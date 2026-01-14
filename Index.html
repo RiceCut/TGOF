@@ -1,0 +1,1156 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>The Game of Freedom — Sifu Mode (v0.7)</title>
+  <style>
+    :root{
+      --text:#e7f0ff;
+      --muted:#a7b4c7;
+      --accent:#7cf7c2;
+      --warn:#ffd166;
+      --bad:#ff5c7c;
+      --good:#7cf7c2;
+      --line:#263246;
+      --chip:#162236;
+      --shadow: 0 10px 30px rgba(0,0,0,.45);
+      --px: 2px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:
+        radial-gradient(1200px 700px at 20% 0%, rgba(124,247,194,.10), transparent 60%),
+        radial-gradient(900px 600px at 90% 20%, rgba(255,209,102,.08), transparent 55%),
+        linear-gradient(180deg, #070a0f, #0b0f14 55%, #070a0f);
+      color:var(--text);
+      font-family: ui-monospace, Menlo, Monaco, Consolas, "Courier New", monospace;
+      letter-spacing:.2px;
+    }
+    .wrap{max-width:1150px;margin:0 auto;padding:18px 14px 40px}
+    .topbar{
+      display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;
+      padding:14px;border:var(--px) solid var(--line);background:rgba(16,24,38,.85);box-shadow:var(--shadow)
+    }
+    .brand{display:flex;gap:12px;align-items:flex-start}
+    .logo{
+      width:44px;height:44px;border:var(--px) solid var(--line);background:linear-gradient(180deg,#0f1c2e,#0a1220);
+      display:grid;place-items:center;
+      box-shadow: inset 0 0 0 2px rgba(124,247,194,.08);
+    }
+    .brand h1{font-size:14px;margin:0;line-height:1.2}
+    .brand p{margin:3px 0 0;color:var(--muted);font-size:12px}
+    .controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+    .chip{
+      display:flex;gap:8px;align-items:center;
+      padding:8px 10px;border:var(--px) solid var(--line);background:var(--chip)
+    }
+    input[type="date"], select{
+      background:#0b1422;color:var(--text);border:var(--px) solid var(--line);padding:6px 8px;
+      font-family:inherit
+    }
+    button{
+      cursor:pointer;
+      background:linear-gradient(180deg,#1a2a44,#0f1a2b);
+      color:var(--text);
+      border:var(--px) solid var(--line);
+      padding:8px 10px;
+      font-family:inherit;
+      text-transform:uppercase;
+      font-size:12px;
+      letter-spacing:.6px;
+    }
+    button:hover{border-color:rgba(124,247,194,.55)}
+    button:disabled{opacity:.5;cursor:not-allowed}
+
+    .grid{display:grid;grid-template-columns: 1.2fr .8fr;gap:14px;margin-top:14px}
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
+
+    .panel{
+      border:var(--px) solid var(--line);
+      background:rgba(16,24,38,.75);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .panel .hd{
+      padding:10px 12px;border-bottom:var(--px) solid var(--line);
+      background:linear-gradient(180deg, rgba(124,247,194,.10), rgba(0,0,0,0));
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    .panel .hd h2{margin:0;font-size:12px;letter-spacing:.9px;text-transform:uppercase}
+    .panel .bd{padding:12px}
+
+    .kpis{display:grid;grid-template-columns: repeat(4, 1fr);gap:10px}
+    @media (max-width: 640px){ .kpis{grid-template-columns: repeat(2,1fr)} }
+    .kpi{padding:10px;border:var(--px) solid var(--line);background:rgba(15,22,34,.8)}
+    .kpi .label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px}
+    .kpi .value{font-size:18px;margin-top:6px}
+    .bar{
+      height:10px;border:var(--px) solid var(--line);background:#0a1220;margin-top:8px;
+      position:relative;overflow:hidden
+    }
+    .bar > span{
+      position:absolute;left:0;top:0;height:100%;width:0%;
+      background:linear-gradient(90deg, rgba(124,247,194,.95), rgba(255,209,102,.85));
+    }
+    .status{margin-top:8px;font-size:12px;color:var(--muted);line-height:1.35}
+    .status b.ok{color:var(--good)}
+    .status b.no{color:var(--bad)}
+
+    .divider{height:1px;background:var(--line);margin:12px 0}
+
+    .sectionTitle{
+      margin:12px 0 8px;font-size:12px;color:var(--muted);
+      text-transform:uppercase;letter-spacing:.7px;
+      display:flex;align-items:center;justify-content:space-between;gap:10px
+    }
+    .sectionTitle .right{display:flex;gap:10px;align-items:center}
+    .badge{
+      padding:2px 6px;border:var(--px) solid var(--line);background:rgba(22,34,54,.85);
+      color:var(--text);font-size:11px;white-space:nowrap
+    }
+
+    .task{
+      display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
+      padding:10px;border:var(--px) solid var(--line);background:rgba(15,22,34,.75);margin-bottom:8px;
+    }
+    .task .left{display:flex;gap:10px;align-items:flex-start}
+    .task label{cursor:pointer}
+    .task .meta{color:var(--muted);font-size:12px;margin-top:2px}
+    .xp{
+      display:flex;gap:8px;align-items:center;white-space:nowrap;
+      color:var(--accent);font-size:12px
+    }
+    .xp small{color:var(--muted)}
+    .sub{margin-top:8px;padding-left:24px;display:grid;gap:6px}
+    .sub .subtask{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      padding:8px;border:var(--px) solid rgba(38,50,70,.8);background:rgba(10,18,32,.65)
+    }
+    .sub .subtask .xp{color:var(--warn)}
+    .pill{
+      display:inline-block;padding:2px 6px;border:var(--px) solid var(--line);background:rgba(22,34,54,.85);
+      color:var(--text);font-size:11px;margin-left:6px
+    }
+    .footnote{margin-top:10px;font-size:12px;color:var(--muted)}
+    .blink{animation: blink 1.2s steps(2, jump-none) infinite;color:var(--accent)}
+    @keyframes blink{50%{opacity:.35}}
+
+    /* Right panel tabs */
+    .tabs{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .tabbtn{
+      padding:8px 10px;border:var(--px) solid var(--line);background:rgba(15,22,34,.8);
+      cursor:pointer;font-size:12px;text-transform:uppercase;letter-spacing:.6px
+    }
+    .tabbtn.active{border-color:rgba(124,247,194,.65);box-shadow:inset 0 0 0 2px rgba(124,247,194,.10)}
+    .tabpane{display:none}
+    .tabpane.active{display:block}
+
+    /* Rewards */
+    .rewards{display:grid;gap:10px}
+    .reward{
+      padding:10px;border:var(--px) solid var(--line);background:rgba(15,22,34,.75);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    .reward .name{font-size:12px}
+    .reward .cost{font-size:12px;color:var(--warn)}
+    .reward .hint{font-size:11px;color:var(--muted);margin-top:3px}
+    .reward .right{display:flex;gap:8px;align-items:center;white-space:nowrap}
+
+    .log{
+      max-height:190px;overflow:auto;border:var(--px) solid var(--line);background:rgba(10,18,32,.6);
+      padding:10px;font-size:12px;color:var(--muted)
+    }
+    .log .item{padding:6px 0;border-bottom:1px dashed rgba(38,50,70,.7)}
+    .log .item:last-child{border-bottom:none}
+
+    /* History */
+    .histControls{
+      display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;
+      padding:10px;border:var(--px) solid var(--line);background:rgba(15,22,34,.65);margin-bottom:10px
+    }
+    .histControls .left, .histControls .right{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .miniStats{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px
+    }
+    .mini{
+      padding:8px;border:var(--px) solid var(--line);background:rgba(15,22,34,.65)
+    }
+    .mini .t{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px}
+    .mini .v{margin-top:6px;font-size:14px}
+    .tableWrap{
+      border:var(--px) solid var(--line);background:rgba(10,18,32,.6);overflow:auto;max-height:380px
+    }
+    table{border-collapse:collapse;width:100%;min-width:720px}
+    th, td{padding:8px;border-bottom:1px solid rgba(38,50,70,.8);font-size:12px}
+    th{position:sticky;top:0;background:rgba(16,24,38,.95);text-align:left;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+    tr:hover td{background:rgba(22,34,54,.35)}
+    .linklike{color:var(--accent);cursor:pointer;text-decoration:underline}
+    .kchip{display:inline-block;padding:1px 6px;border:var(--px) solid var(--line);background:rgba(22,34,54,.65);font-size:11px}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo">👑</div>
+        <div>
+          <h1>THE GAME OF FREEDOM — SIFU MODE <span class="pill">v0.7</span></h1>
+          <p>Historique complet (jours/semaine/mois) + synthèse % / XP / accomplissements.</p>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="chip">
+          <span>📅 Jour :</span>
+          <input id="dateInput" type="date" />
+        </div>
+        <button id="btnToday">Aujourd’hui</button>
+        <button id="btnReset">Reset du jour</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- LEFT: Day play -->
+      <div class="panel">
+        <div class="hd">
+          <h2>📜 Journal du jour</h2>
+          <div class="status">Sauvegarde: <b class="ok">Auto</b> <span class="blink">■</span></div>
+        </div>
+
+        <div class="bd">
+          <div class="kpis">
+            <div class="kpi">
+              <div class="label">Liberté % (Sifu = Liberté+Responsabilité)</div>
+              <div class="value" id="libPct">0%</div>
+              <div class="bar"><span id="libBar"></span></div>
+              <div class="status">Liberté OK: <b id="libOk" class="no">FALSE</b></div>
+            </div>
+
+            <div class="kpi">
+              <div class="label">XP gagnés (jour)</div>
+              <div class="value" id="xpGained">0</div>
+              <div class="status">
+                🟦 <b id="xpLib">0</b> · 🟩 <b id="xpResp">0</b><br/>
+                🟨 <b id="xpDev">0</b> · 🟥 <b id="xpEff">0</b>
+              </div>
+            </div>
+
+            <div class="kpi">
+              <div class="label">XP dépensés (jour)</div>
+              <div class="value" id="xpSpent">0</div>
+              <div class="status">Rewards: <span id="rewardGate">🔒 Bloqués</span></div>
+            </div>
+
+            <div class="kpi">
+              <div class="label">Wallet (solde)</div>
+              <div class="value" id="wallet">0</div>
+              <div class="status">Cumul (gagnés - dépensés) sur tous les jours.</div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="sectionTitle">
+            <span>🟦 Liberté</span>
+            <span class="right">
+              <span class="badge" id="pctLib">0%</span>
+              <span class="badge" id="doneLib">0/0</span>
+            </span>
+          </div>
+          <div id="tasksLib"></div>
+
+          <div class="sectionTitle">
+            <span>🟩 Responsabilité (compte dans Liberté%)</span>
+            <span class="right">
+              <span class="badge" id="pctResp">0%</span>
+              <span class="badge" id="doneResp">0/0</span>
+            </span>
+          </div>
+          <div id="tasksResp"></div>
+
+          <div class="sectionTitle">
+            <span>🟨 Développement (XP seulement)</span>
+            <span class="right">
+              <span class="badge" id="pctDev">0%</span>
+              <span class="badge" id="doneDev">0/0</span>
+            </span>
+          </div>
+          <div id="tasksDev"></div>
+
+          <div class="sectionTitle">
+            <span>🟥 Efficacité (XP seulement)</span>
+            <span class="right">
+              <span class="badge" id="pctEff">0%</span>
+              <span class="badge" id="doneEff">0/0</span>
+            </span>
+          </div>
+          <div id="tasksEff"></div>
+
+          <div class="footnote" id="ruleNote"></div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Tabs Rewards / History -->
+      <div class="panel">
+        <div class="hd">
+          <h2 id="rightTitle">🎁 Rewards & Historique</h2>
+          <div class="tabs">
+            <div class="tabbtn" id="tab_rewards">Rewards</div>
+            <div class="tabbtn" id="tab_history">Historique</div>
+          </div>
+        </div>
+
+        <div class="bd">
+          <!-- Rewards tab -->
+          <div class="tabpane" id="pane_rewards">
+            <div class="rewards" id="rewards"></div>
+
+            <div class="divider"></div>
+
+            <div class="sectionTitle"><span>🧾 Historique (jour)</span></div>
+            <div class="log" id="dayLog"></div>
+
+            <div class="divider"></div>
+
+            <div class="sectionTitle"><span>📦 Sauvegarde</span></div>
+            <div class="footnote">
+              Stockage navigateur (localStorage).<br/>
+              Règle: tu peux gagner des XP même si Liberté OK = false, mais tu ne peux pas dépenser.
+            </div>
+          </div>
+
+          <!-- History tab -->
+          <div class="tabpane" id="pane_history">
+            <div class="histControls">
+              <div class="left">
+                <span class="kchip">Vue</span>
+                <select id="histMode">
+                  <option value="week">Semaine</option>
+                  <option value="month">Mois</option>
+                  <option value="all">Tout</option>
+                </select>
+                <span class="kchip">Référence</span>
+                <input id="histRef" type="date" />
+              </div>
+              <div class="right">
+                <button id="histPrev">◀</button>
+                <button id="histNow">Aujourd’hui</button>
+                <button id="histNext">▶</button>
+              </div>
+            </div>
+
+            <div class="miniStats">
+              <div class="mini">
+                <div class="t">Période</div>
+                <div class="v" id="histLabel">—</div>
+              </div>
+              <div class="mini">
+                <div class="t">XP gagnés / dépensés</div>
+                <div class="v"><span id="histGained">0</span> / <span id="histSpent">0</span></div>
+              </div>
+              <div class="mini">
+                <div class="t">Liberté OK (jours)</div>
+                <div class="v"><span id="histOkDays">0</span> / <span id="histDays">0</span></div>
+              </div>
+            </div>
+
+            <div class="tableWrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Liberté% (Sifu)</th>
+                    <th>Liberté</th>
+                    <th>Resp.</th>
+                    <th>Dev.</th>
+                    <th>Eff.</th>
+                    <th>XP +</th>
+                    <th>XP -</th>
+                    <th>Rewards</th>
+                  </tr>
+                </thead>
+                <tbody id="histRows"></tbody>
+              </table>
+            </div>
+
+            <div class="footnote">
+              Clique une date pour ouvrir ce jour. (Les vues “Semaine” commencent le lundi.)
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  "use strict";
+
+  // =========================
+  // CONFIG
+  // =========================
+  const STORAGE_KEY = "tgoF_sifu_v07";
+  const LIB_OK_THRESHOLD_PCT = 40;
+
+  // ---- Qi Pratique (7 items) + bonus
+  const qiPracticeTasks = [
+    { id:"qi_cultivations", label:"🌱 Cultivations", xp:30 },
+    { id:"qi_projections",  label:"🎯 Projections", xp:8  },
+    { id:"qi_dantien",      label:"⚙️ Dantien Tuna", xp:10 },
+    { id:"qi_balancing",    label:"⚖️ Balancing", xp:10 },
+    { id:"qi_meditation",   label:"🧘 Meditation", xp:15 },
+    { id:"qi_expand",       label:"🌬️ Expand & Condense", xp:30 },
+    { id:"qi_dynamic",      label:"⚡ Dynamic Qi", xp:10 },
+  ];
+  const QI_BONUS_XP = 15;
+
+  // Liberté standalone
+  const libertyStandalone = [
+    { id:"qi_cleansing",  label:"🌊 Qi Cleansing", xp:70 },
+    { id:"med1",          label:"🧘 Méditation 1", xp:15 },
+    { id:"med2",          label:"🧘 Méditation 2", xp:15 },
+    { id:"desengram",     label:"🧠⚡ Désengrammage & Déprogrammation", xp:50 },
+    { id:"yoga",          label:"🪷 Yoga", xp:20 },
+  ];
+
+  // Système (4 items) + bonus
+  const systemTasks = [
+    { id:"sys_audio",     label:"🎧 Audio", xp:25 },
+    { id:"sys_lecture",   label:"📖 Lecture", xp:25 },
+    { id:"sys_relation",  label:"🤝 Relation", xp:25 },
+    { id:"sys_reco",      label:"⭐ Donner reconnaissance", xp:25 },
+  ];
+  const SYSTEM_BONUS_XP = 15;
+
+  const libertyAll = [...qiPracticeTasks, ...libertyStandalone, ...systemTasks];
+
+  // Responsabilité (5)
+  const responsibilityTasks = [
+    { id:"bu_bw",         label:"📘 BU / BW", xp:40 },
+    { id:"transgression", label:"🔥 Transgression", xp:60 },
+    { id:"wai",           label:"👁️ WAI", xp:20 },
+    { id:"coeur",         label:"❤️ Cœur (Coaching)", xp:20 },
+    { id:"auto_cleans",   label:"🧼 Auto-cleansing", xp:60 },
+  ];
+
+  // Développement
+  const developmentTasks = [
+    { id:"vis_matin", label:"🌌 Visualisation matin", xp:15 },
+    { id:"vis_soir",  label:"🌠 Visualisation soir", xp:15 },
+    { id:"priere_m",  label:"🙏 Prière matin", xp:15 },
+    { id:"priere_s",  label:"🕯️ Prière soir", xp:15 },
+  ];
+
+  // Efficacité
+  const efficiencyTasks = [
+    { id:"deep_work",     label:"🛠️ Deep Work", xp:150 },
+    { id:"communication", label:"💬 Communication", xp:120 },
+  ];
+
+  // Rewards (Sifu)
+  const rewards = [
+    { id:"r1_game",   name:"🎮 Reward 1 — Jeux / Jeux vidéo", cost:440 },
+    { id:"r2_film",   name:"🎬 Reward 2 — Film", cost:500 },
+    { id:"r3_out",    name:"🚶 Reward 3 — Sortie dehors", cost:570 },
+    { id:"r4_buy",    name:"🛍️ Reward 4 — Objet ou service", cost:600 },
+    { id:"r5_sex_1",  name:"❤️ Reward 5.1 — Sexe", cost:620 },
+    { id:"r5_sex_2",  name:"❤️ Reward 5.2 — Sexe", cost:650 },
+    { id:"r5_sex_3",  name:"❤️ Reward 5.3 — Sexe", cost:680 },
+    { id:"r6_rest_1", name:"🍽️ Reward 6.1 — Restaurant", cost:700 },
+    { id:"r6_rest_2", name:"🍽️ Reward 6.2 — Restaurant", cost:750 },
+  ];
+
+  // =========================
+  // HELPERS
+  // =========================
+  const el = (id) => document.getElementById(id);
+
+  const todayISO = () => new Date().toISOString().slice(0,10);
+  const pct = (done, total) => total ? Math.round((done / total) * 100) : 0;
+
+  const escapeHtml = (str) =>
+    String(str)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+
+  function parseISO(iso){
+    const [y,m,d] = iso.split("-").map(n=>parseInt(n,10));
+    return new Date(y, m-1, d);
+  }
+  function fmtISO(date){
+    const y = date.getFullYear();
+    const m = String(date.getMonth()+1).padStart(2,"0");
+    const d = String(date.getDate()).padStart(2,"0");
+    return `${y}-${m}-${d}`;
+  }
+  function addDays(iso, n){
+    const dt = parseISO(iso);
+    dt.setDate(dt.getDate() + n);
+    return fmtISO(dt);
+  }
+  function startOfWeek(iso){ // Monday start
+    const dt = parseISO(iso);
+    const day = dt.getDay(); // 0 Sun ... 6 Sat
+    const diff = (day === 0) ? -6 : (1 - day);
+    dt.setDate(dt.getDate() + diff);
+    return fmtISO(dt);
+  }
+  function endOfWeek(iso){
+    return addDays(startOfWeek(iso), 6);
+  }
+  function startOfMonth(iso){
+    const dt = parseISO(iso);
+    dt.setDate(1);
+    return fmtISO(dt);
+  }
+  function endOfMonth(iso){
+    const dt = parseISO(iso);
+    dt.setMonth(dt.getMonth()+1);
+    dt.setDate(0);
+    return fmtISO(dt);
+  }
+  function monthLabel(iso){
+    const dt = parseISO(iso);
+    const y = dt.getFullYear();
+    const m = dt.getMonth()+1;
+    return `${String(m).padStart(2,"0")}/${y}`;
+  }
+
+  function countDone(checked, tasks){
+    let done = 0;
+    for(const t of tasks){
+      if(checked[t.id]) done += 1;
+    }
+    return { done, total: tasks.length, pct: pct(done, tasks.length) };
+  }
+
+  // =========================
+  // STATE
+  // =========================
+  const state = loadState();
+  el("dateInput").value = state.currentDate || todayISO();
+  state.currentDate = el("dateInput").value;
+
+  // Tabs + History controls init
+  el("histRef").value = state.histRef || state.currentDate || todayISO();
+  el("histMode").value = state.histMode || "week";
+
+  // =========================
+  // INIT
+  // =========================
+  renderTasks();
+  renderRewards();
+  initTabs();
+  syncUI();
+
+  // =========================
+  // EVENTS
+  // =========================
+  el("dateInput").addEventListener("change", () => {
+    state.currentDate = el("dateInput").value;
+    ensureDay(state.currentDate);
+    saveState();
+    syncUI();
+  });
+
+  el("btnToday").addEventListener("click", () => {
+    state.currentDate = todayISO();
+    el("dateInput").value = state.currentDate;
+    ensureDay(state.currentDate);
+    saveState();
+    syncUI();
+  });
+
+  el("btnReset").addEventListener("click", () => {
+    const d = state.currentDate;
+    if(!confirm("Reset toutes les cases et l'historique de CE JOUR ?")) return;
+    state.days[d] = createEmptyDay();
+    saveState();
+    syncUI();
+  });
+
+  // History controls
+  el("histMode").addEventListener("change", ()=>{
+    state.histMode = el("histMode").value;
+    saveState();
+    renderHistory();
+  });
+  el("histRef").addEventListener("change", ()=>{
+    state.histRef = el("histRef").value;
+    saveState();
+    renderHistory();
+  });
+  el("histNow").addEventListener("click", ()=>{
+    el("histRef").value = todayISO();
+    state.histRef = el("histRef").value;
+    saveState();
+    renderHistory();
+  });
+  el("histPrev").addEventListener("click", ()=>{
+    const mode = el("histMode").value;
+    const ref = el("histRef").value || todayISO();
+    if(mode === "week") el("histRef").value = addDays(ref, -7);
+    else if(mode === "month"){
+      const dt = parseISO(ref);
+      dt.setMonth(dt.getMonth()-1);
+      el("histRef").value = fmtISO(dt);
+    } else {
+      el("histRef").value = addDays(ref, -30);
+    }
+    state.histRef = el("histRef").value;
+    saveState();
+    renderHistory();
+  });
+  el("histNext").addEventListener("click", ()=>{
+    const mode = el("histMode").value;
+    const ref = el("histRef").value || todayISO();
+    if(mode === "week") el("histRef").value = addDays(ref, 7);
+    else if(mode === "month"){
+      const dt = parseISO(ref);
+      dt.setMonth(dt.getMonth()+1);
+      el("histRef").value = fmtISO(dt);
+    } else {
+      el("histRef").value = addDays(ref, 30);
+    }
+    state.histRef = el("histRef").value;
+    saveState();
+    renderHistory();
+  });
+
+  // =========================
+  // STORAGE
+  // =========================
+  function loadState(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      const parsed = raw ? JSON.parse(raw) : null;
+      const base = (parsed && typeof parsed === "object") ? parsed : {
+        currentDate: todayISO(),
+        days:{},
+        walletBase:0,
+        tab:"rewards",
+        histMode:"week",
+        histRef: todayISO()
+      };
+      base.days = base.days || {};
+      base.walletBase = base.walletBase || 0;
+      base.currentDate = base.currentDate || todayISO();
+      base.tab = base.tab || "rewards";
+      base.histMode = base.histMode || "week";
+      base.histRef = base.histRef || base.currentDate || todayISO();
+      ensureDay(base.currentDate, base);
+      return base;
+    }catch(_){
+      const fallback = { currentDate: todayISO(), days:{}, walletBase:0, tab:"rewards", histMode:"week", histRef: todayISO() };
+      ensureDay(fallback.currentDate, fallback);
+      return fallback;
+    }
+  }
+
+  function saveState(){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  function ensureDay(date, st=state){
+    if(!st.days[date]) st.days[date] = createEmptyDay();
+  }
+
+  function createEmptyDay(){
+    const checked = {};
+    [...libertyAll, ...responsibilityTasks, ...developmentTasks, ...efficiencyTasks]
+      .forEach(t => checked[t.id] = false);
+    return { checked, purchases: [] };
+  }
+
+  // =========================
+  // TABS
+  // =========================
+  function initTabs(){
+    const btnR = el("tab_rewards");
+    const btnH = el("tab_history");
+
+    btnR.addEventListener("click", ()=> setTab("rewards"));
+    btnH.addEventListener("click", ()=> setTab("history"));
+
+    setTab(state.tab || "rewards", true);
+  }
+
+  function setTab(tab, skipSave=false){
+    state.tab = tab;
+    el("tab_rewards").classList.toggle("active", tab==="rewards");
+    el("tab_history").classList.toggle("active", tab==="history");
+    el("pane_rewards").classList.toggle("active", tab==="rewards");
+    el("pane_history").classList.toggle("active", tab==="history");
+    if(!skipSave) saveState();
+    if(tab==="history") renderHistory();
+  }
+
+  // =========================
+  // RENDER TASKS
+  // =========================
+  function taskRow(task, meta){
+    const row = document.createElement("div");
+    row.className = "task";
+    row.innerHTML = `
+      <div class="left">
+        <input type="checkbox" id="ck_${task.id}">
+        <div>
+          <label for="ck_${task.id}"><b>${task.label}</b></label>
+          <div class="meta">${meta}</div>
+        </div>
+      </div>
+      <div class="xp"><span>+${task.xp}</span><small>XP</small></div>
+    `;
+    row.querySelector(`#ck_${task.id}`).addEventListener("change",(e)=>{
+      const d = state.currentDate;
+      state.days[d].checked[task.id] = e.target.checked;
+      saveState();
+      syncUI();
+    });
+    return row;
+  }
+
+  function renderTasks(){
+    const libWrap = el("tasksLib");
+    libWrap.innerHTML = "";
+
+    // Qi group
+    const qiGroup = document.createElement("div");
+    qiGroup.className = "task";
+    qiGroup.innerHTML = `
+      <div class="left">
+        <div style="padding-top:2px">🜂</div>
+        <div>
+          <div><b>🜂 Qi Pratique</b> <span class="pill" id="qiDone">0/7</span> <span class="pill" id="qiPct">0%</span></div>
+          <div class="meta">7 actes + bonus +15 si complet. Compte dans Liberté%.</div>
+          <div class="sub" id="qiSub"></div>
+        </div>
+      </div>
+      <div class="xp"><span id="qiXp">0</span><small>XP</small></div>
+    `;
+    libWrap.appendChild(qiGroup);
+
+    const qiSub = qiGroup.querySelector("#qiSub");
+    qiPracticeTasks.forEach(task=>{
+      const row = document.createElement("div");
+      row.className = "subtask";
+      row.innerHTML = `
+        <div class="left" style="display:flex;gap:10px;align-items:flex-start">
+          <input type="checkbox" id="ck_${task.id}">
+          <label for="ck_${task.id}">${task.label}</label>
+        </div>
+        <div class="xp"><span>+${task.xp}</span><small>XP</small></div>
+      `;
+      qiSub.appendChild(row);
+      row.querySelector(`#ck_${task.id}`).addEventListener("change",(e)=>{
+        const d = state.currentDate;
+        state.days[d].checked[task.id] = e.target.checked;
+        saveState();
+        syncUI();
+      });
+    });
+
+    // Liberté standalone
+    libertyStandalone.forEach(task => libWrap.appendChild(taskRow(task, "Acte Liberté (compte dans Liberté%).")));
+
+    // Système group
+    const sysGroup = document.createElement("div");
+    sysGroup.className = "task";
+    sysGroup.innerHTML = `
+      <div class="left">
+        <div style="padding-top:2px">🧱</div>
+        <div>
+          <div><b>🧱 Système / Organisation</b> <span class="pill" id="sysDone">0/4</span> <span class="pill" id="sysPct">0%</span></div>
+          <div class="meta">4 actes (25 XP chacun) + bonus +15 si complet. Compte dans Liberté%.</div>
+          <div class="sub" id="systemSub"></div>
+        </div>
+      </div>
+      <div class="xp"><span id="sysXp">0</span><small>XP</small></div>
+    `;
+    libWrap.appendChild(sysGroup);
+
+    const sysSub = sysGroup.querySelector("#systemSub");
+    systemTasks.forEach(task=>{
+      const row = document.createElement("div");
+      row.className = "subtask";
+      row.innerHTML = `
+        <div class="left" style="display:flex;gap:10px;align-items:flex-start">
+          <input type="checkbox" id="ck_${task.id}">
+          <label for="ck_${task.id}">${task.label}</label>
+        </div>
+        <div class="xp"><span>+${task.xp}</span><small>XP</small></div>
+      `;
+      sysSub.appendChild(row);
+      row.querySelector(`#ck_${task.id}`).addEventListener("change",(e)=>{
+        const d = state.currentDate;
+        state.days[d].checked[task.id] = e.target.checked;
+        saveState();
+        syncUI();
+      });
+    });
+
+    // Responsabilité
+    const respWrap = el("tasksResp");
+    respWrap.innerHTML = "";
+    responsibilityTasks.forEach(task => respWrap.appendChild(taskRow(task, "Acte Responsabilité (compte dans Liberté%).")));
+
+    // Développement
+    const devWrap = el("tasksDev");
+    devWrap.innerHTML = "";
+    developmentTasks.forEach(task => devWrap.appendChild(taskRow(task, "Développement (XP seulement).")));
+
+    // Efficacité
+    const effWrap = el("tasksEff");
+    effWrap.innerHTML = "";
+    efficiencyTasks.forEach(task => effWrap.appendChild(taskRow(task, "Efficacité (XP seulement).")));
+  }
+
+  // =========================
+  // RENDER REWARDS
+  // =========================
+  function renderRewards(){
+    const wrap = el("rewards");
+    wrap.innerHTML = "";
+    rewards.forEach(r=>{
+      const row = document.createElement("div");
+      row.className = "reward";
+      row.innerHTML = `
+        <div>
+          <div class="name"><b>${r.name}</b></div>
+          <div class="hint">Coût: <span class="cost">${r.cost} XP</span></div>
+        </div>
+        <div class="right">
+          <div class="cost">${r.cost} XP</div>
+          <button id="buy_${r.id}">Prendre</button>
+        </div>
+      `;
+      wrap.appendChild(row);
+      row.querySelector(`#buy_${r.id}`).addEventListener("click", ()=> attemptBuy(r));
+    });
+  }
+
+  // =========================
+  // CALC
+  // =========================
+  function calcGroupXP(checked, tasks, bonusWhenAll=false, bonusXp=0){
+    let total = 0;
+    let all = true;
+    for(const t of tasks){
+      if(checked[t.id]) total += t.xp;
+      else all = false;
+    }
+    if(bonusWhenAll && all) total += bonusXp;
+    return { total, all };
+  }
+
+  function calcDayXP(date){
+    const day = state.days[date];
+    if(!day) return { gained:0, spent:0, qiXP:0, sysXP:0, breakdown:{lib:0, resp:0, dev:0, eff:0} };
+
+    const checked = day.checked || {};
+
+    const qi = calcGroupXP(checked, qiPracticeTasks, true, QI_BONUS_XP);
+
+    let libStandaloneXP = 0;
+    libertyStandalone.forEach(t => { if(checked[t.id]) libStandaloneXP += t.xp; });
+
+    const sys = calcGroupXP(checked, systemTasks, true, SYSTEM_BONUS_XP);
+
+    const libXP = qi.total + libStandaloneXP + sys.total;
+
+    let respXP = 0;
+    responsibilityTasks.forEach(t => { if(checked[t.id]) respXP += t.xp; });
+
+    let devXP = 0;
+    developmentTasks.forEach(t => { if(checked[t.id]) devXP += t.xp; });
+
+    let effXP = 0;
+    efficiencyTasks.forEach(t => { if(checked[t.id]) effXP += t.xp; });
+
+    const gained = libXP + respXP + devXP + effXP;
+    const spent = (day.purchases||[]).reduce((a,p)=>a + (p.cost||0), 0);
+
+    return { gained, spent, qiXP: qi.total, sysXP: sys.total, breakdown:{ lib:libXP, resp:respXP, dev:devXP, eff:effXP } };
+  }
+
+  function calcLibertyPct(date){
+    const day = state.days[date];
+    const checked = (day && day.checked) ? day.checked : {};
+
+    const acts = [
+      ...qiPracticeTasks.map(t=>t.id),
+      ...libertyStandalone.map(t=>t.id),
+      ...systemTasks.map(t=>t.id),
+      ...responsibilityTasks.map(t=>t.id),
+    ];
+    const total = acts.length; // 21
+    let done = 0;
+    for(const id of acts){
+      if(checked[id]) done += 1;
+    }
+
+    const p = total ? Math.round(done / total * 100) : 0;
+    const libOk = p >= LIB_OK_THRESHOLD_PCT;
+    return { pct: p, done, total, libOk };
+  }
+
+  function calcWallet(){
+    const dates = Object.keys(state.days||{});
+    let total = state.walletBase || 0;
+    for(const d of dates){
+      const x = calcDayXP(d);
+      total += (x.gained - x.spent);
+    }
+    return total;
+  }
+
+  // Day summary for History tables (organized)
+  function daySummary(date){
+    ensureDay(date);
+    const checked = state.days[date].checked || {};
+    const libertyOnlyTasks = [...qiPracticeTasks, ...libertyStandalone, ...systemTasks];
+
+    const cLib  = countDone(checked, libertyOnlyTasks);
+    const cResp = countDone(checked, responsibilityTasks);
+    const cDev  = countDone(checked, developmentTasks);
+    const cEff  = countDone(checked, efficiencyTasks);
+
+    const libGlobal = calcLibertyPct(date);
+    const xp = calcDayXP(date);
+    const purchases = state.days[date].purchases || [];
+
+    return {
+      date,
+      libGlobalPct: libGlobal.pct,
+      libOk: libGlobal.libOk,
+      cat: { lib:cLib, resp:cResp, dev:cDev, eff:cEff },
+      xpGained: xp.gained,
+      xpSpent: xp.spent,
+      rewardsCount: purchases.length
+    };
+  }
+
+  // =========================
+  // ECONOMY
+  // =========================
+  function attemptBuy(reward){
+    const d = state.currentDate;
+    ensureDay(d);
+
+    const { libOk } = calcLibertyPct(d);
+    if(!libOk){
+      alert("🔒 Rewards BLOQUÉS : Liberté OK est FALSE.\n\nTu peux gagner des XP, mais tu ne peux pas dépenser aujourd'hui.");
+      return;
+    }
+
+    const wallet = calcWallet();
+    if(wallet < reward.cost){
+      alert(`Pas assez de XP.\n\nWallet: ${wallet} XP\nCoût: ${reward.cost} XP`);
+      return;
+    }
+
+    const entry = { id: reward.id, name: reward.name, cost: reward.cost, ts: new Date().toISOString() };
+    state.days[d].purchases.push(entry);
+    saveState();
+    syncUI();
+  }
+
+  // =========================
+  // UI SYNC
+  // =========================
+  function syncUI(){
+    const d = state.currentDate;
+    ensureDay(d);
+
+    const checked = state.days[d].checked;
+
+    // Apply checkbox states
+    [...libertyAll, ...responsibilityTasks, ...developmentTasks, ...efficiencyTasks].forEach(t=>{
+      const input = document.getElementById(`ck_${t.id}`);
+      if(input) input.checked = !!checked[t.id];
+    });
+
+    // Liberté global
+    const lib = calcLibertyPct(d);
+    el("libPct").textContent = `${lib.pct}% (${lib.done}/${lib.total})`;
+    el("libBar").style.width = `${Math.min(100, Math.max(0, lib.pct))}%`;
+    const okEl = el("libOk");
+    okEl.textContent = lib.libOk ? "TRUE" : "FALSE";
+    okEl.className = lib.libOk ? "ok" : "no";
+
+    // XP
+    const xp = calcDayXP(d);
+    el("xpGained").textContent = xp.gained;
+    el("xpSpent").textContent = xp.spent;
+    el("wallet").textContent = calcWallet();
+
+    // XP by section
+    el("xpLib").textContent = xp.breakdown.lib;
+    el("xpResp").textContent = xp.breakdown.resp;
+    el("xpDev").textContent = xp.breakdown.dev;
+    el("xpEff").textContent = xp.breakdown.eff;
+
+    // Group XP chips
+    if(el("qiXp")) el("qiXp").textContent = xp.qiXP;
+    if(el("sysXp")) el("sysXp").textContent = xp.sysXP;
+
+    // Completion % per category (daily)
+    const libertyOnlyTasks = [...qiPracticeTasks, ...libertyStandalone, ...systemTasks];
+    const cLib = countDone(checked, libertyOnlyTasks);
+    const cResp = countDone(checked, responsibilityTasks);
+    const cDev = countDone(checked, developmentTasks);
+    const cEff = countDone(checked, efficiencyTasks);
+
+    el("pctLib").textContent = `${cLib.pct}%`;
+    el("doneLib").textContent = `${cLib.done}/${cLib.total}`;
+    el("pctResp").textContent = `${cResp.pct}%`;
+    el("doneResp").textContent = `${cResp.done}/${cResp.total}`;
+    el("pctDev").textContent = `${cDev.pct}%`;
+    el("doneDev").textContent = `${cDev.done}/${cDev.total}`;
+    el("pctEff").textContent = `${cEff.pct}%`;
+    el("doneEff").textContent = `${cEff.done}/${cEff.total}`;
+
+    // details inside group headers
+    const qiC = countDone(checked, qiPracticeTasks);
+    if(el("qiDone")) el("qiDone").textContent = `${qiC.done}/${qiC.total}`;
+    if(el("qiPct")) el("qiPct").textContent = `${qiC.pct}%`;
+
+    const sysC = countDone(checked, systemTasks);
+    if(el("sysDone")) el("sysDone").textContent = `${sysC.done}/${sysC.total}`;
+    if(el("sysPct")) el("sysPct").textContent = `${sysC.pct}%`;
+
+    el("ruleNote").textContent =
+      `Liberté% (Sifu) = ${lib.total} actes (Qi 7 + Liberté 5 + Système 4 + Responsabilité 5). Seuil OK = ${LIB_OK_THRESHOLD_PCT}%.`;
+
+    // reward gating + disable buttons
+    el("rewardGate").textContent = lib.libOk ? "✅ Autorisés" : "🔒 Bloqués";
+    rewards.forEach(r=>{
+      const btn = document.getElementById(`buy_${r.id}`);
+      if(btn) btn.disabled = !lib.libOk;
+    });
+
+    // day log
+    const log = el("dayLog");
+    const purchases = state.days[d].purchases || [];
+    if(purchases.length === 0){
+      log.innerHTML = `<div class="item">Aucun reward pris aujourd’hui.</div>`;
+    }else{
+      log.innerHTML = purchases
+        .slice()
+        .reverse()
+        .map(p=>`<div class="item">✅ ${escapeHtml(p.name)} <span class="pill">-${p.cost} XP</span></div>`)
+        .join("");
+    }
+
+    // If history tab open, refresh it (so it feels live)
+    if(state.tab === "history") renderHistory();
+  }
+
+  // =========================
+  // HISTORY (organized day/week/month)
+  // =========================
+  function getRange(mode, refISO){
+    if(mode === "week"){
+      return { start: startOfWeek(refISO), end: endOfWeek(refISO), label: `Semaine ${startOfWeek(refISO)} → ${endOfWeek(refISO)}` };
+    }
+    if(mode === "month"){
+      return { start: startOfMonth(refISO), end: endOfMonth(refISO), label: `Mois ${monthLabel(refISO)} (${startOfMonth(refISO)} → ${endOfMonth(refISO)})` };
+    }
+    // all
+    const dates = Object.keys(state.days||{}).sort();
+    if(dates.length === 0){
+      const t = todayISO();
+      return { start:t, end:t, label:"Tout (aucune donnée)" };
+    }
+    return { start: dates[0], end: dates[dates.length-1], label: `Tout (${dates[0]} → ${dates[dates.length-1]})` };
+  }
+
+  function inRange(iso, start, end){
+    return iso >= start && iso <= end;
+  }
+
+  function renderHistory(){
+    const mode = el("histMode").value;
+    const ref = el("histRef").value || todayISO();
+
+    const { start, end, label } = getRange(mode, ref);
+    el("histLabel").textContent = label;
+
+    // collect rows in range
+    const dates = Object.keys(state.days||{}).sort();
+    const rows = [];
+    for(const d of dates){
+      if(mode === "all" || inRange(d, start, end)){
+        rows.push(daySummary(d));
+      }
+    }
+
+    // if no rows: still show range days skeleton for week/month
+    if(rows.length === 0 && mode !== "all"){
+      // build all days in range even if empty (so user sees structure)
+      let cur = start;
+      while(cur <= end){
+        ensureDay(cur);
+        rows.push(daySummary(cur));
+        cur = addDays(cur, 1);
+      }
+    }
+
+    // stats period
+    let gained = 0, spent = 0, okDays = 0;
+    for(const r of rows){
+      gained += r.xpGained;
+      spent  += r.xpSpent;
+      if(r.libOk) okDays += 1;
+    }
+    el("histGained").textContent = gained;
+    el("histSpent").textContent = spent;
+    el("histOkDays").textContent = okDays;
+    el("histDays").textContent = rows.length;
+
+    // render table
+    const tbody = el("histRows");
+    tbody.innerHTML = rows
+      .slice()
+      .sort((a,b)=> a.date.localeCompare(b.date))
+      .map(r=>{
+        const okTag = r.libOk ? `<span class="kchip">OK</span>` : `<span class="kchip" style="border-color:rgba(255,92,124,.6)">NO</span>`;
+        const dateCell = `<span class="linklike" data-open="${r.date}">${r.date}</span>`;
+        return `
+          <tr>
+            <td>${dateCell}</td>
+            <td>${r.libGlobalPct}% ${okTag}</td>
+            <td>${r.cat.lib.pct}% <span class="kchip">${r.cat.lib.done}/${r.cat.lib.total}</span></td>
+            <td>${r.cat.resp.pct}% <span class="kchip">${r.cat.resp.done}/${r.cat.resp.total}</span></td>
+            <td>${r.cat.dev.pct}% <span class="kchip">${r.cat.dev.done}/${r.cat.dev.total}</span></td>
+            <td>${r.cat.eff.pct}% <span class="kchip">${r.cat.eff.done}/${r.cat.eff.total}</span></td>
+            <td>+${r.xpGained}</td>
+            <td>-${r.xpSpent}</td>
+            <td>${r.rewardsCount}</td>
+          </tr>
+        `;
+      })
+      .join("");
+
+    // bind clicks to open day
+    tbody.querySelectorAll("[data-open]").forEach(node=>{
+      node.addEventListener("click", ()=>{
+        const d = node.getAttribute("data-open");
+        state.currentDate = d;
+        el("dateInput").value = d;
+        ensureDay(d);
+        saveState();
+        syncUI();
+      });
+    });
+  }
+
+})();
+</script>
+</body>
+</html>
