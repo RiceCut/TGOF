@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>The Game of Freedom — Sifu Mode (v1.3 Sticky Journal)</title>
+  <title>The Game of Freedom — Sifu Mode (v1.4 Custom Categories)</title>
   <style>
     :root{
       --text:#e7f0ff;
@@ -37,6 +37,48 @@
       --cat-eff-br:   rgba(255,92,124,.35);
     }
 
+    /* Money Making Mode Colors */
+    body.mode-money{
+      --text:#ffe7c8;
+      --muted:#d4a574;
+      --accent:#ffd700;
+      --warn:#ff8c00;
+      --bad:#ff5c7c;
+      --good:#ffa500;
+      --line:#3d2817;
+      --chip:#2a1810;
+      
+      background:
+        radial-gradient(1200px 700px at 20% 0%, rgba(255,215,0,.15), transparent 60%),
+        radial-gradient(900px 600px at 90% 20%, rgba(255,140,0,.12), transparent 55%),
+        linear-gradient(180deg, #1a0f05, #2a1810 55%, #1a0f05) !important;
+    }
+    
+    body.mode-money .section{
+      background: linear-gradient(135deg, rgba(255,215,0,.05), rgba(255,140,0,.03));
+      border-left-color: rgba(255,215,0,.5);
+    }
+    
+    body.mode-money .badge{
+      background: rgba(255,215,0,.15);
+      color: #ffd700;
+    }
+    
+    body.mode-money .task{
+      background: rgba(255,215,0,.03);
+      border-left-color: rgba(255,215,0,.3);
+    }
+    
+    body.mode-money button{
+      background: linear-gradient(135deg, #ffd700, #ff8c00);
+      color: #1a0f05;
+    }
+    
+    body.mode-money .chip{
+      background: rgba(255,215,0,.1);
+      border-color: rgba(255,215,0,.3);
+    }
+
     *{box-sizing:border-box}
     body{
       margin:0;
@@ -48,41 +90,158 @@
       font-family: ui-monospace, Menlo, Monaco, Consolas, "Courier New", monospace;
       letter-spacing:.2px;
     }
+    body.dark-mode{
+      --text:#e5edf7;
+      --muted:#9aa9bf;
+      --accent:#6ddbb3;
+      --warn:#f4c15d;
+      --bad:#ff6f8d;
+      --good:#6ddbb3;
+      --line:#1c2636;
+      --chip:#0f1724;
+      --shadow: 0 12px 36px rgba(0,0,0,.6);
+      background:
+        radial-gradient(1200px 700px at 20% 0%, rgba(109,219,179,.08), transparent 60%),
+        radial-gradient(900px 600px at 90% 20%, rgba(244,193,93,.06), transparent 55%),
+        linear-gradient(180deg, #04060a, #090e14 55%, #04060a);
+      color:var(--text);
+    }
+    body.dark-mode .topbar{
+      background:linear-gradient(135deg, rgba(12,18,28,.96), rgba(8,12,20,.95));
+      border-color:rgba(109,219,179,.2);
+    }
+    body.dark-mode .panel{
+      background:rgba(10,16,26,.8);
+    }
+    body.dark-mode .chip{
+      background:linear-gradient(135deg,rgba(12,18,28,.85),rgba(8,12,20,.8));
+      border-color:rgba(109,219,179,.2);
+    }
+    body.dark-mode input[type="date"], body.dark-mode input[type="month"], body.dark-mode select{
+      background:linear-gradient(135deg,rgba(12,18,28,.9),rgba(8,12,20,.85));
+      border-color:rgba(109,219,179,.2);
+    }
+    body.dark-mode button{
+      background:linear-gradient(135deg,rgba(12,18,28,.96),rgba(8,12,20,.92));
+      border-color:rgba(109,219,179,.2);
+    }
     .wrap{max-width:1200px;margin:0 auto;padding:18px 14px 40px}
 
     .topbar{
-      display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;
-      padding:14px;border:var(--px) solid var(--line);background:rgba(16,24,38,.85);box-shadow:var(--shadow)
+      display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;
+      padding:6px 12px;
+      border:1px solid rgba(124,247,194,.25);
+      background:linear-gradient(135deg, rgba(20,28,44,.95), rgba(15,22,34,.9));
+      backdrop-filter:blur(12px);
+      box-shadow:0 8px 32px rgba(0,0,0,.4), inset 0 1px 0 rgba(124,247,194,.1);
+      border-radius:8px;
+      transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
     }
-    .brand{display:flex;gap:12px;align-items:flex-start}
+    .topbar:hover{
+      border-color:rgba(124,247,194,.4);
+      box-shadow:0 12px 40px rgba(0,0,0,.5), inset 0 1px 0 rgba(124,247,194,.15);
+    }
+    .brand{display:flex;gap:8px;align-items:center;flex:0 0 auto}
+    .brand h1{font-size:13px;margin:0;line-height:1.1}
+    .brand p{display:none}
+    
+    /* Character Panel dans topbar - Version compacte */
+    .topbar .characterPanel{
+      display:flex;gap:8px;align-items:center;flex:1 1 auto;justify-content:center;padding:0 8px;
+      border-left:1px solid rgba(124,247,194,.15);border-right:1px solid rgba(124,247,194,.15);
+    }
+    .topbar .controls{flex:0 0 auto;display:flex;gap:6px;align-items:center}
     .logo{
-      width:44px;height:44px;border:var(--px) solid var(--line);background:linear-gradient(180deg,#0f1c2e,#0a1220);
+      width:36px;height:36px;
+      border:2px solid rgba(124,247,194,.3);
+      background:linear-gradient(135deg,rgba(124,247,194,.15),rgba(124,247,194,.05));
+      backdrop-filter:blur(8px);
       display:grid;place-items:center;
-      box-shadow: inset 0 0 0 2px rgba(124,247,194,.08);
+      box-shadow:0 4px 12px rgba(124,247,194,.2), inset 0 0 0 1px rgba(124,247,194,.1);
+      border-radius:6px;
+      font-size:18px;
+      transition:all 0.3s ease;
     }
-    .brand h1{font-size:14px;margin:0;line-height:1.2}
-    .brand p{margin:3px 0 0;color:var(--muted);font-size:12px}
+    .logo:hover{
+      transform:scale(1.05) rotate(5deg);
+      box-shadow:0 6px 20px rgba(124,247,194,.3), inset 0 0 0 1px rgba(124,247,194,.2);
+    }
+    .brand h1{
+      font-size:15px;margin:0;line-height:1.3;
+      background:linear-gradient(135deg, #7cf7c2, #8ab4f8);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+      font-weight:700;
+      letter-spacing:0.5px;
+    }
+    .brand p{margin:4px 0 0;color:var(--muted);font-size:11px;line-height:1.4}
+    .pill{
+      display:inline-block;
+      padding:2px 8px;
+      background:rgba(124,247,194,.15);
+      border:1px solid rgba(124,247,194,.3);
+      border-radius:12px;
+      font-size:10px;
+      color:#7cf7c2;
+      font-weight:600;
+      letter-spacing:0.5px;
+    }
     .controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
     .chip{
       display:flex;gap:8px;align-items:center;
-      padding:8px 10px;border:var(--px) solid var(--line);background:var(--chip)
+      padding:8px 12px;
+      border:1px solid rgba(124,247,194,.2);
+      background:linear-gradient(135deg,rgba(15,22,34,.8),rgba(10,18,32,.7));
+      backdrop-filter:blur(8px);
+      border-radius:6px;
+      transition:all 0.2s ease;
+    }
+    .chip:hover{
+      border-color:rgba(124,247,194,.35);
+      box-shadow:0 4px 12px rgba(124,247,194,.15);
     }
     input[type="date"], input[type="month"], select{
-      background:#0b1422;color:var(--text);border:var(--px) solid var(--line);padding:6px 8px;
-      font-family:inherit
+      background:linear-gradient(135deg,rgba(15,22,34,.9),rgba(10,18,32,.8));
+      color:var(--text);
+      border:1px solid rgba(124,247,194,.2);
+      padding:7px 10px;
+      font-family:inherit;
+      border-radius:6px;
+      transition:all 0.2s ease;
+    }
+    input[type="date"]:hover, input[type="month"]:hover, select:hover{
+      border-color:rgba(124,247,194,.35);
+      box-shadow:0 2px 8px rgba(124,247,194,.15);
+    }
+    input[type="date"]:focus, input[type="month"]:focus, select:focus{
+      outline:none;
+      border-color:rgba(124,247,194,.5);
+      box-shadow:0 0 0 3px rgba(124,247,194,.1);
     }
     button{
       cursor:pointer;
-      background:linear-gradient(180deg,#1a2a44,#0f1a2b);
+      background:linear-gradient(135deg,rgba(20,28,44,.95),rgba(15,22,34,.9));
       color:var(--text);
-      border:var(--px) solid var(--line);
-      padding:8px 10px;
+      border:1px solid rgba(124,247,194,.25);
+      padding:9px 14px;
       font-family:inherit;
       text-transform:uppercase;
-      font-size:12px;
-      letter-spacing:.6px;
+      font-size:11px;
+      letter-spacing:0.8px;
+      font-weight:600;
+      border-radius:6px;
+      transition:all 0.2s ease;
     }
-    button:hover{border-color:rgba(124,247,194,.55)}
+    button:hover{
+      border-color:rgba(124,247,194,.45);
+      background:linear-gradient(135deg,rgba(124,247,194,.15),rgba(124,247,194,.08));
+      transform:translateY(-1px);
+      box-shadow:0 4px 12px rgba(124,247,194,.2);
+    }
+    button:active{
+      transform:translateY(0);
+    }
     button:disabled{opacity:.5;cursor:not-allowed}
 
     /* ===== Sticky Journal du Jour ===== */
@@ -96,6 +255,54 @@
     @media (max-width: 980px){
       .leftSticky{ position: static; top:auto; z-index:auto; }
     }
+    @media (max-width: 780px){
+      .topbar{
+        flex-direction: column;
+        align-items: stretch;
+        gap:10px;
+      }
+      .topbar .controls{
+        width:100%;
+        justify-content: space-between;
+      }
+      .topbar .characterPanel{
+        border:none;
+        padding:0;
+      }
+      .status{
+        align-self:flex-end;
+      }
+    }
+    @media (max-width: 600px){
+      .topbar .controls{
+        flex-wrap: wrap;
+        gap:6px;
+      }
+      .topbar .controls button,
+      #btnDarkMode,
+      #btnThemeSwitcher{
+        min-width: calc(50% - 6px);
+        flex:1;
+      }
+      .kpis{
+        grid-template-columns: repeat(1,1fr);
+      }
+      .grid{
+        gap:8px;
+      }
+    }
+    @media (max-width: 480px){
+      .wrap{
+        padding:14px 10px 20px;
+      }
+      button{
+        font-size:10px;
+        padding:8px 10px;
+      }
+      .status{
+        font-size:11px;
+      }
+    }
     /* ================================= */
 
     .grid{display:grid;grid-template-columns: 1.15fr .85fr;gap:14px;margin-top:14px}
@@ -105,7 +312,9 @@
       border:var(--px) solid var(--line);
       background:rgba(16,24,38,.75);
       box-shadow:var(--shadow);
-      overflow:hidden;
+      overflow:visible;
+      position:relative;
+      z-index:1;
     }
     .panel .hd{
       padding:10px 12px;border-bottom:var(--px) solid var(--line);
@@ -134,8 +343,21 @@
     .status b.no{color:var(--bad)}
 
     .badge{
-      padding:2px 6px;border:var(--px) solid var(--line);background:rgba(22,34,54,.85);
-      color:var(--text);font-size:11px;white-space:nowrap
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(124, 247, 194, 0.25);
+      background: linear-gradient(135deg, rgba(20, 28, 44, 0.9), rgba(15, 22, 34, 0.8));
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+    
+    .badge:hover {
+      border-color: rgba(124, 247, 194, 0.4);
+      box-shadow: 0 4px 12px rgba(124, 247, 194, 0.15);
     }
     .pill{
       display:inline-block;padding:2px 6px;border:var(--px) solid var(--line);background:rgba(22,34,54,.85);
@@ -190,37 +412,45 @@
 
     /* History */
     .historyControls{
-      display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;
-      margin-bottom:10px
+      display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;
+      margin-bottom:16px;
+      padding:12px;
+      background:rgba(16,24,38,.6);
+      border:var(--px) solid var(--line);
+      border-radius:4px;
     }
     .historyControls .left, .historyControls .right{
       display:flex;gap:8px;flex-wrap:wrap;align-items:center
     }
     .summaryGrid{
-      display:grid;grid-template-columns: repeat(3, 1fr);gap:8px;margin-bottom:10px
+      display:grid;grid-template-columns: repeat(3, 1fr);gap:10px;margin-bottom:16px
     }
     @media (max-width: 640px){ .summaryGrid{grid-template-columns:1fr} }
     .sumCard{
-      padding:10px;border:var(--px) solid var(--line);background:rgba(15,22,34,.8)
+      padding:12px;
+      border:var(--px) solid var(--line);
+      background:rgba(15,22,34,.7);
+      border-radius:4px;
     }
-    .sumCard .t{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px}
-    .sumCard .v{font-size:16px;margin-top:6px}
+    .sumCard .t{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+    .sumCard .v{font-size:18px;margin-top:6px;color:#7cf7c2}
     .tableWrap{
       border:var(--px) solid var(--line);
-      background:rgba(10,18,32,.55);
+      background:rgba(10,18,32,.6);
       overflow:auto;
-      max-height:320px;
+      max-height:400px;
+      border-radius:4px;
     }
     table{
       width:100%;
       border-collapse:collapse;
-      font-size:12px;
-      min-width:980px;
+      font-size:13px;
+      min-width:800px;
     }
     th, td{
-      padding:8px 10px;
-      border-bottom:1px dashed rgba(38,50,70,.7);
-      vertical-align:top;
+      padding:10px 12px;
+      border-bottom:1px solid rgba(38,50,70,.4);
+      vertical-align:middle;
       white-space:nowrap;
     }
     th{
@@ -228,17 +458,33 @@
       letter-spacing:.6px;
       font-size:11px;
       color:var(--muted);
-      background:rgba(15,22,34,.75);
+      background:rgba(15,22,34,.8);
       position:sticky; top:0;
+      font-weight:600;
     }
-    tr:hover td{background:rgba(124,247,194,.06)}
+    tr:hover td{
+      background:rgba(124,247,194,.08);
+    }
+    td:first-child{
+      position:sticky;
+      left:0;
+      background:rgba(10,18,32,.9);
+      z-index:1;
+    }
+    tr:hover td:first-child{
+      background:rgba(15,22,34,.95);
+    }
     .linkBtn{
-      background:transparent;
+      background:rgba(16,24,38,.6);
       border:var(--px) solid var(--line);
-      padding:6px 8px;
+      padding:6px 10px;
       font-size:11px;
+      border-radius:3px;
     }
-    .linkBtn:hover{border-color:rgba(124,247,194,.55)}
+    .linkBtn:hover{
+      border-color:rgba(124,247,194,.6);
+      background:rgba(124,247,194,.08);
+    }
 
     /* Collapsible sections */
     details.section{
@@ -281,21 +527,119 @@
       font-size:12px;
       flex:0 0 auto;
     }
-    details.section[open] .chev{ transform: rotate(90deg); }
+    details.section[open] .chev{ transform: rotate(90deg) !important; }
+    details.nested[open] .chev{ transform: rotate(90deg) !important; }
     .sectionBody{ padding:12px; }
     .sectionHint{ margin:-4px 0 10px; color:var(--muted); font-size:12px; line-height:1.35; }
+
+    /* Category Color Indicators */
+    .categoryIndicator{
+      width: 18px;
+      height: 18px;
+      border-radius: 3px;
+      display: inline-block;
+      margin-right: 8px;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .categoryIndicator::before{
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.15), transparent);
+      transform: rotate(45deg);
+      transition: all 0.4s ease;
+    }
+    details.section:hover .categoryIndicator::before{
+      left: 100%;
+    }
+    .categoryIndicator.lib{
+      background: linear-gradient(135deg, #7caaff 0%, #5a8fff 100%);
+      box-shadow: 0 2px 8px rgba(124, 170, 255, 0.4), inset 0 1px 1px rgba(255,255,255,0.2);
+    }
+    .categoryIndicator.resp{
+      background: linear-gradient(135deg, #8cffbe 0%, #6affaa 100%);
+      box-shadow: 0 2px 8px rgba(140, 255, 190, 0.4), inset 0 1px 1px rgba(255,255,255,0.2);
+    }
+    .categoryIndicator.dev{
+      background: linear-gradient(135deg, #ffd166 0%, #ffbf3d 100%);
+      box-shadow: 0 2px 8px rgba(255, 209, 102, 0.4), inset 0 1px 1px rgba(255,255,255,0.2);
+    }
+    .categoryIndicator.eff{
+      background: linear-gradient(135deg, #ff5c7c 0%, #ff3d61 100%);
+      box-shadow: 0 2px 8px rgba(255, 92, 124, 0.4), inset 0 1px 1px rgba(255,255,255,0.2);
+    }
+    details.section[open] .categoryIndicator{
+      transform: scale(1.1);
+      box-shadow: 0 3px 12px rgba(124, 247, 194, 0.5), inset 0 1px 2px rgba(255,255,255,0.3);
+    }
+
+    /* Category Color Indicators */
+    .categoryIndicator{
+      width: 18px;
+      height: 18px;
+      border-radius: 3px;
+      display: inline-block;
+      margin-right: 8px;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .categoryIndicator::before{
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.15), transparent);
+      transform: rotate(45deg);
+      transition: all 0.4s ease;
+    }
+    details.section:hover .categoryIndicator::before{
+      left: 100%;
+    }
+    .categoryIndicator.lib{
+      background: linear-gradient(135deg, #7caaff 0%, #5a8fff 100%);
+      box-shadow: 0 2px 8px rgba(124, 170, 255, 0.4), inset 0 1px 1px rgba(255,255,255,0.2);
+    }
+    .categoryIndicator.resp{
+      background: linear-gradient(135deg, #8cffbe 0%, #6affaa 100%);
+      box-shadow: 0 2px 8px rgba(140, 255, 190, 0.4), inset 0 1px 1px rgba(255,255,255,0.2);
+    }
+    .categoryIndicator.dev{
+      background: linear-gradient(135deg, #ffd166 0%, #ffbf3d 100%);
+      box-shadow: 0 2px 8px rgba(255, 209, 102, 0.4), inset 0 1px 1px rgba(255,255,255,0.2);
+    }
+    .categoryIndicator.eff{
+      background: linear-gradient(135deg, #ff5c7c 0%, #ff3d61 100%);
+      box-shadow: 0 2px 8px rgba(255, 92, 124, 0.4), inset 0 1px 1px rgba(255,255,255,0.2);
+    }
+    details.section[open] .categoryIndicator{
+      transform: scale(1.1);
+      box-shadow: 0 3px 12px rgba(124, 247, 194, 0.5), inset 0 1px 2px rgba(255,255,255,0.3);
+    }
 
     /* Nested details */
     details.nested{
       border:var(--px) solid rgba(38,50,70,.85);
       background:rgba(10,18,32,.55);
-      margin:8px 0;
+      margin:16px 0;
+      min-height: 65px;
     }
     details.nested.cat-qi{ border-color:var(--cat-qi-br); background:rgba(10,18,32,.55); }
     details.nested.cat-system{ border-color:var(--cat-system-br); background:rgba(10,18,32,.55); }
 
     details.nested > summary{
-      padding:10px 10px;
+      padding:18px 20px;
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -309,8 +653,8 @@
       border-bottom:1px dashed rgba(38,50,70,.75);
       background:linear-gradient(180deg, rgba(255,209,102,.06), rgba(0,0,0,0));
     }
-    details.nested .sectionBody{ padding:10px; }
-    details.nested .chev{ width:20px;height:20px;font-size:11px; }
+    details.nested .sectionBody{ padding:20px; }
+    details.nested .chev{ width:24px;height:24px;font-size:13px; }
     .xpWarn{ color:var(--warn); }
 
     /* Loot */
@@ -325,6 +669,8 @@
       padding:10px;
       border:var(--px) solid var(--line);
       background:rgba(15,22,34,.8);
+      overflow:visible;
+      position:relative;
     }
     .lootCard .t{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px}
     .lootCard .v{font-size:16px;margin-top:6px}
@@ -363,116 +709,293 @@
       font-size:13px;
     }
     .modal .actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;margin-top:10px}
-    .modal .actions button{padding:8px 10px}
+    .modal .actions button{padding:8px 10px;background:var(--accent);color:#000;border:none;border-radius:4px;cursor:pointer;font-weight:600;transition:all 0.2s}
+    .modal .actions button:hover{background:rgba(140,255,190,0.8);transform:translateY(-1px)}
+    .modal .actions button:active{transform:translateY(0)}
   </style>
+  <link rel="stylesheet" href="patch.css">
 </head>
 <body>
   <div class="wrap">
     <div class="topbar">
-      <div class="brand">
-        <div class="logo">👑</div>
-        <div>
-          <h1>THE GAME OF FREEDOM — SIFU MODE <span class="pill">v1.3</span></h1>
-          <p>Journal du jour sticky en haut (desktop/tablette). Couleurs identiques par catégorie.</p>
+      <!-- Character Panel intégré dans topbar -->
+      <div class="characterPanel">
+        <div class="characterAvatarSection">
+          <div class="characterAvatar">
+            <button id="btnPrevImage" class="avatarNavBtn" title="Image précédente">‹</button>
+            <div class="avatarImageContainer">
+              <img id="charAvatar" class="avatarImage" src="assets/avatars/character-avatar.png" alt="Character Avatar" />
+              <span id="avatarImageCounter" class="avatarCounter">1/1</span>
+            </div>
+            <button id="btnNextImage" class="avatarNavBtn" title="Image suivante">›</button>
+          </div>
+          <div class="characterNameDisplay">
+            <div id="charName" class="characterName">L'Équilibré</div>
+            <div id="charSpecialty" class="characterSpecialty">Harmonie totale</div>
+          </div>
+        </div>
+        
+        <div class="characterLevelWrapper">
+          <div class="characterLevel">
+            <div class="levelBadge">
+              <div class="levelNumber" id="charLevel">1</div>
+              <div class="levelLabel">LEVEL</div>
+            </div>
+            <div class="levelProgress">
+              <div class="levelProgressLabel">
+                <span>XP vers niveau suivant</span>
+                <span id="charXPInfo">0 / 100</span>
+              </div>
+              <div class="levelProgressBar">
+                <div class="levelProgressFill" id="charLevelFill"></div>
+              </div>
+              <button id="btnTestLevelUp" style="margin-top: 8px; font-size: 11px; padding: 4px 8px;" title="Ajouter 500 XP pour tester">🧪 Test +Level</button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="characterStats">
+          <div class="statItem stat-energy">
+            <div class="statIcon"><img src="assets/icons/energie-icon.png" style="width:24px;height:24px;object-fit:contain;" /></div>
+            <div class="statInfo">
+              <div class="statName">Énergie</div>
+              <div class="statSource">Liberté</div>
+            </div>
+            <div class="statBar">
+              <div class="statFill" id="statEnergyFill"></div>
+            </div>
+            <div class="statValue" id="statEnergy">0</div>
+          </div>
+          
+          <div class="statItem stat-discipline">
+            <div class="statIcon"><img src="assets/icons/discipline-icon.png" style="width:24px;height:24px;object-fit:contain;" /></div>
+            <div class="statInfo">
+              <div class="statName">Discipline</div>
+              <div class="statSource">Responsabilité</div>
+            </div>
+            <div class="statBar">
+              <div class="statFill" id="statDisciplineFill"></div>
+            </div>
+            <div class="statValue" id="statDiscipline">0</div>
+          </div>
+          
+          <div class="statItem stat-conscience">
+            <div class="statIcon"><img src="assets/icons/conscience-icon.png" style="width:24px;height:24px;object-fit:contain;" /></div>
+            <div class="statInfo">
+              <div class="statName">Conscience</div>
+              <div class="statSource">Développement</div>
+            </div>
+            <div class="statBar">
+              <div class="statFill" id="statConscienceFill"></div>
+            </div>
+            <div class="statValue" id="statConscience">0</div>
+          </div>
+          
+          <div class="statItem stat-focus">
+            <div class="statIcon"><img src="assets/icons/focus-icon.png" style="width:24px;height:24px;object-fit:contain;" /></div>
+            <div class="statInfo">
+              <div class="statName">Focus</div>
+              <div class="statSource">Efficacité</div>
+            </div>
+            <div class="statBar">
+              <div class="statFill" id="statFocusFill"></div>
+            </div>
+            <div class="statValue" id="statFocus">0</div>
+          </div>
         </div>
       </div>
-      <div class="controls">
-        <div class="chip">
-          <span>📅 Jour :</span>
-          <input id="dateInput" type="date" />
-        </div>
-        <button id="btnToday">Aujourd’hui</button>
-        <button id="btnReset">Reset du jour</button>
-      </div>
+      
     </div>
 
-    <div class="grid">
-      <!-- LEFT (STICKY) -->
-      <div class="panel leftSticky">
-        <div class="hd">
-          <h2>📜 Journal du jour</h2>
+    <!-- SCORES (Full-Width Sticky) -->
+    <section id="journal-scores" class="panel leftSticky" style="margin-bottom: 14px;">
+      <div class="hd">
+        <button class="panelCollapseBtn" data-target="journal-scores-body" title="Réduire/Agrandir">
+          <span class="panelChev">›</span>
+        </button>
+        <h2 id="journalTitle">📜 Journal du jour</h2>
+        <div style="display:flex;align-items:center;gap:10px">
+          <div class="chip">
+            <span>📅 Jour :</span>
+            <input id="dateInput" type="date" />
+          </div>
+          <button id="btnToday">Aujourd'hui</button>
+          <button id="btnReset" title="Reset du jour"><img src="assets/icons/refresh.png" style="width:18px;height:18px;object-fit:contain;" /></button>
+          <button id="btnModeSwitch" title="Changer de mode" style="background:linear-gradient(135deg, #7cf7c2, #ffd166);color:#0b0f14;font-weight:bold;">💰 Mode</button>
+          <button id="btnFocusMode" title="Activer le mode focus"><img src="assets/icons/focusmode.png" style="width:18px;height:18px;object-fit:contain;" /></button>
+          <button id="btnDarkMode" title="Activer le mode sombre">🌙</button>
+          <button id="btnThemeSwitcher" title="Changer de thème">🎨</button>
           <div class="status">Sauvegarde: <b class="ok">Auto</b> <span class="blink">■</span></div>
         </div>
+      </div>
 
-        <div class="bd">
-          <div class="kpis">
-            <div class="kpi">
-              <div class="label">Liberté % (Sifu = Liberté+Responsabilité)</div>
-              <div class="value" id="libPct">0%</div>
-              <div class="bar"><span id="libBar"></span></div>
-              <div class="status">Liberté OK: <b id="libOk" class="no">FALSE</b></div>
-            </div>
-
-            <div class="kpi">
-              <div class="label">XP gagnés (jour)</div>
-              <div class="value" id="xpGained">0</div>
-              <div class="status">
-                🟦 <b id="xpLib">0</b> · 🟩 <b id="xpResp">0</b><br/>
-                🟨 <b id="xpDev">0</b> · 🟥 <b id="xpEff">0</b>
+      <div class="bd" id="journal-scores-body">
+            <div class="kpis">
+          <div class="kpi" id="kpiLiberty">
+            <div class="label" id="libertyLabel">Liberté % (Sifu = Liberté+Responsabilité)</div>
+            <div class="value" id="libPct">0%</div>
+            <div class="progressBarWrapper">
+              <div class="progressBar" id="libProgressBar">
+                <div class="progressFill" id="libProgressFill"></div>
+                <div class="progressShine"></div>
               </div>
             </div>
+            <div class="status">Liberté OK: <b id="libOk" class="no">FALSE</b></div>
+          </div>
 
-            <div class="kpi">
-              <div class="label">XP dépensés (jour)</div>
-              <div class="value" id="xpSpent">0</div>
-              <div class="status">Rewards: <span id="rewardGate">🔒 Bloqués</span></div>
+          <div class="kpi">
+            <div class="label"><span id="currencyDayLabel">XP</span> <span id="gainedLabel">gagnés</span> (jour)</div>
+            <div class="value" id="xpGained">0</div>
+            <div class="progressBarWrapper">
+              <div class="progressBar xp" id="xpProgressBar">
+                <div class="progressFill" id="xpProgressFill"></div>
+                <div class="progressShine"></div>
+              </div>
             </div>
-
-            <div class="kpi">
-              <div class="label">Wallet (solde)</div>
-              <div class="value" id="wallet">0</div>
-              <div class="status">Solde = cumul jours (gagnés - dépensés).</div>
+            <div class="status">
+              <div class="xpBreakdown" id="xpBreakdown">
+                <div class="xpBadge xpBadge-lib">
+                  <span class="xpBadgeIcon" id="iconLib">⭐</span>
+                  <span class="xpBadgeValue" id="xpLib">0</span>
+                </div>
+                <div class="xpBadge xpBadge-resp">
+                  <span class="xpBadgeIcon" id="iconResp">⭐</span>
+                  <span class="xpBadgeValue" id="xpResp">0</span>
+                </div>
+                <div class="xpBadge xpBadge-dev">
+                  <span class="xpBadgeIcon" id="iconDev">⭐</span>
+                  <span class="xpBadgeValue" id="xpDev">0</span>
+                </div>
+                <div class="xpBadge xpBadge-eff">
+                  <span class="xpBadgeIcon" id="iconEff">⭐</span>
+                  <span class="xpBadgeValue" id="xpEff">0</span>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div class="divider"></div>
+          <div class="kpi">
+            <div class="label"><span id="currencySpentLabel">XP</span> <span id="spentLabel">dépensés</span> (jour)</div>
+            <div class="value" id="xpSpent">0</div>
+            <div class="status">Rewards: <span id="rewardGate">🔒 Bloqués</span></div>
+          </div>
 
-          <div id="sections"></div>
+          <div class="kpi">
+            <div class="label">Wallet (solde)</div>
+            <div class="value" id="wallet">0</div>
+            <div class="progressBarWrapper">
+              <div class="progressBar wallet" id="walletProgressBar">
+                <div class="progressFill" id="walletProgressFill"></div>
+                <div class="progressShine"></div>
+              </div>
+            </div>
+            <div class="status">Solde = cumul jours (gagnés - dépensés).</div>
+          </div>
+        </div>
 
-          <div class="footnote" id="ruleNote"></div>
+            <div class="footnote" id="ruleNote"></div>
+      </div>
+    </section>
+
+    <!-- Rewards Track (Battle Pass Style) - Non sticky -->
+    <section class="panel" style="margin-bottom: 14px;">
+      <div class="lootTrackWrapper" id="rewardsTrackWrapper">
+        <div class="lootTrackHeader">
+          <button id="rewardsCollapseBtn" class="rewardsToggle" title="Réduire/Agrandir">
+            <span class="rewardsChev">›</span>
+          </button>
+          <div class="lootTrackTitle">🏆 Rewards Track</div>
+          <div class="lootTrackXP">Total <span id="currencyLabel">XP</span>: <b id="lootTrackTotalXP">0</b></div>
+        </div>
+        <div class="lootTrackScroll" id="rewardsTrackContent">
+          <div class="lootTrackContainer" id="lootTrackContainer">
+            <!-- Rewards will be injected here -->
+          </div>
         </div>
       </div>
+    </section>
+
+    <!-- TACHES + RIGHT (Grid 2 colonnes) -->
+    <div class="grid">
+      <section id="journal-taches" class="panel">
+        <div class="hd">
+          <button class="panelCollapseBtn" data-target="journal-taches-body" title="Réduire/Agrandir">
+            <span class="panelChev">›</span>
+          </button>
+          <h2>✅ Tâches du jour</h2>
+          <div style="display:flex;gap:8px">
+            <button id="btnAddCustomCategory" class="linkBtn">+ Catégorie</button>
+            <button id="btnAddCustomTask" class="linkBtn">+ Ajouter tâche</button>
+          </div>
+        </div>
+
+        <div class="bd" id="journal-taches-body">
+          <!-- Custom tasks section -->
+          <div id="custom-tasks-section" style="margin-bottom:16px"></div>
+          
+          <div id="sections"></div>
+        </div>
+      </section>
 
       <!-- RIGHT -->
       <div class="panel">
         <div class="hd">
-          <h2>🎁 Loot + Rewards + 📚 Historique</h2>
+          <button class="panelCollapseBtn" data-target="loot-rewards-body" title="Réduire/Agrandir">
+            <span class="panelChev">›</span>
+          </button>
+          <h2>🎁 Loot + Rewards</h2>
           <div class="status">Seuil Liberté OK = 40%</div>
         </div>
 
+        <div id="loot-rewards-body">
+        <!-- Tab Navigation -->
+        <div class="tabNav">
+          <button class="tabBtn active" data-tab="tab-loot-rewards">
+            <span>🎁 Loot & Rewards</span>
+          </button>
+          <button class="tabBtn" data-tab="tab-shop">
+            <span>🏪 Magasin</span>
+          </button>
+          <button class="tabBtn" data-tab="tab-inventory">
+            <span>🎒 Inventaire</span>
+          </button>
+          <button class="tabBtn" data-tab="tab-history">
+            <span>📚 Historique</span>
+          </button>
+        </div>
+
+        <!-- Tab Content -->
         <div class="bd">
-          <!-- Loot Inventory -->
-          <div class="lootGrid">
+          <!-- TAB 1: Loot & Rewards -->
+          <div id="tab-loot-rewards" class="tabContent active">
+            <!-- Loot Inventory -->
+            <div class="lootGrid">
             <div class="lootCard">
-              <div class="t">🧿 Shields</div>
+              <div class="t"><img src="assets/loots/loot-shield.png" style="width: 120px; height: 120px; object-fit: contain; display: block; margin: -20px 0 8px -10px; position: relative; z-index: 100;" />Shields</div>
               <div class="v" id="invShields">0</div>
               <div class="lootMini">Réservé (streak plus tard).</div>
             </div>
             <div class="lootCard">
-              <div class="t">💸 Discounts</div>
+              <div class="t"><img src="assets/loots/loot-discounts.png" style="width: 120px; height: 120px; object-fit: contain; display: block; margin: -20px 0 8px -10px; position: relative; z-index: 100;" />Discounts</div>
               <div class="v" id="invDiscounts">0</div>
               <div class="lootMini">-50 XP auto sur le prochain reward.</div>
             </div>
             <div class="lootCard">
-              <div class="t">🧠 Boosts</div>
+              <div class="t"><img src="assets/loots/loot-boosts.png" style="width: 120px; height: 120px; object-fit: contain; display: block; margin: -20px 0 8px -10px; position: relative; z-index: 100;" />Boosts</div>
               <div class="v" id="invBoosts">0</div>
               <div class="lootMini">+20 XP instant (ajouté au loot).</div>
             </div>
             <div class="lootCard">
-              <div class="t">⚡ Double XP</div>
+              <div class="t"><img src="assets/loots/loot-doublexp.png" style="width: 120px; height: 120px; object-fit: contain; display: block; margin: -20px 0 8px -10px; position: relative; z-index: 100;" />Double XP</div>
               <div class="v" id="invDouble">0</div>
               <div class="lootMini">Actif demain sur une section.</div>
             </div>
             <div class="lootCard">
-              <div class="t">🔁 Rerolls</div>
+              <div class="t"><img src="assets/loots/loot-reroll.png" style="width: 120px; height: 120px; object-fit: contain; display: block; margin: -20px 0 8px -10px; position: relative; z-index: 100;" />Rerolls</div>
               <div class="v" id="invRerolls">0</div>
               <div class="lootMini">Relance une loot (popup).</div>
             </div>
           </div>
-
-          <div class="divider"></div>
-
-          <div class="rewards" id="rewards"></div>
 
           <div class="divider"></div>
 
@@ -487,48 +1010,99 @@
             🎁 Loot du jour
           </div>
           <div class="log" id="lootLog"></div>
+            </div>
 
-          <div class="divider"></div>
+          <!-- TAB 2: Magasin -->
+          <div id="tab-shop" class="tabContent">
+            <div class="shopHeader">
+              <div class="shopBalance">
+                <span class="balanceLabel">💰 Solde XP:</span>
+                <span class="balanceValue" id="shopBalance">0</span>
+              </div>
+            </div>
 
-          <div class="sectionTitle" style="margin:0 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px">
-            📚 Historique
+            <div class="shopFilters">
+              <button class="filterBtn active" data-filter="all">Tout</button>
+              <button class="filterBtn" data-filter="consumables">Consommables</button>
+              <button class="filterBtn" data-filter="permanent">Permanent</button>
+              <button class="filterBtn" data-filter="cosmetic">Cosmétique</button>
+            </div>
+            
+            <div class="cosmeticSubFilters" style="display:none;">
+              <button class="subFilterBtn active" data-subfilter="all">Tous</button>
+              <button class="subFilterBtn" data-subfilter="title">Titres</button>
+              <button class="subFilterBtn" data-subfilter="avatarFrame">Cadres</button>
+              <button class="subFilterBtn" data-subfilter="theme">Thèmes</button>
+            </div>
+
+            <div id="shopItems" class="shopGrid">
+              <!-- Items will be injected here -->
+            </div>
           </div>
 
-          <div class="historyControls">
+          <!-- TAB 3: Inventaire -->
+          <div id="tab-inventory" class="tabContent">
+            <div class="inventoryHeader">
+              <h3>🎒 Mon Inventaire</h3>
+              <div class="inventoryStats">
+                <span class="badge">Items: <b id="invItemCount">0</b></span>
+                <span class="badge">Valeur: <b id="invTotalValue">0</b> XP</span>
+                <button id="btnResetInventory" class="linkBtn" style="margin-left:12px;color:var(--warn);">🗑️ Reset Inventaire</button>
+              </div>
+            </div>
+
+            <div class="inventoryFilters">
+              <button class="filterBtn active" data-filter="all">Tout</button>
+              <button class="filterBtn" data-filter="consumables">Consommables</button>
+              <button class="filterBtn" data-filter="permanent">Permanent</button>
+              <button class="filterBtn" data-filter="cosmetic">Cosmétique</button>
+            </div>
+            
+            <div class="inventoryCosmeticSubFilters" style="display:none;">
+              <button class="subFilterBtn active" data-subfilter="all">Tous</button>
+              <button class="subFilterBtn" data-subfilter="title">Titres</button>
+              <button class="subFilterBtn" data-subfilter="avatarFrame">Cadres</button>
+              <button class="subFilterBtn" data-subfilter="theme">Thèmes</button>
+            </div>
+
+            <div id="inventoryItems" class="inventoryGrid">
+              <!-- Items will be injected here -->
+            </div>
+          </div>
+
+          <!-- TAB 4: Historique -->
+          <div id="tab-history" class="tabContent">
+            <div class="historyControls">
             <div class="left">
-              <label class="badge">Vue</label>
-              <select id="histMode">
-                <option value="week">Semaine</option>
-                <option value="month">Mois</option>
-                <option value="all">Tout</option>
+              <select id="histMode" style="padding:8px;font-size:12px;min-width:120px">
+                <option value="week">📅 Cette semaine</option>
+                <option value="month">📆 Ce mois</option>
+                <option value="all">📊 Tout l'historique</option>
               </select>
 
-              <label class="badge">Semaine</label>
-              <input id="weekPick" type="date" />
-
-              <label class="badge">Mois</label>
-              <input id="monthPick" type="month" />
+              <input id="weekPick" type="date" style="padding:8px;font-size:12px" />
+              <input id="monthPick" type="month" style="padding:8px;font-size:12px" />
             </div>
 
             <div class="right">
-              <button class="linkBtn" id="btnGoSelected">Aller au jour</button>
-              <button class="linkBtn" id="btnExportJson">Export JSON</button>
-              <button class="linkBtn" id="btnImportJson">Import JSON</button>
+              <button class="linkBtn" id="btnGoSelected">➡️ Aller au jour</button>
+              <button class="linkBtn" id="btnExportJson">💾 Exporter</button>
+              <button class="linkBtn" id="btnImportJson">📂 Importer</button>
               <input id="importFile" type="file" accept="application/json" style="display:none"/>
             </div>
           </div>
 
           <div class="summaryGrid">
             <div class="sumCard">
-              <div class="t">Période</div>
+              <div class="t">📅 Période</div>
               <div class="v" id="sumPeriod">—</div>
             </div>
             <div class="sumCard">
-              <div class="t">XP net (gagnés - dépensés)</div>
+              <div class="t">💎 XP Net</div>
               <div class="v" id="sumNet">0</div>
             </div>
             <div class="sumCard">
-              <div class="t">Moyenne Liberté%</div>
+              <div class="t">🎯 Moy. Liberté%</div>
               <div class="v" id="sumLibAvg">0%</div>
             </div>
           </div>
@@ -537,17 +1111,14 @@
             <table>
               <thead>
                 <tr>
-                  <th>Date</th>
-                  <th>Liberté% (Sifu)</th>
-                  <th>XP gagnés</th>
-                  <th>XP dépensés</th>
-                  <th>Net</th>
-                  <th>Liberté</th>
-                  <th>Responsabilité</th>
-                  <th>Développement</th>
-                  <th>Efficacité</th>
-                  <th>Rewards</th>
-                  <th>Loots</th>
+                  <th>📅 Date</th>
+                  <th>🎯 Liberté%</th>
+                  <th>⬆️ XP +</th>
+                  <th>⬇️ XP -</th>
+                  <th>💰 Net</th>
+                  <th>🟦 Sections</th>
+                  <th>🎁 Rewards</th>
+                  <th>🎰 Loots</th>
                 </tr>
               </thead>
               <tbody id="histBody"></tbody>
@@ -557,6 +1128,8 @@
           <div class="footnote">
             Bonus section 100% = +30 XP (par section / par jour) + LOOT BOX (par section / par jour).
           </div>
+            </div>
+        </div>
         </div>
       </div>
     </div>
@@ -578,45 +1151,189 @@
     </div>
   </div>
 
+  <!-- Active Task Popup -->
+  <div id="activeTaskPopup" class="activeTaskPopup" style="display:none">
+    <div class="activeTaskPopupContent">
+      <div class="activeTaskPopupHeader">
+        <span class="activeTaskPopupTitle">⏱️ Tâches en cours</span>
+        <button id="closeActiveTaskPopup" class="activeTaskPopupClose">✕</button>
+      </div>
+      <div class="activeTaskPopupBody" id="activeTasksList">
+        <!-- Les tâches actives seront injectées ici -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Suggested Tasks Popup -->
+  <div id="suggestedTasksPopup" class="suggestedTasksPopup" style="display:none">
+    <div class="suggestedTasksPopupContent">
+      <div class="suggestedTasksPopupHeader">
+        <span class="suggestedTasksPopupTitle">💡 Tâches suggérées</span>
+        <button id="closeSuggestedTasksPopup" class="suggestedTasksPopupClose">✕</button>
+      </div>
+      <div class="suggestedTasksPopupBody" id="suggestedTasksList">
+        <!-- Les tâches suggérées seront injectées ici -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Task Modal -->
+  <div class="modalBack" id="customTaskModalBack">
+    <div class="modal">
+      <div class="mh">
+        <h3 id="customTaskModalTitle">➕ Créer une tâche personnalisée</h3>
+        <button class="linkBtn" id="customTaskClose">Fermer</button>
+      </div>
+      <div class="mb">
+        <input type="hidden" id="customTaskEditId" value="">
+        
+        <label style="display:block;margin-bottom:10px;color:var(--muted);font-size:12px">Catégorie</label>
+        <select id="customTaskCategory" style="width:100%;padding:8px;margin-bottom:12px;background:#0b1422;color:var(--text);border:1px solid var(--line);border-radius:4px;font-family:inherit">
+          <option value="">-- Sans catégorie --</option>
+        </select>
+        
+        <label style="display:block;margin-bottom:10px;color:var(--muted);font-size:12px">Nom de la tâche</label>
+        <input id="customTaskName" type="text" placeholder="ex: Faire du sport" style="width:100%;padding:8px;margin-bottom:12px;background:#0b1422;color:var(--text);border:1px solid var(--line);border-radius:4px;font-family:inherit">
+        
+        <label style="display:block;margin-bottom:10px;color:var(--muted);font-size:12px">Nombre d'XP</label>
+        <input id="customTaskXP" type="number" placeholder="ex: 50" min="1" max="999" style="width:100%;padding:8px;background:#0b1422;color:var(--text);border:1px solid var(--line);border-radius:4px;font-family:inherit">
+      </div>
+      <div class="actions">
+        <button type="button" id="customTaskCreate">Créer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Category Modal -->
+  <div class="modalBack" id="customCategoryModalBack">
+    <div class="modal">
+      <div class="mh">
+        <h3>📁 Créer une catégorie personnalisée</h3>
+        <button class="linkBtn" id="customCategoryClose">Fermer</button>
+      </div>
+      <div class="mb">
+        <label style="display:block;margin-bottom:10px;color:var(--muted);font-size:12px">Nom de la catégorie</label>
+        <input id="customCategoryName" type="text" placeholder="ex: Santé, Sport, Projets..." style="width:100%;padding:8px;background:#0b1422;color:var(--text);border:1px solid var(--line);border-radius:4px;font-family:inherit">
+      </div>
+      <div class="actions">
+        <button id="customCategoryCreate">Créer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Emoji Picker Modal -->
+  <div class="modalBack" id="emojiPickerModal" style="display:none">
+    <div class="modal">
+      <div class="mh">
+        <h3>🎨 Choisir une icône</h3>
+        <button class="linkBtn" id="emojiPickerClose">Fermer</button>
+      </div>
+      <div class="mb">
+        <input type="hidden" id="emojiPickerSectionKey" value="">
+        <div id="emojiGrid" style="display:grid;grid-template-columns:repeat(8,1fr);gap:8px;max-height:400px;overflow-y:auto">
+          <!-- Emojis seront injectés ici -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Sélection de Personnage -->
+  <!-- Character Select Modal -->
+  <div class="modalBack" id="modalCharacterSelect" style="display:none">
+    <div class="modal characterSelectModal">
+      <div class="mh">
+        <h3>🎭 Choisir son personnage</h3>
+        <button class="closeModalBtn" id="btnCancelCharacterSelect">✕</button>
+      </div>
+      <div class="mb">
+        <p style="opacity:0.8;margin-bottom:20px">Chaque personnage a des spécialités et bonus de stats uniques</p>
+        
+        <div id="characterGrid" class="characterGrid">
+          <!-- Les personnages seront injectés ici -->
+        </div>
+      </div>
+    </div>
+  </div>
+
 <script>
 (() => {
   "use strict";
 
-  const STORAGE_KEY = "tgoF_sifu_v13_sticky_journal";
+  const STORAGE_KEY = "tgoF_sifu_v14_custom_categories";
   const LIB_OK_THRESHOLD_PCT = 40;
   const SECTION_BONUS_XP = 30;
 
+  // Personnages disponibles
+  const CHARACTERS = [
+    {
+      id: "sage",
+      name: "Marvin",
+      icon: "🧙",
+      illustration: "assets/illustrations/marvin-illustration.png",
+      images: {
+        base: "assets/avatars/marvin-avatar-1.png",
+        tier2: "assets/avatars/marvin-avatar-2.png",
+        tier3: "assets/avatars/marvin-avatar-3.png",
+        tier4: "assets/avatars/marvin-avatar-4.png",
+        tier5: "assets/avatars/marvin-avatar-5.png"
+      },
+      specialty: "Conscience & Développement",
+      description: "Érudit en quête de sagesse",
+      stats: { energy: 5, discipline: 5, conscience: 15, focus: 5 },
+      bonus: "📚 +50% XP sur tâches Développement"
+    },
+    {
+      id: "monk",
+      name: "Anne-Sophie",
+      icon: "🙏",
+      illustration: "assets/illustrations/anne-sophie-illustration.png",
+      images: {
+        base: "assets/avatars/anne-sophie-avatar-1.png",
+        tier2: "assets/avatars/anne-sophie-avatar-2.png",
+        tier3: "assets/avatars/anne-sophie-avatar-3.png",
+        tier4: "assets/avatars/anne-sophie-avatar-4.png",
+        tier5: "assets/avatars/anne-sophie-avatar-5.png"
+      },
+      specialty: "Liberté & Énergie",
+      description: "Maître de l'équilibre intérieur",
+      stats: { energy: 15, discipline: 10, conscience: 5, focus: 0 },
+      bonus: "🌱 +50% XP sur tâches Liberté"
+    }
+  ];
+
   // Cultivations (12) total 30xp
   const cultivationSteps = [
-    { n:1, xp:1 }, { n:2, xp:1 }, { n:3, xp:1 }, { n:4, xp:3 },
-    { n:5, xp:2 }, { n:6, xp:2 }, { n:7, xp:2 }, { n:8, xp:4 },
-    { n:9, xp:3 }, { n:10, xp:3 }, { n:11, xp:3 }, { n:12, xp:5 },
+    { n:1, xp:4 }, { n:2, xp:4 }, { n:3, xp:4 }, { n:4, xp:11 },
+    { n:5, xp:7 }, { n:6, xp:7 }, { n:7, xp:7 }, { n:8, xp:14 },
+    { n:9, xp:11 }, { n:10, xp:11 }, { n:11, xp:11 }, { n:12, xp:17 },
   ];
-  const cultivationTasks = cultivationSteps.map(s => ({
-    id: `cult_${s.n}`,
-    label: `🌱 Cultivation ${s.n}`,
-    xp: s.xp
-  }));
+  const cultivationTasks = cultivationSteps.map(s => {
+    const side = (s.n % 2 === 0) ? '(G)' : '(D)';
+    return {
+      id: `cult_${s.n}`,
+      label: `🌱 Cultivation ${s.n} ${side}`,
+      xp: s.xp
+    };
+  });
 
   // Qi Pratique items (Cultivations is nested group)
   const qiPractice = [
     { id:"qi_cultivations_group", label:`🌱 Cultivations (12)`, xp: 30, kind:"group" }, // display only
-    { id:"qi_projections",  label:"🎯 Projections", xp:8  },
-    { id:"qi_dantien",      label:"⚙️ Dantien Tuna", xp:10 },
-    { id:"qi_balancing",    label:"⚖️ Balancing", xp:10 },
-    { id:"qi_meditation",   label:"🧘 Meditation", xp:15 },
-    { id:"qi_expand",       label:"🌬️ Expand & Condense", xp:30 },
-    { id:"qi_dynamic",      label:"⚡ Dynamic Qi", xp:10 },
+    { id:"qi_projections",  label:"🎯 Projections", xp:16  },
+    { id:"qi_dantien",      label:"⚙️ Dantien Tuna", xp:20 },
+    { id:"qi_balancing",    label:"⚖️ Balancing", xp:20 },
+    { id:"qi_meditation",   label:"🧘 Meditation", xp:30 },
+    { id:"qi_expand",       label:"🌬️ Expand & Condense", xp:108 },
+    { id:"qi_dynamic",      label:"⚡ Dynamic Qi", xp:20 },
   ];
   const QI_BONUS_XP = 15;
 
   // Liberté standalone
   const libertyStandalone = [
-    { id:"qi_cleansing",  label:"🌊 Qi Cleansing", xp:70 },
-    { id:"med1",          label:"🧘 Méditation 1", xp:15 },
-    { id:"med2",          label:"🧘 Méditation 2", xp:15 },
+    { id:"qi_cleansing",  label:"🌊 Qi Cleansing", xp:108 },
+    { id:"med1",          label:"🧘 Méditation 1", xp:30 },
     { id:"desengram",     label:"🧠⚡ Désengrammage & Déprogrammation", xp:50 },
-    { id:"yoga",          label:"🪷 Yoga", xp:20 },
+    { id:"yoga",          label:"🪷 Yoga", xp:30 },
   ];
 
   // Système (4) + bonus
@@ -631,10 +1348,10 @@
   // Responsabilité (5)
   const responsibilityTasks = [
     { id:"bu_bw",         label:"📘 BU / BW", xp:40 },
-    { id:"transgression", label:"🔥 Transgression", xp:60 },
-    { id:"wai",           label:"👁️ WAI", xp:20 },
-    { id:"coeur",         label:"❤️ Cœur (Coaching)", xp:20 },
-    { id:"auto_cleans",   label:"🧼 Auto-cleansing", xp:60 },
+    { id:"transgression", label:"🔥 Transgression", xp:108 },
+    { id:"wai",           label:"👁️ WAI", xp:50 },
+    { id:"coeur",         label:"❤️ Coeur", xp:20 },
+    { id:"auto_cleans",   label:"🧼 Auto-cleansing", xp:80 },
   ];
 
   // Développement (4)
@@ -647,21 +1364,105 @@
 
   // Efficacité (2)
   const efficiencyTasks = [
-    { id:"deep_work",     label:"🛠️ Deep Work", xp:150 },
-    { id:"communication", label:"💬 Communication", xp:120 },
+    { id:"deep_work",     label:"🛠️ Deep Work", xp:250 },
+    { id:"communication", label:"💬 Communication", xp:200 },
   ];
 
-  // Rewards (Sifu) — Love
+  // Money Making
+  const moneyMakingTasks = [
+    { id:"money_making", label:"💰 Money Making", xp:100 },
+  ];
+
+  // Rewards Track - Paliers de progression basés sur XP total cumulé
   const rewards = [
-    { id:"r1_game",   name:"🎮 Reward 1 — Jeux / Jeux vidéo", cost:440 },
-    { id:"r2_film",   name:"🎬 Reward 2 — Film", cost:500 },
-    { id:"r3_out",    name:"🚶 Reward 3 — Sortie dehors", cost:570 },
-    { id:"r4_buy",    name:"🛍️ Reward 4 — Objet ou service", cost:600 },
-    { id:"r5_love_1", name:"💖 Reward 5.1 — Love", cost:620 },
-    { id:"r5_love_2", name:"💖 Reward 5.2 — Love", cost:650 },
-    { id:"r5_love_3", name:"💖 Reward 5.3 — Love", cost:680 },
-    { id:"r6_rest_1", name:"🍽️ Reward 6.1 — Restaurant", cost:700 },
-    { id:"r6_rest_2", name:"🍽️ Reward 6.2 — Restaurant", cost:750 },
+    { id:"r1_game",   icon:"🎮", name:"Jeux / Jeux vidéo", xpThreshold:250, illustration:"assets/rewards/rewards-jeux.png" },
+    { id:"r2_film",   icon:"🎬", name:"Film", xpThreshold:400, illustration:"assets/rewards/rewards-film.png" },
+    { id:"r3_out",    icon:"🚶", name:"Sortie dehors", xpThreshold:500, illustration:"assets/rewards/rewards-sortie.png" },
+    { id:"r4_buy",    icon:"🛍️", name:"Objet ou service", xpThreshold:600, illustration:"assets/rewards/rewards-objet.png" },
+    { id:"r5_love_1", icon:"💖", name:"Love (1)", xpThreshold:700, illustration:"assets/rewards/rewards-love1.png" },
+    { id:"r5_love_2", icon:"💖", name:"Love (2)", xpThreshold:800, illustration:"assets/rewards/rewards-love2.png" },
+    { id:"r5_love_3", icon:"💖", name:"Love (3)", xpThreshold:900, illustration:"assets/rewards/rewards-love3.png" },
+    { id:"r6_rest_1", icon:"🍽️", name:"Restaurant (1)", xpThreshold:1000, illustration:"assets/rewards/rewards-restau1.png" },
+    { id:"r6_rest_2", icon:"🍽️", name:"Restaurant (2)", xpThreshold:1200, illustration:"assets/rewards/rewards-restau2.png" },
+  ];
+
+  // Shop Items Catalog
+  const shopCatalog = [
+    // Consommables
+    { id:"xp_boost_small", name:"Boost XP Petit", icon:"⚡", price:50, category:"consumables", description:"+20 XP instantané", effect:"xpBoost", value:20 },
+    { id:"xp_boost_medium", name:"Boost XP Moyen", icon:"⚡⚡", price:120, category:"consumables", description:"+50 XP instantané", effect:"xpBoost", value:50 },
+    { id:"xp_boost_large", name:"Boost XP Grand", icon:"⚡⚡⚡", price:250, category:"consumables", description:"+120 XP instantané", effect:"xpBoost", value:120 },
+    { id:"double_xp_day", name:"Double XP Journée", icon:"🎯", price:200, category:"consumables", description:"Double les XP d'une section demain", effect:"doubleXP" },
+    { id:"reroll_token", name:"Jeton de Relance", icon:"🔁", price:80, category:"consumables", description:"Permet de relancer une loot box", effect:"reroll" },
+    { id:"discount_coupon", name:"Coupon Réduction", icon:"💸", price:100, category:"consumables", description:"-50 XP sur le prochain reward", effect:"discount" },
+    { id:"lucky_charm", name:"Porte-Bonheur", icon:"🍀", price:150, category:"consumables", description:"+10% de chances de loot rare", effect:"luckBoost", value:10 },
+    { id:"energy_potion", name:"Potion d'Énergie", icon:"🧪", price:180, category:"consumables", description:"+5 points d'Énergie", effect:"statBoost", stat:"energy", value:5 },
+    
+    // Permanent
+    { id:"xp_multiplier_1", name:"Multiplicateur XP I", icon:"📈", price:500, category:"permanent", description:"+5% XP permanent", effect:"xpMultiplier", value:5 },
+    { id:"xp_multiplier_2", name:"Multiplicateur XP II", icon:"📈📈", price:1200, category:"permanent", description:"+10% XP permanent", effect:"xpMultiplier", value:10, requires:"xp_multiplier_1" },
+    { id:"auto_cultivation", name:"Cultivation Auto", icon:"🌱", price:800, category:"permanent", description:"Complète automatiquement 3 cultivations/jour", effect:"autoCultivation" },
+    { id:"task_slots_1", name:"Slots de Tâches +5", icon:"📋", price:400, category:"permanent", description:"+5 emplacements de tâches personnalisées", effect:"taskSlots", value:5 },
+    { id:"category_slots_1", name:"Slots Catégories +3", icon:"📁", price:350, category:"permanent", description:"+3 emplacements de catégories", effect:"categorySlots", value:3 },
+    { id:"fast_rewards", name:"Récompenses Rapides", icon:"⚡", price:600, category:"permanent", description:"-10% de XP requis pour les rewards", effect:"rewardDiscount", value:10 },
+    { id:"shield_generator", name:"Générateur Bouclier", icon:"🛡️", price:700, category:"permanent", description:"+1 bouclier gratuit par semaine", effect:"shieldGen" },
+    
+    // Cosmétique
+    { id:"theme_dark_blue", name:"Thème Bleu Nuit", icon:"🌙", price:300, category:"cosmetic", description:"Thème visuel bleu foncé", effect:"theme", value:"dark_blue" },
+    { id:"theme_forest", name:"Thème Forêt", icon:"🌲", price:300, category:"cosmetic", description:"Thème visuel vert forêt", effect:"theme", value:"forest" },
+    { id:"theme_sunset", name:"Thème Coucher de Soleil", icon:"🌅", price:300, category:"cosmetic", description:"Thème visuel orange/rose", effect:"theme", value:"sunset" },
+    { id:"theme_rainbow", name:"Thème Arc-en-ciel", icon:"🌈", price:1500, category:"cosmetic", description:"Thème épique multicolore", effect:"theme", value:"rainbow" },
+    { id:"theme_cosmic", name:"Thème Cosmique", icon:"🌌", price:2500, category:"cosmetic", description:"Thème légendaire galactique", effect:"theme", value:"cosmic" },
+    { id:"avatar_frame_plastic", name:"Cadre Avatar Plastique", icon:"📦", price:50, category:"cosmetic", description:"Cadre basique en plastique", effect:"avatarFrame", value:"plastic" },
+    { id:"avatar_frame_wood", name:"Cadre Avatar Bois", icon:"🪵", price:100, category:"cosmetic", description:"Cadre rustique en bois", effect:"avatarFrame", value:"wood" },
+    { id:"avatar_frame_steel", name:"Cadre Avatar Acier", icon:"⚙️", price:150, category:"cosmetic", description:"Cadre solide en acier", effect:"avatarFrame", value:"steel" },
+    { id:"avatar_frame_silver", name:"Cadre Avatar Argent", icon:"🥈", price:175, category:"cosmetic", description:"Cadre élégant en argent", effect:"avatarFrame", value:"silver" },
+    { id:"avatar_frame_bronze", name:"Cadre Avatar Bronze", icon:"🥉", price:200, category:"cosmetic", description:"Cadre bronze pour votre avatar", effect:"avatarFrame", value:"bronze" },
+    { id:"avatar_frame_gold", name:"Cadre Avatar Or", icon:"🥇", price:400, category:"cosmetic", description:"Cadre doré pour votre avatar", effect:"avatarFrame", value:"gold" },
+    { id:"avatar_frame_diamond", name:"Cadre Avatar Diamant", icon:"💎", price:800, category:"cosmetic", description:"Cadre diamant brillant pour votre avatar", effect:"avatarFrame", value:"diamond" },
+    { id:"avatar_frame_platinum", name:"Cadre Avatar Platine", icon:"⭐", price:1200, category:"cosmetic", description:"Cadre platine étincelant pour votre avatar", effect:"avatarFrame", value:"platinum" },
+    { id:"avatar_frame_rainbow", name:"Cadre Avatar Arc-en-ciel", icon:"🌈", price:2000, category:"cosmetic", description:"Cadre arc-en-ciel épique pour votre avatar", effect:"avatarFrame", value:"rainbow" },
+    { id:"avatar_frame_cosmic", name:"Cadre Avatar Cosmique", icon:"🌌", price:3500, category:"cosmetic", description:"Cadre cosmique légendaire pour votre avatar", effect:"avatarFrame", value:"cosmic" },
+    { id:"avatar_marvin_yinyang", name:"Marvin Yin-Yang", icon:"☯️", price:250, category:"cosmetic", description:"Illustration spéciale Marvin Yin-Yang", effect:"avatarIllustration", value:"assets/cosmetics/marvin-yinyang.png", characterId:"sage" },
+    { id:"avatar_annesophie_sweet", name:"Anne-Sophie Sweet", icon:"🎀", price:250, category:"cosmetic", description:"Illustration spéciale Anne-Sophie Sweet", effect:"avatarIllustration", value:"assets/cosmetics/anne-sophie-sweet.png", characterId:"monk" },
+    { id:"title_warrior", name:"Titre: Guerrier", icon:"⚔️", price:250, category:"cosmetic", description:"Affiche 'Guerrier' sous votre nom", effect:"title", value:"Guerrier", titleDescription:"Maître du combat et de la discipline" },
+    { id:"title_master", name:"Titre: Maître", icon:"🎓", price:500, category:"cosmetic", description:"Affiche 'Maître' sous votre nom", effect:"title", value:"Maître", titleDescription:"Expert accompli dans son art" },
+    { id:"title_legend", name:"Titre: Légende", icon:"👑", price:1000, category:"cosmetic", description:"Affiche 'Légende' sous votre nom", effect:"title", value:"Légende", titleDescription:"Figure légendaire de l'excellence" },
+  ];
+
+  // ===== MONEY MAKING MODE =====
+  const moneyMakingIncomeTasks = [
+    { id:"mm_freelance", label:"💼 Freelance/Client Work", xp:500 },
+    { id:"mm_sales", label:"💵 Sales Call/Meeting", xp:300 },
+    { id:"mm_content", label:"📹 Create Content", xp:200 },
+    { id:"mm_outreach", label:"📧 Outreach/Networking", xp:150 },
+    { id:"mm_product", label:"🛠️ Product Development", xp:400 },
+  ];
+
+  const moneyMakingSkillsTasks = [
+    { id:"mm_learning", label:"📚 Learning/Course", xp:100 },
+    { id:"mm_practice", label:"🎯 Practice Skills", xp:150 },
+    { id:"mm_research", label:"🔍 Market Research", xp:100 },
+  ];
+
+  const moneyMakingSystemsTasks = [
+    { id:"mm_automation", label:"⚙️ Build Automation", xp:250 },
+    { id:"mm_marketing", label:"📣 Marketing Task", xp:200 },
+    { id:"mm_admin", label:"📋 Admin/Finances", xp:100 },
+  ];
+
+  const SECTIONS_MONEY = [
+    { key:"income", title:"💰 Income Generation", hint:"Tâches qui génèrent directement du revenu", meta:"Génération de revenu", tasks: moneyMakingIncomeTasks },
+    { key:"skills", title:"🎓 Skill Building", hint:"Développement des compétences", meta:"Compétences", tasks: moneyMakingSkillsTasks },
+    { key:"systems", title:"⚙️ Systems & Growth", hint:"Systèmes et automatisations", meta:"Systèmes", tasks: moneyMakingSystemsTasks },
+  ];
+
+  const rewardsMoney = [
+    { id:"mm_r1_break", icon:"☕", name:"Pause café premium", xpThreshold:300, illustration:"assets/rewards/rewards-sortie.png" },
+    { id:"mm_r2_snack", icon:"🍕", name:"Commande food", xpThreshold:500, illustration:"assets/rewards/rewards-film.png" },
+    { id:"mm_r3_game", icon:"🎮", name:"1h Gaming", xpThreshold:800, illustration:"assets/rewards/rewards-jeux.png" },
+    { id:"mm_r4_shopping", icon:"🛍️", name:"Shopping online", xpThreshold:1200, illustration:"assets/rewards/rewards-serie.png" },
+    { id:"mm_r5_treat", icon:"🎁", name:"Treat yourself", xpThreshold:1500, illustration:"assets/rewards/rewards-cadeau.png" },
   ];
 
   // Sections
@@ -670,15 +1471,16 @@
     { key:"resp", title:"🟩 Responsabilité", hint:"Compte dans Liberté% (mode Sifu).", meta:"Acte Responsabilité (compte dans Liberté%).", tasks: responsibilityTasks },
     { key:"dev",  title:"🟨 Développement",  hint:"XP seulement.", meta:"Développement (XP seulement).", tasks: developmentTasks },
     { key:"eff",  title:"🟥 Efficacité",     hint:"XP seulement (Deep Work & Communication).", meta:"Efficacité (XP seulement).", tasks: efficiencyTasks },
+    { key:"money", title:"💰 Money Making",  hint:"XP seulement.", meta:"Money Making (XP seulement).", tasks: moneyMakingTasks },
   ];
 
   // Loot table (weighted)
   const LOOT_TABLE = [
-    { type:"discount", label:"💸 Discount", desc:"-50 XP sur ton prochain reward (auto).",  weight: 28 },
-    { type:"double",   label:"⚡ Double XP", desc:"Demain, une section gagne double XP.",   weight: 22 },
-    { type:"boost",    label:"🧠 Boost",    desc:"+20 XP instant (ajouté à aujourd’hui).",  weight: 22 },
-    { type:"shield",   label:"🧿 Shield",   desc:"Jeton de protection (streak bientôt).",   weight: 18 },
-    { type:"reroll",   label:"🔁 Reroll",   desc:"+1 reroll pour relancer une loot.",       weight: 10 },
+    { type:"discount", label:"💸 Discount", desc:"-50 XP sur ton prochain reward (auto).",  weight: 28, illustration:"assets/loots/loot-discounts.png" },
+    { type:"double",   label:"⚡ Double XP", desc:"Demain, une section gagne double XP.",   weight: 22, illustration:"assets/loots/loot-doublexp.png" },
+    { type:"boost",    label:"🧠 Boost",    desc:"+20 XP instant (ajouté à aujourd’hui).",  weight: 22, illustration:"assets/loots/loot-boosts.png" },
+    { type:"shield",   label:"🧿 Shield",   desc:"Jeton de protection (streak bientôt).",   weight: 18, illustration:"assets/loots/loot-shield.png" },
+    { type:"reroll",   label:"🔁 Reroll",   desc:"+1 reroll pour relancer une loot.",       weight: 10, illustration:"assets/loots/loot-reroll.png" },
   ];
 
   // Helpers
@@ -786,8 +1588,29 @@
     return [];
   }
 
+  // Active tasks management - déclaré avant loadState pour pouvoir être restauré
+  let activeTasks = [];
+
   // State
-  const state = loadState();
+  window.state = loadState(); // Expose state globally for console access
+  
+  // Restore active tasks from state
+  if(state.activeTasks && Array.isArray(state.activeTasks)){
+    activeTasks = state.activeTasks;
+  }
+  
+  // Initialize game mode (default: freedom)
+  if(!state.gameMode) state.gameMode = "freedom";
+
+  // Apply permanent effects from purchased items
+  applyPermanentEffects();
+  
+  // Initialize character display
+  updateCharacterDisplay();
+  
+  // Apply game mode
+  applyGameMode();
+  applyDarkMode();
 
   // UI init
   el("dateInput").value = state.currentDate || todayISO();
@@ -801,6 +1624,35 @@
   renderRewards();
   syncUI();
   renderHistory();
+  
+  // Restore active tasks popup if there are tasks (with a small delay to ensure DOM is ready)
+  if(activeTasks.length > 0){
+    setTimeout(() => {
+      updateActiveTasksDisplay();
+    }, 100);
+  }
+  
+  // Initialize shop and inventory displays
+  setTimeout(() => {
+    renderShop();
+    renderInventory();
+  }, 100);
+
+  // Test Level Up button (attach after DOM is ready)
+  setTimeout(() => {
+    const testBtn = el("btnTestLevelUp");
+    if(testBtn){
+      testBtn.addEventListener("click", () => {
+        const d = state.currentDate;
+        ensureDay(d);
+        // Add 500 XP to test XP (stored separately to not affect real XP)
+        state.days[d].testXP = (state.days[d].testXP || 0) + 500;
+        saveState();
+        syncUI();
+        renderHistory();
+      });
+    }
+  }, 100);
 
   // Events
   el("dateInput").addEventListener("change", () => {
@@ -813,8 +1665,25 @@
     renderHistory();
   });
 
+  el("btnModeSwitch").addEventListener("click", () => {
+    state.gameMode = state.gameMode === "freedom" ? "money" : "freedom";
+    saveState();
+    applyGameMode();
+    renderSections();
+    renderRewards();
+    syncUI();
+  });
+
   el("btnToday").addEventListener("click", () => {
-    state.currentDate = todayISO();
+    const previousDate = state.currentDate;
+    const newDate = todayISO();
+    
+    // Si on change de jour, réinitialiser les rewards pour la nouvelle journée
+    if(previousDate !== newDate) {
+      state.claimedRewards = [];
+    }
+    
+    state.currentDate = newDate;
     el("dateInput").value = state.currentDate;
     ensureDay(state.currentDate);
     el("weekPick").value = state.currentDate;
@@ -826,17 +1695,331 @@
 
   el("btnReset").addEventListener("click", () => {
     const d = state.currentDate;
-    if(!confirm("Reset toutes les cases, loots, et achats de CE JOUR ?")) return;
+    if(!confirm("Reset toutes les cases et loots de CE JOUR ?")) return;
     state.days[d] = createEmptyDay();
+    // Ne pas réinitialiser les rewards - ils sont permanents
     saveState();
     renderRewards();
     syncUI(false);
     renderHistory();
   });
 
+  // Focus Mode Toggle
+  let focusModeActive = false;
+  el("btnFocusMode").addEventListener("click", () => {
+    focusModeActive = !focusModeActive;
+    const btn = el("btnFocusMode");
+    
+    // Get all collapsible elements
+    const allPanels = document.querySelectorAll(".bd[id$='-body'], #loot-rewards-body");
+    const allButtons = document.querySelectorAll(".panelCollapseBtn, .rewardsCollapseBtn");
+    
+    if(focusModeActive) {
+      btn.title = "Désactiver le mode focus";
+      // Collapse all panels
+      allPanels.forEach(panel => panel.classList.add("collapsed"));
+      allButtons.forEach(button => button.classList.add("collapsed"));
+      // Also collapse the rewards track wrapper
+      const rewardsWrapper = el("rewardsTrackWrapper");
+      if(rewardsWrapper) rewardsWrapper.classList.add("collapsed");
+    } else {
+      btn.title = "Activer le mode focus";
+      // Expand all panels
+      allPanels.forEach(panel => panel.classList.remove("collapsed"));
+      allButtons.forEach(button => button.classList.remove("collapsed"));
+      // Also expand the rewards track wrapper
+      const rewardsWrapper = el("rewardsTrackWrapper");
+      if(rewardsWrapper) rewardsWrapper.classList.remove("collapsed");
+    }
+  });
+
+  // Avatar Gallery Navigation
+  el("btnPrevImage").addEventListener("click", () => {
+    if (state.avatarImageIndex > 0) {
+      state.avatarImageIndex--;
+      updateAvatarGallery();
+      saveState();
+    }
+  });
+
+  el("btnNextImage").addEventListener("click", () => {
+    const unlockedImages = getUnlockedImages();
+    if (state.avatarImageIndex < unlockedImages.length - 1) {
+      state.avatarImageIndex++;
+      updateAvatarGallery();
+      saveState();
+    }
+  });
+
   el("histMode").addEventListener("change", renderHistory);
   el("weekPick").addEventListener("change", renderHistory);
   el("monthPick").addEventListener("change", renderHistory);
+
+  // Character selection - Click on avatar to change
+  el("charAvatar").addEventListener("click", () => {
+    openCharacterSelectModal();
+  });
+  
+  // Make avatar look clickable
+  el("charAvatar").style.cursor = "pointer";
+  el("charAvatar").title = "Cliquer pour changer de personnage";
+
+  el("btnCancelCharacterSelect").addEventListener("click", () => {
+    el("modalCharacterSelect").style.display = "none";
+  });
+
+  // Close modal when clicking on background
+  el("modalCharacterSelect").addEventListener("click", (e) => {
+    if (e.target === el("modalCharacterSelect")) {
+      el("modalCharacterSelect").style.display = "none";
+    }
+  });
+
+  // Dark Mode Toggle
+  const darkModeBtn = el("btnDarkMode");
+  if(darkModeBtn){
+    darkModeBtn.addEventListener("click", () => {
+      state.ui = state.ui || {};
+      state.ui.darkMode = !state.ui.darkMode;
+      applyDarkMode();
+      saveState();
+    });
+  }
+
+  // Theme Switcher
+  el("btnThemeSwitcher").addEventListener("click", () => {
+    cycleTheme();
+  });
+
+  // Active task popup close button
+  setTimeout(() => {
+    const closeBtn = el("closeActiveTaskPopup");
+    if(closeBtn){
+      closeBtn.addEventListener("click", hideActiveTaskPopup);
+    }
+  }, 100);
+
+  // Suggested tasks popup close button
+  setTimeout(() => {
+    const closeSuggestedBtn = el("closeSuggestedTasksPopup");
+    if(closeSuggestedBtn){
+      closeSuggestedBtn.addEventListener("click", hideSuggestedTasksPopup);
+    }
+  }, 100);
+
+  // Reset Inventory button
+  setTimeout(() => {
+    const resetInvBtn = el("btnResetInventory");
+    if(resetInvBtn){
+      resetInvBtn.addEventListener("click", () => {
+        if(confirm("⚠️ Êtes-vous sûr de vouloir réinitialiser tout votre inventaire ? Cette action est irréversible.")){
+          state.inventory = createInventory();
+          saveState();
+          renderInventory();
+          syncUI();
+          showNotification("🗑️ Inventaire réinitialisé");
+        }
+      });
+    }
+  }, 100);
+
+  function openCharacterSelectModal() {
+    const modal = el("modalCharacterSelect");
+    const grid = el("characterGrid");
+    
+    grid.innerHTML = CHARACTERS.map(char => {
+      const isSelected = state.selectedCharacter === char.id;
+      return `
+        <div class="characterCard ${isSelected ? 'selected' : ''}" data-character="${char.id}">
+          ${char.illustration ? `<div class="characterCardIllustration"><img src="${char.illustration}" alt="${char.name}" /></div>` : ''}
+          <div class="characterCardHeader">
+            <div class="characterCardIcon">${char.icon}</div>
+            <div class="characterCardName">${char.name}</div>
+            ${isSelected ? '<div class="characterCardBadge">✓ Actif</div>' : ''}
+          </div>
+          <div class="characterCardSpecialty">${char.specialty}</div>
+          <div class="characterCardDescription">${char.description}</div>
+          <div class="characterCardStats">
+            <div class="characterCardStat">
+              <span>⚡ Énergie:</span>
+              <span class="statValue">+${char.stats.energy}</span>
+            </div>
+            <div class="characterCardStat">
+              <span>🛡️ Discipline:</span>
+              <span class="statValue">+${char.stats.discipline}</span>
+            </div>
+            <div class="characterCardStat">
+              <span>🧠 Conscience:</span>
+              <span class="statValue">+${char.stats.conscience}</span>
+            </div>
+            <div class="characterCardStat">
+              <span>🎯 Focus:</span>
+              <span class="statValue">+${char.stats.focus}</span>
+            </div>
+          </div>
+          <div class="characterCardBonus">${char.bonus}</div>
+          <button class="characterCardSelect" data-character="${char.id}">
+            ${isSelected ? '✓ Sélectionné' : 'Choisir'}
+          </button>
+        </div>
+      `;
+    }).join('');
+    
+    // Add click handlers
+    grid.querySelectorAll('.characterCardSelect').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const characterId = e.target.dataset.character;
+        selectCharacter(characterId);
+      });
+    });
+    
+    modal.style.display = "flex";
+  }
+
+  function selectCharacter(characterId) {
+    const character = CHARACTERS.find(c => c.id === characterId);
+    if (!character) return;
+    
+    state.selectedCharacter = characterId;
+    saveState();
+    
+    // Update character display
+    updateCharacterDisplay();
+    
+    // Recalculate stats
+    syncUI();
+    
+    showNotification(`✅ Personnage sélectionné: ${character.name}`);
+    el("modalCharacterSelect").style.display = "none";
+  }
+
+  function updateCharacterDisplay() {
+    const character = getCurrentCharacter();
+    if (character) {
+      updateAvatarGallery();
+      
+      const nameEl = el("charName");
+      const specialtyEl = el("charSpecialty");
+      
+      // Display character name and specialty
+      if (nameEl) nameEl.textContent = character.name;
+      if (specialtyEl) specialtyEl.textContent = character.specialty;
+    }
+  }
+
+  function getUnlockedImages() {
+    const character = getCurrentCharacter();
+    
+    // Calculate current level to determine unlocked tiers
+    const totalXP = calculateTotalXP();
+    const levelData = calculateCharacterLevel(totalXP);
+    const level = levelData.level;
+    
+    // Base image is always available
+    const unlockedImages = [character.images.base];
+    
+    // Unlock tiers based on level
+    // Tier 2: Level 5+, Tier 3: Level 10+, Tier 4: Level 15+, Tier 5: Level 20+
+    if(level >= 5) unlockedImages.push(character.images.tier2);
+    if(level >= 10) unlockedImages.push(character.images.tier3);
+    if(level >= 15) unlockedImages.push(character.images.tier4);
+    if(level >= 20) unlockedImages.push(character.images.tier5);
+    
+    // Add equipped cosmetic avatar illustrations
+    if (state.inventory && state.inventory.equippedAvatars) {
+      state.inventory.equippedAvatars.forEach(itemId => {
+        const shopItem = shopCatalog.find(i => i.id === itemId);
+        if (shopItem && shopItem.effect === 'avatarIllustration' && shopItem.characterId === character.id) {
+          unlockedImages.push(shopItem.value);
+        }
+      });
+    }
+    
+    return unlockedImages;
+  }
+
+  function updateAvatarGallery() {
+    const character = getCurrentCharacter();
+    const unlockedImages = getUnlockedImages();
+    
+    // Initialize avatar index if not set
+    if (!state.avatarImageIndex) state.avatarImageIndex = 0;
+    
+    // Ensure index is within bounds
+    if (state.avatarImageIndex >= unlockedImages.length) {
+      state.avatarImageIndex = unlockedImages.length - 1;
+    }
+    
+    // Update avatar image
+    const avatarImg = el("charAvatar");
+    if (avatarImg) {
+      avatarImg.src = unlockedImages[state.avatarImageIndex];
+      avatarImg.alt = character.name;
+    }
+    
+    // Update character name based on current avatar
+    const nameEl = el("charName");
+    if (nameEl) {
+      let displayName = character.name;
+      const currentImage = unlockedImages[state.avatarImageIndex];
+      
+      // Detect which tier/type of avatar is displayed
+      if (currentImage === character.images.base) {
+        nameEl.innerHTML = character.name;
+      } else if (currentImage === character.images.tier2) {
+        nameEl.innerHTML = `${character.name} Sifu<br>Level 2`;
+      } else if (currentImage === character.images.tier3) {
+        nameEl.innerHTML = `${character.name} Sifu<br>Level 3`;
+      } else if (currentImage === character.images.tier4) {
+        nameEl.innerHTML = `${character.name} Sifu<br>Level 4`;
+      } else if (currentImage === character.images.tier5) {
+        nameEl.innerHTML = `${character.name} Sifu<br>Level 5`;
+      } else {
+        // It's a cosmetic illustration
+        const cosmeticItem = shopCatalog.find(item => 
+          item.effect === 'avatarIllustration' && 
+          item.value === currentImage && 
+          item.characterId === character.id
+        );
+        if (cosmeticItem) {
+          nameEl.innerHTML = cosmeticItem.name;
+        } else {
+          nameEl.innerHTML = character.name;
+        }
+      }
+    }
+    
+    // Update counter and buttons
+    const counterEl = el("avatarImageCounter");
+    const prevBtn = el("btnPrevImage");
+    const nextBtn = el("btnNextImage");
+    
+    if (counterEl) {
+      counterEl.textContent = `${state.avatarImageIndex + 1}/${unlockedImages.length}`;
+    }
+    
+    if (prevBtn) {
+      prevBtn.disabled = state.avatarImageIndex <= 0;
+      prevBtn.style.opacity = state.avatarImageIndex <= 0 ? '0.3' : '1';
+      prevBtn.style.cursor = state.avatarImageIndex <= 0 ? 'not-allowed' : 'pointer';
+    }
+    
+    if (nextBtn) {
+      nextBtn.disabled = state.avatarImageIndex >= unlockedImages.length - 1;
+      nextBtn.style.opacity = state.avatarImageIndex >= unlockedImages.length - 1 ? '0.3' : '1';
+      nextBtn.style.cursor = state.avatarImageIndex >= unlockedImages.length - 1 ? 'not-allowed' : 'pointer';
+    }
+  }
+
+  function getCurrentCharacter() {
+    if (!state.selectedCharacter) return CHARACTERS[0]; // Default: Marvin
+    return CHARACTERS.find(c => c.id === state.selectedCharacter) || CHARACTERS[0];
+  }
+
+  function getCharacterStatBonus() {
+    const character = getCurrentCharacter();
+    return character.stats;
+  }
 
   el("btnGoSelected").addEventListener("click", () => {
     const pick = el("weekPick").value || state.currentDate;
@@ -907,6 +2090,191 @@
   el("lootClose").addEventListener("click", closeLootModal);
   el("lootOk").addEventListener("click", closeLootModal);
 
+  // Tab system
+  document.querySelectorAll(".tabBtn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const tabName = btn.getAttribute("data-tab");
+      
+      // Remove active class from all buttons and contents
+      document.querySelectorAll(".tabBtn").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".tabContent").forEach(c => c.classList.remove("active"));
+      
+      // Add active class to clicked button and corresponding content
+      btn.classList.add("active");
+      const tabContent = document.getElementById(tabName);
+      if (tabContent) {
+        tabContent.classList.add("active");
+        
+        // Render content when tab is opened
+        if(tabName === "tab-shop"){
+          renderShop();
+        } else if(tabName === "tab-inventory"){
+          renderInventory();
+        }
+      }
+    });
+  });
+
+  // Shop and Inventory filters (attach after a delay to ensure DOM is ready)
+  setTimeout(() => {
+    // Shop filters
+    document.querySelectorAll(".shopFilters .filterBtn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".shopFilters .filterBtn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        
+        // Show/hide cosmetic sub-filters
+        const cosmeticSubFilters = document.querySelector(".cosmeticSubFilters");
+        if(btn.dataset.filter === "cosmetic"){
+          cosmeticSubFilters.style.display = "flex";
+        } else {
+          cosmeticSubFilters.style.display = "none";
+        }
+        
+        renderShop();
+      });
+    });
+    
+    // Shop cosmetic sub-filters
+    document.querySelectorAll(".cosmeticSubFilters .subFilterBtn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".cosmeticSubFilters .subFilterBtn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        renderShop();
+      });
+    });
+
+    // Inventory filters
+    document.querySelectorAll(".inventoryFilters .filterBtn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".inventoryFilters .filterBtn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        
+        // Show/hide cosmetic sub-filters
+        const cosmeticSubFilters = document.querySelector(".inventoryCosmeticSubFilters");
+        if(btn.dataset.filter === "cosmetic"){
+          cosmeticSubFilters.style.display = "flex";
+        } else {
+          cosmeticSubFilters.style.display = "none";
+        }
+        
+        renderInventory();
+      });
+    });
+    
+    // Inventory cosmetic sub-filters
+    document.querySelectorAll(".inventoryCosmeticSubFilters .subFilterBtn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".inventoryCosmeticSubFilters .subFilterBtn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        renderInventory();
+      });
+    });
+  }, 200);
+
+  // Emoji picker
+  const CATEGORY_EMOJIS = [
+    "🟦","🟩","🟨","🟥","🟪","🟫","⬛","⬜","🔴","🔵","🟢","🟡","🟠","🟣","🟤",
+    "💰","💎","💵","🏆","🎯","⚡","🔥","✨","🌟","⭐","💫","🌈","☀️","🌙","⛅",
+    "🎮","🎬","📚","✏️","🔨","⚙️","🛠️","🔧","📱","💻","⌚","🎧","🎵","🎨","🖼️",
+    "🏃","💪","🧘","🏋️","⚽","🏀","🎾","🎯","🎲","🎪","🎭","🎬","🎤","🎸","🎹",
+    "🍎","🥗","🍕","☕","🍜","🍱","🍰","🍫","🥤","🧃","🍷","🥂","🍻","🥃","🍹",
+    "🏠","🏢","🏦","🏪","🏫","🏨","🏩","🏛️","⛪","🕌","🛕","🗼","🗿","🎡","🎢",
+    "📈","📊","💹","📉","💼","📎","📌","📍","🔖","📝","📄","📃","📑","📇","📅",
+    "❤️","💚","💙","💛","🧡","💜","🖤","🤍","💗","💖","💕","💓","💞","💝","💟",
+    "✅","❌","⭕","🔴","🟢","🔵","⚫","⚪","🟤","🟣","🟡","🟠","✔️","❎","➕",
+    "👤","👥","👨","👩","🧑","👶","👦","👧","🧒","👨‍💼","👩‍💼","🧑‍💼","👨‍🎓","👩‍🎓","🧑‍🎓"
+  ];
+
+  el("emojiPickerClose").addEventListener("click", () => {
+    el("emojiPickerModal").style.display = "none";
+  });
+
+  function openEmojiPicker(sectionKey){
+    el("emojiPickerSectionKey").value = sectionKey;
+    const grid = el("emojiGrid");
+    grid.innerHTML = "";
+    
+    CATEGORY_EMOJIS.forEach(emoji => {
+      const btn = document.createElement("button");
+      btn.textContent = emoji;
+      btn.style.cssText = "padding:12px;font-size:24px;background:#1a2332;border:1px solid var(--line);border-radius:6px;cursor:pointer;transition:all 0.2s";
+      btn.onmouseover = () => btn.style.background = "#2a3342";
+      btn.onmouseout = () => btn.style.background = "#1a2332";
+      btn.onclick = () => {
+        state.ui = state.ui || {};
+        state.ui.sectionIcons = state.ui.sectionIcons || {};
+        state.ui.sectionIcons[sectionKey] = emoji;
+        saveState();
+        renderSections();
+        syncUI(false);
+        el("emojiPickerModal").style.display = "none";
+      };
+      grid.appendChild(btn);
+    });
+    
+    el("emojiPickerModal").style.display = "flex";
+  }
+
+  // Custom task modal
+  el("btnAddCustomTask").addEventListener("click", openCustomTaskModal);
+  el("customTaskClose").addEventListener("click", () => {
+    el("customTaskModalBack").style.display = "none";
+  });
+  el("customTaskCreate").addEventListener("click", createCustomTask);
+  el("customTaskName").addEventListener("keypress", (e) => {
+    if(e.key === "Enter") el("customTaskXP").focus();
+  });
+  el("customTaskXP").addEventListener("keypress", (e) => {
+    if(e.key === "Enter") createCustomTask();
+  });
+
+  // Custom category modal
+  el("btnAddCustomCategory").addEventListener("click", openCustomCategoryModal);
+  el("customCategoryClose").addEventListener("click", () => {
+    el("customCategoryModalBack").style.display = "none";
+  });
+  el("customCategoryCreate").addEventListener("click", createCustomCategory);
+  el("customCategoryName").addEventListener("keypress", (e) => {
+    if(e.key === "Enter") createCustomCategory();
+  });
+
+  // Rewards Track collapse button
+  setTimeout(() => {
+    const rewardsBtn = el("rewardsCollapseBtn");
+    if(rewardsBtn){
+      rewardsBtn.addEventListener("click", () => {
+        el("rewardsTrackWrapper").classList.toggle("collapsed");
+        el("rewardsCollapseBtn").classList.toggle("collapsed");
+      });
+    }
+  }, 100);
+  
+  // Generic panel collapse buttons
+  setTimeout(() => {
+    document.querySelectorAll(".panelCollapseBtn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const targetId = btn.dataset.target;
+        const targetEl = el(targetId);
+        if(targetEl){
+          targetEl.classList.toggle("collapsed");
+          btn.classList.toggle("collapsed");
+        }
+      });
+    });
+  }, 100);
+
+  // Quest collapse button
+  setTimeout(() => {
+    const questBtn = el("questCollapseBtn");
+    if(questBtn){
+      questBtn.addEventListener("click", () => {
+        el("daily-quest").classList.toggle("questCollapsed");
+        el("questCollapseBtn").classList.toggle("questCollapsed");
+      });
+    }
+  }, 100);
+
   // Storage
   function createInventory(){
     return {
@@ -914,7 +2282,9 @@
       discounts: 0,
       boosts: 0,
       rerolls: 0,
-      doubleXP: [] // [{date:'YYYY-MM-DD', section:'lib'|'resp'|'dev'|'eff'}]
+      doubleXP: [], // [{date:'YYYY-MM-DD', section:'lib'|'resp'|'dev'|'eff'}]
+      shopItems: {}, // {itemId: quantity}
+      equippedAvatars: [] // [itemId] des illustrations d'avatar équipées
     };
   }
 
@@ -938,9 +2308,12 @@
       base.ui = base.ui || { open:{}, nested:{} };
       base.ui.open = base.ui.open || { lib:true, resp:false, dev:false, eff:false };
       base.ui.nested = base.ui.nested || { qi:true, system:false, cultivation:false };
+      if(typeof base.ui.darkMode !== "boolean") base.ui.darkMode = false;
 
       base.inventory = base.inventory || createInventory();
+      base.inventory.equippedAvatars = base.inventory.equippedAvatars || [];
       base.lootHistory = base.lootHistory || [];
+      base.claimedRewards = base.claimedRewards || []; // Array of reward IDs claimed from Rewards Track
 
       ensureDay(base.currentDate, base);
       migrateEnsureAllTasks(base);
@@ -957,6 +2330,7 @@
         inventory: createInventory(),
         lootHistory: []
       };
+      if(typeof fallback.ui.darkMode !== "boolean") fallback.ui.darkMode = false;
       ensureDay(fallback.currentDate, fallback);
       migrateEnsureAllTasks(fallback);
       migrateEnsureLootKeys(fallback);
@@ -964,12 +2338,21 @@
     }
   }
 
-  function saveState(){
+  window.saveState = function saveState(){
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }
 
   function ensureDay(date, st=state){
     if(!st.days[date]) st.days[date] = createEmptyDay();
+    // Ensure migrated fields exist on pre-existing days
+    const day = st.days[date];
+    if(!day.checked) day.checked = {};
+    if(!Array.isArray(day.customTasks)) day.customTasks = [];
+    if(!Array.isArray(day.customCategories)) day.customCategories = [];
+    if(!Array.isArray(day.purchases)) day.purchases = [];
+    if(!day.sectionLooted) day.sectionLooted = { lib:false, resp:false, dev:false, eff:false };
+    if(typeof day.lootBoostXP !== 'number') day.lootBoostXP = 0;
+    if(!Array.isArray(day.loots)) day.loots = [];
   }
 
   function createEmptyDay(){
@@ -977,6 +2360,8 @@
     allTasksFlat.forEach(t => checked[t.id] = false);
     return {
       checked,
+      customTasks: [],
+      customCategories: [],
       purchases: [],
       sectionLooted: { lib:false, resp:false, dev:false, eff:false },
       lootBoostXP: 0,
@@ -1002,6 +2387,22 @@
     st.inventory.boosts    = Number(st.inventory.boosts||0);
     st.inventory.rerolls   = Number(st.inventory.rerolls||0);
     st.inventory.doubleXP  = Array.isArray(st.inventory.doubleXP) ? st.inventory.doubleXP : [];
+    st.inventory.shopItems = st.inventory.shopItems || {};
+    st.inventory.luckCharms = Number(st.inventory.luckCharms||0);
+
+    // Initialize permanent buffs
+    st.permanentBuffs = st.permanentBuffs || {
+      xpMultiplier: 0,
+      rewardDiscount: 0,
+      taskSlots: 0,
+      categorySlots: 0,
+      autoCultivation: false,
+      shieldGen: false,
+      luckBoost: 0,
+      theme: 'default',
+      avatarFrame: 'none',
+      title: ''
+    };
 
     st.lootHistory = Array.isArray(st.lootHistory) ? st.lootHistory : [];
 
@@ -1038,23 +2439,135 @@
   function taskRow(task, meta, cat){
     const row = document.createElement("div");
     row.className = `task ${catClass(cat)}`;
+    row.setAttribute("draggable", "true");
+    row.setAttribute("data-task-id", task.id);
+    
+    const currencyIcon = getCurrencyIcon();
+    const currencyName = getCurrencyName();
+    
     row.innerHTML = `
       <div class="left">
+        <span class="drag-handle" style="cursor:move;margin-right:6px;color:var(--muted);font-size:14px">☰</span>
         <input type="checkbox" id="ck_${task.id}">
         <div>
           <label for="ck_${task.id}"><b>${task.label}</b></label>
           <div class="meta">${meta}</div>
         </div>
       </div>
-      <div class="xp"><span>+${task.xp}</span><small>XP</small></div>
+      <div class="xp"><span>${currencyIcon}+${task.xp}</span><small>${currencyName}</small></div>
     `;
-    row.querySelector(`#ck_${task.id}`).addEventListener("change",(e)=>{
+    
+    const checkbox = row.querySelector(`#ck_${task.id}`);
+    checkbox.addEventListener("change",(e)=>{
       const d = state.currentDate;
       state.days[d].checked[task.id] = e.target.checked;
       saveState();
       syncUI();
       renderHistory();
     });
+    
+    // Drag and drop for tasks
+    row.addEventListener("dragstart", (e) => {
+      // Ne pas permettre le drag si on clique sur la checkbox
+      if(e.target.type === 'checkbox') {
+        e.preventDefault();
+        return;
+      }
+      e.dataTransfer.effectAllowed = "move";
+      e.dataTransfer.setData("text/plain", task.id);
+      e.dataTransfer.setData("category", cat);
+      row.style.opacity = "0.4";
+    });
+
+    row.addEventListener("dragend", () => {
+      row.style.opacity = "1";
+      // Nettoyer toutes les bordures
+      document.querySelectorAll('.task').forEach(el => {
+        el.style.borderTop = "";
+        el.style.borderBottom = "";
+      });
+    });
+
+    row.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "move";
+      
+      // Déterminer si on est dans la moitié supérieure ou inférieure
+      const rect = row.getBoundingClientRect();
+      const midpoint = rect.top + rect.height / 2;
+      
+      // Ajouter un indicateur visuel
+      if(e.clientY < midpoint){
+        row.style.borderTop = "2px solid var(--accent)";
+        row.style.borderBottom = "";
+      } else {
+        row.style.borderTop = "";
+        row.style.borderBottom = "2px solid var(--accent)";
+      }
+    });
+
+    row.addEventListener("dragleave", () => {
+      row.style.borderTop = "";
+      row.style.borderBottom = "";
+    });
+
+    row.addEventListener("drop", (e) => {
+      e.preventDefault();
+      row.style.borderTop = "";
+      row.style.borderBottom = "";
+      
+      const draggedId = e.dataTransfer.getData("text/plain");
+      const targetId = task.id;
+      
+      if(draggedId !== targetId) {
+        // Réorganiser les tâches dans la section
+        state.ui = state.ui || {};
+        state.ui.taskOrder = state.ui.taskOrder || {};
+        state.ui.taskOrder[cat] = state.ui.taskOrder[cat] || [];
+        
+        // Si pas encore d'ordre personnalisé, créer à partir de l'ordre actuel
+        if(state.ui.taskOrder[cat].length === 0) {
+          const CURRENT_SECTIONS = getCurrentSections();
+          const section = CURRENT_SECTIONS.find(s => s.key === cat);
+          if(section && section.tasks) {
+            state.ui.taskOrder[cat] = section.tasks.map(t => t.id);
+          }
+        }
+        
+        const currentOrder = state.ui.taskOrder[cat];
+        const draggedIndex = currentOrder.indexOf(draggedId);
+        const targetIndex = currentOrder.indexOf(targetId);
+        
+        if(draggedIndex !== -1 && targetIndex !== -1) {
+          currentOrder.splice(draggedIndex, 1);
+          
+          // Déterminer la position d'insertion (avant ou après)
+          const rect = row.getBoundingClientRect();
+          const midpoint = rect.top + rect.height / 2;
+          const insertIndex = e.clientY < midpoint ? targetIndex : targetIndex + 1;
+          
+          currentOrder.splice(insertIndex > draggedIndex ? insertIndex - 1 : insertIndex, 0, draggedId);
+          
+          saveState();
+          renderSections();
+          syncUI(false);
+        }
+      }
+    });
+    
+    // Add click handler to show active task popup (on the entire row except checkbox and drag handle)
+    row.style.cursor = 'pointer';
+    row.addEventListener('click', (e) => {
+      // Don't trigger if clicking checkbox or drag handle
+      if(e.target.type === 'checkbox' || e.target.classList.contains('drag-handle')) return;
+      showActiveTaskPopup(task.label, task.xp, task.id);
+      
+      // Afficher les suggestions après un court délai
+      setTimeout(() => {
+        showSuggestedTasksPopup(task.id);
+      }, 300);
+    });
+    
     return row;
   }
 
@@ -1069,12 +2582,22 @@
       state.ui.nested = state.ui.nested || {};
       state.ui.nested[key] = details.open;
       saveState();
+      
+      // Forcer la rotation du chevron
+      const chev = details.querySelector('.chev');
+      if(chev){
+        if(details.open){
+          chev.style.transform = 'rotate(90deg)';
+        } else {
+          chev.style.transform = 'rotate(0deg)';
+        }
+      }
     });
 
     details.innerHTML = `
       <summary>
         <div class="sumLeft" style="font-size:12px; text-transform:none; letter-spacing:.2px">
-          <span class="chev">▶</span>
+          <span class="chev" style="transition: transform 0.18s ease;">▶</span>
           <b>${titleHtml}</b>
         </div>
         <div class="sumRight">
@@ -1083,6 +2606,12 @@
       </summary>
       <div class="sectionBody" id="nested_body_${key}"></div>
     `;
+    
+    // Initialiser l'état du chevron
+    const chev = details.querySelector('.chev');
+    if(chev && open){
+      chev.style.transform = 'rotate(90deg)';
+    }
 
     const body = details.querySelector(`#nested_body_${key}`);
     bodyBuilder(body, details);
@@ -1115,6 +2644,7 @@
           <div class="sumRight">
             <span class="badge" id="pct_${s.key}">0%</span>
             <span class="badge" id="done_${s.key}">0/0</span>
+            <span class="badge xpWarn" id="potential_${s.key}">0 XP</span>
             <span class="badge" id="bonus_${s.key}">Bonus: 0</span>
             <span class="badge" id="loot_${s.key}">Loot: 0</span>
           </div>
@@ -1145,7 +2675,7 @@
   }
 
   function renderQiPratiqueNested(){
-    return nestedDetails(
+    const details = nestedDetails(
       "qi",
       "🜂 Qi Pratique",
       `<span class="badge" id="qiDone">0/0</span><span class="badge" id="qiPct">0%</span><span class="badge xpWarn" id="qiXp">0 XP</span>`,
@@ -1163,6 +2693,10 @@
       },
       "qi"
     );
+    // Augmenter la taille du titre pour correspondre aux tâches normales
+    const sumLeft = details.querySelector('.sumLeft');
+    if(sumLeft) sumLeft.style.fontSize = '14px';
+    return details;
   }
 
   function renderCultivationsNested(){
@@ -1182,7 +2716,7 @@
   function renderSystemNested(){
     return nestedDetails(
       "system",
-      "🧱 Système / Organisation (4)",
+      "🧱 Système (4)",
       `<span class="badge" id="sysDone">0/4</span><span class="badge" id="sysPct">0%</span><span class="badge xpWarn" id="sysXp">0 XP</span>`,
       (body) => {
         systemTasks.forEach(t=>{
@@ -1198,32 +2732,1773 @@
     );
   }
 
-  // Rewards
+  // Calculate total XP accumulated across all days
+  function calculateTotalXP(){
+    const dates = Object.keys(state.days || {});
+    let total = 0;
+    for(const d of dates){
+      const xp = calcDayXP(d);
+      total += xp.gained;
+      // Add test XP for level testing
+      total += (state.days[d].testXP || 0);
+    }
+    return total;
+  }
+
+  // Character Level System
+  function calculateCharacterLevel(totalXP){
+    // Level progression: 100 XP for level 1->2, then +100 per level
+    // Level 1: 0-99, Level 2: 100-299, Level 3: 300-599, etc.
+    let level = 1;
+    let xpNeeded = 0;
+    let xpForNextLevel = 100;
+    
+    while(totalXP >= xpNeeded + xpForNextLevel){
+      xpNeeded += xpForNextLevel;
+      level++;
+      xpForNextLevel += 100;
+    }
+    
+    const currentLevelXP = totalXP - xpNeeded;
+    const xpToNextLevel = xpForNextLevel;
+    const progress = (currentLevelXP / xpToNextLevel) * 100;
+    
+    return {
+      level,
+      currentLevelXP,
+      xpToNextLevel,
+      progress
+    };
+  }
+
+  // Character Stats based on categories
+  function calculateCharacterStats(){
+    const dates = Object.keys(state.days || {});
+    let stats = {
+      energy: 0,      // Liberté
+      discipline: 0,  // Responsabilité
+      conscience: 0,  // Développement
+      focus: 0        // Efficacité
+    };
+    
+    for(const d of dates){
+      const xp = calcDayXP(d);
+      stats.energy += xp.breakdown.lib || 0;
+      stats.discipline += xp.breakdown.resp || 0;
+      stats.conscience += xp.breakdown.dev || 0;
+      stats.focus += xp.breakdown.eff || 0;
+    }
+    
+    // Convert XP to stat points (1 stat point per 10 XP)
+    stats.energy = Math.floor(stats.energy / 10);
+    stats.discipline = Math.floor(stats.discipline / 10);
+    stats.conscience = Math.floor(stats.conscience / 10);
+    stats.focus = Math.floor(stats.focus / 10);
+    
+    // Add character stat bonuses
+    const charBonus = getCharacterStatBonus();
+    stats.energy += charBonus.energy;
+    stats.discipline += charBonus.discipline;
+    stats.conscience += charBonus.conscience;
+    stats.focus += charBonus.focus;
+    
+    // Find max stat for percentage calculation
+    const maxStat = Math.max(stats.energy, stats.discipline, stats.conscience, stats.focus, 1);
+    
+    return {
+      values: stats,
+      max: maxStat
+    };
+  }
+
+  function updateCharacterUI(){
+    const totalXP = calculateTotalXP();
+    const levelData = calculateCharacterLevel(totalXP);
+    const statsData = calculateCharacterStats();
+    
+    // Update level display
+    const levelEl = el('charLevel');
+    const xpInfoEl = el('charXPInfo');
+    const levelFillEl = el('charLevelFill');
+    const levelBadge = document.querySelector('.levelBadge');
+    
+    if(levelEl) levelEl.textContent = levelData.level;
+    if(xpInfoEl) xpInfoEl.textContent = `${levelData.currentLevelXP} / ${levelData.xpToNextLevel}`;
+    if(levelFillEl){
+      setTimeout(() => {
+        levelFillEl.style.width = `${Math.min(100, Math.max(0, levelData.progress))}%`;
+      }, 100);
+      
+      // Update level progress bar color based on game mode
+      if(state.gameMode === 'money'){
+        levelFillEl.style.background = 'linear-gradient(90deg, #ffd700, #ffa500)';
+        levelFillEl.style.boxShadow = '0 0 10px rgba(255, 215, 0, 0.6)';
+      } else {
+        levelFillEl.style.background = 'linear-gradient(90deg, #7cf7c2, #8ab4f8)';
+        levelFillEl.style.boxShadow = '0 0 10px rgba(124, 247, 194, 0.6)';
+      }
+    }
+    
+    // Update level badge color based on game mode
+    if(levelBadge){
+      if(state.gameMode === 'money'){
+        levelBadge.style.background = 'linear-gradient(135deg, #ffd700, #ffa500)';
+        levelBadge.style.boxShadow = '0 3px 8px rgba(255, 215, 0, 0.4)';
+      } else {
+        levelBadge.style.background = 'linear-gradient(135deg, #7cf7c2, #8ab4f8)';
+        levelBadge.style.boxShadow = '0 3px 8px rgba(124, 247, 194, 0.4)';
+      }
+    }
+    
+    // Update stats display
+    const stats = [
+      { id: 'Energy', value: statsData.values.energy },
+      { id: 'Discipline', value: statsData.values.discipline },
+      { id: 'Conscience', value: statsData.values.conscience },
+      { id: 'Focus', value: statsData.values.focus }
+    ];
+    
+    stats.forEach(stat => {
+      const valueEl = el(`stat${stat.id}`);
+      const fillEl = el(`stat${stat.id}Fill`);
+      
+      if(valueEl) valueEl.textContent = stat.value;
+      if(fillEl){
+        const percent = (stat.value / statsData.max) * 100;
+        setTimeout(() => {
+          fillEl.style.width = `${Math.min(100, Math.max(0, percent))}%`;
+        }, 100);
+      }
+    });
+    
+    // Update avatar appearance based on level
+    updateAvatarAppearance(levelData.level);
+    updateAvatarGallery();
+  }
+  
+  function updateAvatarAppearance(level){
+    const avatar = el('charAvatar');
+    if(!avatar) return;
+    
+    // Remove previous level classes
+    avatar.className = 'avatarImage';
+    
+    // Add level-based class for visual evolution
+    if(level < 5){
+      avatar.classList.add('avatar-novice');
+    } else if(level < 10){
+      avatar.classList.add('avatar-apprentice');
+    } else if(level < 20){
+      avatar.classList.add('avatar-warrior');
+    } else if(level < 30){
+      avatar.classList.add('avatar-master');
+    } else {
+      avatar.classList.add('avatar-legend');
+    }
+  }
+
+  // Rewards Track - Remplace l'ancien système de rewards
   function renderRewards(){
-    const wrap = el("rewards");
-    wrap.innerHTML = "";
-    rewards.forEach(r=>{
-      const row = document.createElement("div");
-      row.className = "reward";
+    const container = el('lootTrackContainer');
+    if(!container) return;
+    
+    const totalXP = calculateTotalXP();
+    const xpEl = el('lootTrackTotalXP');
+    if(xpEl) xpEl.textContent = totalXP;
+    
+    // Obtenir les rewards selon le mode
+    const currentRewards = getCurrentRewards();
+    
+    // Remove claimed rewards if XP falls below threshold
+    const originalLength = state.claimedRewards.length;
+    state.claimedRewards = state.claimedRewards.filter(rewardId => {
+      const reward = currentRewards.find(r => r.id === rewardId);
+      return reward && totalXP >= reward.xpThreshold;
+    });
+    
+    // Save state if rewards were removed
+    if(state.claimedRewards.length < originalLength){
+      saveState();
+    }
+    
+    container.innerHTML = '';
+    
+    currentRewards.forEach((reward, index) => {
+      let requiredXP = reward.xpThreshold;
+      
+      // Apply permanent reward discount
+      if(state.permanentBuffs && state.permanentBuffs.rewardDiscount > 0){
+        const discount = state.permanentBuffs.rewardDiscount / 100;
+        requiredXP = Math.floor(requiredXP * (1 - discount));
+      }
+      
+      const isUnlocked = totalXP >= requiredXP;
+      const isClaimed = state.claimedRewards.includes(reward.id);
+      
+      const item = document.createElement('div');
+      item.className = 'lootTrackItem';
+      if(isUnlocked && !isClaimed) item.classList.add('unlocked');
+      if(isClaimed) item.classList.add('claimed');
+      
+      const discountBadge = state.permanentBuffs?.rewardDiscount > 0 ? 
+        `<span class="rewardDiscount">-${state.permanentBuffs.rewardDiscount}%</span>` : '';
+      
+      const iconDisplay = reward.illustration 
+        ? `<img src="${reward.illustration}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" />`
+        : reward.icon;
+      
+      item.innerHTML = `
+        <div class="lootTrackIcon">${iconDisplay}</div>
+        <div class="lootTrackName">${reward.name}</div>
+        <div class="lootTrackXPReq">${requiredXP} XP ${discountBadge}</div>
+        ${!isUnlocked ? '<div class="lootTrackLock">🔒</div>' : ''}
+        ${isClaimed ? '<div class="lootTrackCheck">✅</div>' : ''}
+      `;
+      
+      // Click handler for unlocked but not claimed rewards
+      if(isUnlocked && !isClaimed){
+        item.style.cursor = 'pointer';
+        item.addEventListener('click', () => claimReward(reward));
+      }
+      
+      container.appendChild(item);
+      
+      // Add connector line (except after last item)
+      if(index < rewards.length - 1){
+        const connector = document.createElement('div');
+        connector.className = 'lootTrackConnector';
+        if(totalXP >= rewards[index + 1].xpThreshold) {
+          connector.classList.add('complete');
+        }
+        container.appendChild(connector);
+      }
+    });
+    
+    // update daily quest bar after rewards render
+    try{ renderQuestBar(); }catch(e){/* ignore */}
+  }
 
-      const hasDiscount = state.inventory.discounts > 0;
-      const finalCost = Math.max(0, r.cost - (hasDiscount ? 50 : 0));
+  // Claim a reward from Rewards Track
+  function claimReward(reward){
+    if(state.claimedRewards.includes(reward.id)) return;
+    
+    // Check if XP threshold is still met
+    const totalXP = calculateTotalXP();
+    if(totalXP < reward.xpThreshold){
+      alert('⚠️ XP insuffisants pour réclamer ce reward !');
+      return;
+    }
+    
+    // Check liberty condition
+    const { libOk } = calcLibertyPct(state.currentDate);
+    if(!libOk){
+      alert('⚠️ Liberté % doit être ≥ 40% pour réclamer des rewards !');
+      return;
+    }
+    
+    // Mark as claimed
+    state.claimedRewards.push(reward.id);
+    
+    // Log to history
+    const msg = `🏆 Rewards Track: ${reward.name} réclamé ! (${reward.xpThreshold} XP)`;
+    state.lootHistory.unshift(msg);
+    if(state.lootHistory.length > 250) state.lootHistory.length = 250;
+    
+    saveState();
+    renderRewards();
+    syncUI();
+    renderHistory();
+    
+    // Show notification with illustration if available
+    let message = `🎉 ${reward.name} réclamé !\n\nVous avez débloqué ce reward avec ${reward.xpThreshold} XP total !`;
+    
+    if(reward.illustration){
+      // Show modal with illustration
+      const modal = document.createElement('div');
+      modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+      `;
+      
+      const content = document.createElement('div');
+      content.style.cssText = `
+        background: rgba(15, 22, 34, 0.95);
+        border: 2px solid #7cf7c2;
+        border-radius: 12px;
+        padding: 20px;
+        max-width: 500px;
+        text-align: center;
+      `;
+      
+      content.innerHTML = `
+        <h2 style="color: #7cf7c2; margin-bottom: 15px;">🎉 ${reward.name} réclamé !</h2>
+        <img src="${reward.illustration}" style="max-width: 100%; max-height: 300px; border-radius: 8px; margin: 15px 0;" />
+        <p style="color: #fff; margin: 15px 0;">Vous avez débloqué ce reward avec ${reward.xpThreshold} XP total !</p>
+        <button id="closeRewardModal" style="background: #7cf7c2; color: #0a0e16; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: bold;">OK</button>
+      `;
+      
+      modal.appendChild(content);
+      document.body.appendChild(modal);
+      
+      document.getElementById('closeRewardModal').addEventListener('click', () => {
+        document.body.removeChild(modal);
+      });
+      
+      modal.addEventListener('click', (e) => {
+        if(e.target === modal) document.body.removeChild(modal);
+      });
+    } else {
+      alert(message);
+    }
+  }
 
-      row.innerHTML = `
-        <div>
-          <div class="name"><b>${r.name}</b></div>
-          <div class="hint">
-            Coût: <span class="cost">${r.cost} XP</span>
-            ${hasDiscount ? `<span class="pill">Discount dispo: -50 → <b>${finalCost} XP</b></span>` : ``}
-          </div>
+  // Shop Functions
+  function renderShop(){
+    const container = el('shopItems');
+    if(!container){
+      console.warn('Shop container not found');
+      return;
+    }
+
+    const totalXP = calculateTotalXP();
+    // Calculate spent XP from shop purchases
+    let spentXP = 0;
+    for(const itemId in state.inventory.shopItems){
+      const qty = state.inventory.shopItems[itemId];
+      const itemData = shopCatalog.find(i => i.id === itemId);
+      if(itemData && qty > 0){
+        spentXP += itemData.price * qty;
+      }
+    }
+    const balance = totalXP - spentXP;
+    
+    console.log('Shop: Total XP:', totalXP, 'Spent:', spentXP, 'Balance:', balance);
+    
+    const shopBalanceEl = el('shopBalance');
+    if(shopBalanceEl) shopBalanceEl.textContent = balance;
+
+    const activeFilter = document.querySelector('.shopFilters .filterBtn.active')?.dataset.filter || 'all';
+    const activeSubFilter = document.querySelector('.cosmeticSubFilters .subFilterBtn.active')?.dataset.subfilter || 'all';
+    
+    container.innerHTML = '';
+    
+    shopCatalog.forEach(item => {
+      if(activeFilter !== 'all' && item.category !== activeFilter) return;
+      
+      // Apply cosmetic sub-filter
+      if(activeFilter === 'cosmetic' && activeSubFilter !== 'all'){
+        if(item.effect !== activeSubFilter) return;
+      }
+      
+      const owned = state.inventory.shopItems[item.id] || 0;
+      const canAfford = balance >= item.price;
+      const meetsRequirements = !item.requires || (state.inventory.shopItems[item.requires] || 0) > 0;
+      
+      // Items permanents et cosmétiques ne peuvent être achetés qu'une seule fois
+      const alreadyOwned = owned > 0 && (item.category === 'permanent' || item.category === 'cosmetic');
+      const canBuy = canAfford && meetsRequirements && !alreadyOwned;
+      
+      const itemEl = document.createElement('div');
+      itemEl.className = 'shopItem';
+      if(!canAfford) itemEl.classList.add('locked');
+      if(!meetsRequirements) itemEl.classList.add('requires');
+      if(alreadyOwned) itemEl.classList.add('owned');
+      if(!meetsRequirements) itemEl.classList.add('requires');
+      
+      // Special display for avatar illustrations
+      const isAvatarIllustration = item.effect === 'avatarIllustration';
+      const iconDisplay = isAvatarIllustration ? 
+        `<img src="${item.value}" alt="${item.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" />` : 
+        item.icon;
+      
+      itemEl.innerHTML = `
+        <div class="shopItemIcon" style="${isAvatarIllustration ? 'width: 100%; height: 120px; padding: 0;' : ''}">${iconDisplay}</div>
+        <div class="shopItemInfo">
+          <div class="shopItemName">${item.name}</div>
+          <div class="shopItemDesc">${item.description}</div>
+          ${item.requires ? `<div class="shopItemRequires">Requiert: ${shopCatalog.find(i => i.id === item.requires)?.name}</div>` : ''}
+          ${owned > 0 ? `<div class="shopItemOwned">Possédé: ${owned}x</div>` : ''}
         </div>
-        <div class="right">
-          <div class="cost">${hasDiscount ? finalCost : r.cost} XP</div>
-          <button id="buy_${r.id}">Prendre</button>
+        <div class="shopItemFooter">
+          <div class="shopItemPrice">${item.price} XP</div>
+          <button class="shopItemBuy" ${!canBuy ? 'disabled' : ''}>
+            ${alreadyOwned ? 'Déjà possédé' : (canAfford && meetsRequirements ? 'Acheter' : (!meetsRequirements ? 'Verrouillé' : 'Trop cher'))}
+          </button>
         </div>
       `;
-      wrap.appendChild(row);
-      row.querySelector(`#buy_${r.id}`).addEventListener("click", ()=> attemptBuy(r));
+      
+      const buyBtn = itemEl.querySelector('.shopItemBuy');
+      if(canBuy){
+        console.log('Attaching buy button for:', item.name);
+        buyBtn.addEventListener('click', () => {
+          console.log('Buy button clicked for:', item.name);
+          buyItem(item);
+        });
+      } else {
+        console.log('Button disabled for:', item.name, 'CanAfford:', canAfford, 'MeetsReq:', meetsRequirements, 'AlreadyOwned:', alreadyOwned);
+      }
+      
+      container.appendChild(itemEl);
+    });
+  }
+
+  function buyItem(item){
+    console.log('=== BUY ITEM ===');
+    console.log('Item:', item);
+    
+    const totalXP = calculateTotalXP();
+    // Calculate spent XP from shop purchases
+    let spentXP = 0;
+    for(const itemId in state.inventory.shopItems){
+      const qty = state.inventory.shopItems[itemId];
+      const itemData = shopCatalog.find(i => i.id === itemId);
+      if(itemData && qty > 0){
+        spentXP += itemData.price * qty;
+      }
+    }
+    const balance = totalXP - spentXP;
+    
+    console.log('TotalXP:', totalXP, 'SpentXP:', spentXP, 'Balance:', balance);
+    console.log('Price:', item.price, 'Can afford?', balance >= item.price);
+    
+    if(balance < item.price){
+      console.warn('Not enough XP!');
+      showNotification('⚠️ XP insuffisants!');
+      return;
+    }
+    if(item.requires && !(state.inventory.shopItems[item.requires] || 0)){
+      console.warn('Missing requirement:', item.requires);
+      showNotification('⚠️ Item prérequis manquant!');
+      return;
+    }
+    
+    // Add item to inventory
+    state.inventory.shopItems[item.id] = (state.inventory.shopItems[item.id] || 0) + 1;
+    console.log('Added to inventory. New quantity:', state.inventory.shopItems[item.id]);
+    
+    // Apply immediate effects
+    applyItemEffect(item);
+    
+    saveState();
+    syncUI();
+    renderShop();
+    renderInventory();
+    
+    // Show notification
+    showNotification(`✅ Acheté: ${item.name}`);
+  }
+
+  function applyItemEffect(item){
+    const d = state.currentDate;
+    ensureDay(d);
+    
+    // Initialize permanent buffs if not exists
+    if(!state.permanentBuffs){
+      state.permanentBuffs = {
+        xpMultiplier: 0,
+        rewardDiscount: 0,
+        taskSlots: 0,
+        categorySlots: 0,
+        autoCultivation: false,
+        shieldGen: false,
+        luckBoost: 0,
+        theme: 'default',
+        avatarFrame: 'none',
+        title: ''
+      };
+    }
+    
+    switch(item.effect){
+      case 'xpBoost':
+        state.days[d].lootBoostXP = (state.days[d].lootBoostXP || 0) + item.value;
+        break;
+        
+      case 'doubleXP':
+        state.inventory.doubleXP.push({ date: nextDay(d), section: 'lib' });
+        break;
+        
+      case 'reroll':
+        state.inventory.rerolls++;
+        break;
+        
+      case 'discount':
+        state.inventory.discounts++;
+        break;
+        
+      case 'luckBoost':
+        // Store in inventory for later use
+        state.inventory.luckCharms = (state.inventory.luckCharms || 0) + 1;
+        break;
+        
+      case 'statBoost':
+        // Apply stat boost via XP bonus
+        const statMultiplier = 10; // 1 stat point = 10 XP
+        state.days[d].lootBoostXP = (state.days[d].lootBoostXP || 0) + (item.value * statMultiplier);
+        break;
+        
+      case 'xpMultiplier':
+        // Permanent effect - stack with existing multipliers
+        state.permanentBuffs.xpMultiplier += item.value;
+        break;
+        
+      case 'autoCultivation':
+        // Permanent effect
+        state.permanentBuffs.autoCultivation = true;
+        // Auto-complete 3 cultivations today
+        const cultIds = ['cult_1', 'cult_2', 'cult_3'];
+        cultIds.forEach(id => {
+          if(!state.days[d].checked[id]){
+            state.days[d].checked[id] = true;
+          }
+        });
+        break;
+        
+      case 'taskSlots':
+        state.permanentBuffs.taskSlots += item.value;
+        break;
+        
+      case 'categorySlots':
+        state.permanentBuffs.categorySlots += item.value;
+        break;
+        
+      case 'rewardDiscount':
+        state.permanentBuffs.rewardDiscount += item.value;
+        break;
+        
+      case 'shieldGen':
+        state.permanentBuffs.shieldGen = true;
+        // Give one shield immediately
+        state.inventory.shields = (state.inventory.shields || 0) + 1;
+        break;
+        
+      case 'theme':
+        state.permanentBuffs.theme = item.value;
+        applyTheme(item.value);
+        break;
+        
+      case 'avatarFrame':
+        state.permanentBuffs.avatarFrame = item.value;
+        applyAvatarFrame(item.value);
+        break;
+        
+      case 'title':
+        state.permanentBuffs.title = item.value;
+        applyTitle(item.value);
+        break;
+    }
+  }
+
+  function renderInventory(){
+    const container = el('inventoryItems');
+    if(!container) return;
+    
+    const activeFilter = document.querySelector('.inventoryFilters .filterBtn.active')?.dataset.filter || 'all';
+    const activeSubFilter = document.querySelector('.inventoryCosmeticSubFilters .subFilterBtn.active')?.dataset.subfilter || 'all';
+    
+    container.innerHTML = '';
+    
+    let itemCount = 0;
+    let totalValue = 0;
+    
+    const ownedItems = [];
+    for(const itemId in state.inventory.shopItems){
+      const quantity = state.inventory.shopItems[itemId];
+      if(quantity > 0){
+        const itemData = shopCatalog.find(i => i.id === itemId);
+        if(itemData){
+          ownedItems.push({ ...itemData, quantity });
+        }
+      }
+    }
+    
+    if(state.inventory.shields > 0){
+      ownedItems.push({ id:'shields', name:'Shields', icon:'🧿', quantity:state.inventory.shields, category:'consumables', price:0 });
+    }
+    if(state.inventory.discounts > 0){
+      ownedItems.push({ id:'discounts', name:'Discounts', icon:'💸', quantity:state.inventory.discounts, category:'consumables', price:100 });
+    }
+    if(state.inventory.boosts > 0){
+      ownedItems.push({ id:'boosts', name:'Boosts', icon:'🧠', quantity:state.inventory.boosts, category:'consumables', price:50 });
+    }
+    if(state.inventory.rerolls > 0){
+      ownedItems.push({ id:'rerolls', name:'Rerolls', icon:'🔁', quantity:state.inventory.rerolls, category:'consumables', price:80 });
+    }
+    if(state.inventory.doubleXP.length > 0){
+      ownedItems.push({ id:'doubleXP', name:'Double XP', icon:'⚡', quantity:state.inventory.doubleXP.length, category:'consumables', price:200 });
+    }
+    
+    ownedItems.forEach(item => {
+      if(activeFilter !== 'all' && item.category !== activeFilter) return;
+      
+      // Apply cosmetic sub-filter
+      if(activeFilter === 'cosmetic' && activeSubFilter !== 'all'){
+        if(item.effect !== activeSubFilter) return;
+      }
+      
+      itemCount += item.quantity;
+      totalValue += (item.price || 0) * item.quantity;
+      
+      const itemEl = document.createElement('div');
+      itemEl.className = 'inventoryItem';
+      
+      // Check if item can be used (consumables from shop)
+      const canUse = item.category === 'consumables' && 
+                     !['shields', 'doubleXP', 'discounts', 'boosts', 'rerolls'].includes(item.id) &&
+                     state.inventory.shopItems[item.id] > 0;
+      
+      // Check if it's an avatar frame
+      const isAvatarFrame = item.id && item.id.startsWith('avatar_frame_');
+      let frameValue = null;
+      if(isAvatarFrame){
+        frameValue = item.id.replace('avatar_frame_', '');
+      }
+      const isFrameActive = isAvatarFrame && state.permanentBuffs?.avatarFrame === frameValue;
+      
+      // Check if it's a theme
+      const isTheme = item.id && item.id.startsWith('theme_');
+      let themeValue = null;
+      if(isTheme){
+        themeValue = item.id.replace('theme_', '');
+      }
+      const isThemeActive = isTheme && state.permanentBuffs?.theme === themeValue;
+      
+      // Check if it's a title
+      const isTitle = item.effect === 'title';
+      const isTitleActive = isTitle && state.permanentBuffs?.title === item.value;
+      
+      // Check if it's an avatar illustration
+      const isAvatarIllustration = item.effect === 'avatarIllustration';
+      const isAvatarEquipped = isAvatarIllustration && state.inventory.equippedAvatars && state.inventory.equippedAvatars.includes(item.id);
+      
+      // Special display for avatar illustrations
+      const iconDisplay = isAvatarIllustration ? 
+        `<img src="${item.value}" alt="${item.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;" />` : 
+        item.icon;
+      
+      itemEl.innerHTML = `
+        <div class="inventoryItemIcon" style="${isAvatarIllustration ? 'width: 80px; height: 80px; padding: 0;' : ''}">${iconDisplay}</div>
+        <div class="inventoryItemInfo">
+          <div class="inventoryItemName">${item.name}</div>
+          <div class="inventoryItemQty">Quantité: ${item.quantity}x</div>
+          ${item.description ? `<div class="inventoryItemDesc">${item.description}</div>` : ''}
+          ${item.category === 'permanent' ? '<div class="inventoryItemPermanent">✨ Effet permanent actif</div>' : ''}
+          ${item.category === 'cosmetic' && !isAvatarFrame && !isTheme && !isTitle ? '<div class="inventoryItemCosmetic">🎨 Cosmétique équipé</div>' : ''}
+          ${isAvatarFrame && isFrameActive ? '<div class="inventoryItemCosmetic">✅ Cadre activé</div>' : ''}
+          ${isAvatarFrame && !isFrameActive ? '<div class="inventoryItemInactive">⭕ Cadre désactivé</div>' : ''}
+          ${isTheme && isThemeActive ? '<div class="inventoryItemCosmetic">✅ Thème activé</div>' : ''}
+          ${isTheme && !isThemeActive ? '<div class="inventoryItemInactive">⭕ Thème désactivé</div>' : ''}
+          ${isTitle && isTitleActive ? '<div class="inventoryItemCosmetic">✅ Titre équipé</div>' : ''}
+          ${isTitle && !isTitleActive ? '<div class="inventoryItemInactive">⭕ Titre non équipé</div>' : ''}
+          ${isAvatarIllustration && isAvatarEquipped ? '<div class="inventoryItemCosmetic">✅ Illustration équipée</div>' : ''}
+          ${isAvatarIllustration && !isAvatarEquipped ? '<div class="inventoryItemInactive">⭕ Illustration non équipée</div>' : ''}
+        </div>
+        ${canUse ? `
+          <button class="inventoryItemUse">Utiliser</button>
+        ` : ''}
+        ${isAvatarFrame ? `
+          <button class="inventoryItemToggle" data-frame="${frameValue}">${isFrameActive ? 'Désactiver' : 'Activer'}</button>
+        ` : ''}
+        ${isTheme ? `
+          <button class="inventoryItemToggle" data-theme="${themeValue}">${isThemeActive ? 'Désactiver' : 'Activer'}</button>
+        ` : ''}
+        ${isTitle ? `
+          <button class="inventoryItemToggle" data-title="${item.value}">${isTitleActive ? 'Déséquiper' : 'Équiper'}</button>
+        ` : ''}
+        ${isAvatarIllustration ? `
+          <button class="inventoryItemToggle" data-avatar="${item.id}">${isAvatarEquipped ? 'Déséquiper' : 'Équiper'}</button>
+        ` : ''}
+      `;
+      
+      const useBtn = itemEl.querySelector('.inventoryItemUse');
+      if(useBtn){
+        useBtn.addEventListener('click', () => useInventoryItem(item));
+      }
+      
+      const toggleBtn = itemEl.querySelector('.inventoryItemToggle');
+      if(toggleBtn){
+        if(isAvatarFrame){
+          toggleBtn.addEventListener('click', () => toggleAvatarFrame(frameValue, !isFrameActive));
+        } else if(isTheme){
+          toggleBtn.addEventListener('click', () => toggleTheme(themeValue, !isThemeActive));
+        } else if(isTitle){
+          toggleBtn.addEventListener('click', () => toggleTitle(item.value, !isTitleActive));
+        } else if(isAvatarIllustration){
+          toggleBtn.addEventListener('click', () => toggleAvatarIllustration(item.id, !isAvatarEquipped));
+        }
+      }
+      
+      container.appendChild(itemEl);
+    });
+    
+    const countEl = el('invItemCount');
+    const valueEl = el('invTotalValue');
+    if(countEl) countEl.textContent = itemCount;
+    if(valueEl) valueEl.textContent = totalValue;
+    
+    if(ownedItems.length === 0){
+      container.innerHTML = '<div class="emptyInventory">Votre inventaire est vide. Visitez le magasin pour acheter des items!</div>';
+    }
+  }
+
+  function useInventoryItem(item){
+    if(item.category !== 'consumables'){
+      showNotification('⚠️ Cet item ne peut pas être utilisé');
+      return;
+    }
+    
+    // Check if item exists in shop items
+    if(!state.inventory.shopItems[item.id] || state.inventory.shopItems[item.id] <= 0){
+      showNotification('⚠️ Item non disponible');
+      return;
+    }
+    
+    // Consume one
+    state.inventory.shopItems[item.id]--;
+    
+    // Apply effect
+    const itemData = shopCatalog.find(i => i.id === item.id);
+    if(itemData){
+      applyItemEffect(itemData);
+      showNotification(`✅ Utilisé: ${item.name}`);
+    }
+    
+    saveState();
+    syncUI();
+    renderInventory();
+    renderShop();
+  }
+
+  function showNotification(message){
+    const notif = document.createElement('div');
+    notif.className = 'notification';
+    notif.textContent = message;
+    document.body.appendChild(notif);
+    
+    setTimeout(() => {
+      notif.classList.add('show');
+    }, 10);
+    
+    setTimeout(() => {
+      notif.classList.remove('show');
+      setTimeout(() => notif.remove(), 300);
+    }, 2000);
+  }
+
+  function nextDay(dateStr){
+    const d = new Date(dateStr);
+    d.setDate(d.getDate() + 1);
+    return d.toISOString().slice(0, 10);
+  }
+
+  // Cosmetic effects
+  function applyTheme(themeName){
+    const root = document.documentElement;
+    const body = document.body;
+    
+    // Remove existing theme classes
+    body.className = body.className.replace(/theme-\w+/g, '');
+    
+    // Apply new theme
+    switch(themeName){
+      case 'dark_blue':
+        root.style.setProperty('--accent', '#5a8fff');
+        root.style.setProperty('--good', '#5a8fff');
+        body.classList.add('theme-dark-blue');
+        break;
+      case 'forest':
+        root.style.setProperty('--accent', '#6affaa');
+        root.style.setProperty('--good', '#6affaa');
+        body.classList.add('theme-forest');
+        break;
+      case 'sunset':
+        root.style.setProperty('--accent', '#ff9a44');
+        root.style.setProperty('--good', '#ffbf3d');
+        body.classList.add('theme-sunset');
+        break;
+      case 'rainbow':
+        root.style.setProperty('--accent', '#ff00ff');
+        root.style.setProperty('--good', '#00ffff');
+        body.classList.add('theme-rainbow');
+        break;
+      case 'cosmic':
+        root.style.setProperty('--accent', '#8a2be2');
+        root.style.setProperty('--good', '#9370db');
+        body.classList.add('theme-cosmic');
+        break;
+      default:
+        root.style.setProperty('--accent', '#7cf7c2');
+        root.style.setProperty('--good', '#7cf7c2');
+        break;
+    }
+  }
+
+  function toggleAvatarFrame(frameName, activate){
+    if(!state.permanentBuffs) state.permanentBuffs = {};
+    
+    const frameNames = {
+      plastic: 'Plastique',
+      wood: 'Bois',
+      steel: 'Acier',
+      silver: 'Argent',
+      bronze: 'Bronze',
+      gold: 'Or',
+      diamond: 'Diamant',
+      platinum: 'Platine',
+      rainbow: 'Arc-en-ciel',
+      cosmic: 'Cosmique'
+    };
+    
+    if(activate){
+      state.permanentBuffs.avatarFrame = frameName;
+      applyAvatarFrame(frameName);
+      showNotification(`✅ Cadre activé: ${frameNames[frameName] || frameName}`);
+    } else {
+      state.permanentBuffs.avatarFrame = 'none';
+      applyAvatarFrame('none');
+      showNotification('⭕ Cadre désactivé');
+    }
+    
+    saveState();
+    renderInventory();
+  }
+
+  function toggleTheme(themeName, activate){
+    if(!state.permanentBuffs) state.permanentBuffs = {};
+    
+    const themeNames = {
+      dark_blue: 'Bleu Nuit',
+      forest: 'Forêt',
+      sunset: 'Coucher de Soleil',
+      rainbow: 'Arc-en-ciel',
+      cosmic: 'Cosmique'
+    };
+    
+    if(activate){
+      state.permanentBuffs.theme = themeName;
+      applyTheme(themeName);
+      showNotification(`✅ Thème activé: ${themeNames[themeName] || themeName}`);
+    } else {
+      state.permanentBuffs.theme = 'default';
+      applyTheme('default');
+      showNotification('⭕ Thème désactivé');
+    }
+    
+    saveState();
+    renderInventory();
+  }
+
+  function cycleTheme(){
+    if(!state.permanentBuffs) state.permanentBuffs = {};
+    
+    // Get all owned themes
+    const ownedThemes = ['default']; // Default theme is always available
+    
+    const themeItems = [
+      { value: 'dark_blue', id: 'theme_dark_blue', name: 'Bleu Nuit', icon: '🌙' },
+      { value: 'forest', id: 'theme_forest', name: 'Forêt', icon: '🌲' },
+      { value: 'sunset', id: 'theme_sunset', name: 'Coucher de Soleil', icon: '🌅' },
+      { value: 'rainbow', id: 'theme_rainbow', name: 'Arc-en-ciel', icon: '🌈' },
+      { value: 'cosmic', id: 'theme_cosmic', name: 'Cosmique', icon: '🌌' }
+    ];
+    
+    // Check which themes are owned
+    themeItems.forEach(theme => {
+      if(state.inventory.shopItems[theme.id] > 0){
+        ownedThemes.push(theme.value);
+      }
+    });
+    
+    // Get current theme
+    const currentTheme = state.permanentBuffs.theme || 'default';
+    const currentIndex = ownedThemes.indexOf(currentTheme);
+    
+    // Cycle to next theme
+    const nextIndex = (currentIndex + 1) % ownedThemes.length;
+    const nextTheme = ownedThemes[nextIndex];
+    
+    // Apply new theme
+    state.permanentBuffs.theme = nextTheme;
+    applyTheme(nextTheme);
+    
+    // Show notification with icon
+    const themeInfo = themeItems.find(t => t.value === nextTheme);
+    const themeName = nextTheme === 'default' ? 'Défaut' : (themeInfo?.name || nextTheme);
+    const themeIcon = nextTheme === 'default' ? '🎨' : (themeInfo?.icon || '🎨');
+    showNotification(`${themeIcon} Thème: ${themeName}`);
+    
+    saveState();
+  }
+
+  function applyDarkMode(){
+    const enabled = !!(state.ui && state.ui.darkMode);
+    document.body.classList.toggle("dark-mode", enabled);
+    updateDarkModeButton(enabled);
+  }
+
+  function updateDarkModeButton(enabled){
+    const btn = el("btnDarkMode");
+    if(!btn) return;
+    btn.textContent = enabled ? "☀️" : "🌙";
+    btn.title = enabled ? "Désactiver le mode sombre" : "Activer le mode sombre";
+    btn.setAttribute("aria-pressed", enabled ? "true" : "false");
+  }
+
+  // Active tasks functions
+  function showActiveTaskPopup(label, xp, taskId){
+    console.log('showActiveTaskPopup called:', {label, xp, taskId});
+    
+    // Check if task already exists
+    const exists = activeTasks.find(t => t.taskId === taskId);
+    if(exists) {
+      console.log('Task already exists in active tasks');
+      return; // Don't add duplicate
+    }
+    
+    // Add task to active list
+    activeTasks.push({ label, xp, taskId });
+    console.log('Task added to activeTasks:', activeTasks);
+    
+    // Save to state
+    state.activeTasks = activeTasks;
+    saveState();
+    
+    // Update popup display (without activating focus mode)
+    updateActiveTasksDisplay();
+  }
+
+  function updateActiveTasksDisplay(){
+    const popup = el('activeTaskPopup');
+    const listEl = el('activeTasksList');
+    
+    if(!popup || !listEl) {
+      console.error('Popup elements not found:', {popup, listEl});
+      return;
+    }
+    
+    if(activeTasks.length === 0){
+      popup.style.display = 'none';
+      return;
+    }
+    
+    console.log('Displaying active tasks:', activeTasks);
+    
+    const d = state.currentDate;
+    ensureDay(d);
+    
+    // Build tasks list HTML
+    listEl.innerHTML = activeTasks.map((task, index) => {
+      const isChecked = state.days[d].checked[task.taskId] || false;
+      return `
+        <div class="activeTaskItem" data-index="${index}">
+          <input type="checkbox" class="activeTaskCheckbox" data-index="${index}" ${isChecked ? 'checked' : ''}>
+          <div class="activeTaskItemContent">
+            <div class="activeTaskItemLabel">${task.label}</div>
+            <div class="activeTaskItemXP">+${task.xp} XP</div>
+          </div>
+          <button class="activeTaskItemRemove">✕</button>
+        </div>
+      `;
+    }).join('');
+    
+    // Attach event listeners to checkboxes
+    listEl.querySelectorAll('.activeTaskCheckbox').forEach((checkbox, index) => {
+      checkbox.addEventListener('change', (e) => {
+        const task = activeTasks[index];
+        state.days[d].checked[task.taskId] = e.target.checked;
+        saveState();
+        syncUI();
+        renderHistory();
+        
+        // Remove from active tasks if checked
+        if(e.target.checked){
+          setTimeout(() => {
+            removeActiveTask(index);
+          }, 500);
+        }
+      });
+    });
+    
+    // Attach event listeners to remove buttons
+    listEl.querySelectorAll('.activeTaskItemRemove').forEach((btn, index) => {
+      btn.addEventListener('click', () => removeActiveTask(index));
+    });
+    
+    popup.style.display = 'block';
+  }
+
+  function removeActiveTask(index){
+    activeTasks.splice(index, 1);
+    state.activeTasks = activeTasks;
+    saveState();
+    updateActiveTasksDisplay();
+  }
+
+  function hideActiveTaskPopup(){
+    activeTasks = [];
+    state.activeTasks = [];
+    saveState();
+    const popup = el('activeTaskPopup');
+    if(popup){
+      popup.style.display = 'none';
+    }
+  }
+
+  // Suggested tasks management
+  function getSuggestedTasks(clickedTaskId){
+    console.log('getSuggestedTasks called with:', clickedTaskId);
+    const suggestions = [];
+    const d = state.currentDate;
+    ensureDay(d);
+    
+    // Si c'est une cultivation ou yoga, suggérer audio et lecture
+    if(clickedTaskId.startsWith('cult_') || clickedTaskId === 'yoga'){
+      console.log('Clicked task is a cultivation or yoga');
+      const audioTask = systemTasks.find(t => t.id === 'sys_audio');
+      const lectureTask = systemTasks.find(t => t.id === 'sys_lecture');
+      const autoCleansingTask = responsibilityTasks.find(t => t.id === 'auto_cleans');
+      
+      console.log('Audio task:', audioTask, 'checked:', state.days[d].checked[audioTask?.id]);
+      console.log('Lecture task:', lectureTask, 'checked:', state.days[d].checked[lectureTask?.id]);
+      console.log('Auto-cleansing task:', autoCleansingTask, 'checked:', state.days[d].checked[autoCleansingTask?.id]);
+      
+      // Vérifier que la tâche n'est pas cochée ET n'est pas déjà dans les tâches en cours
+      if(audioTask && !state.days[d].checked[audioTask.id] && !activeTasks.find(t => t.taskId === audioTask.id)){
+        suggestions.push(audioTask);
+      }
+      if(lectureTask && !state.days[d].checked[lectureTask.id] && !activeTasks.find(t => t.taskId === lectureTask.id)){
+        suggestions.push(lectureTask);
+      }
+      if(autoCleansingTask && !state.days[d].checked[autoCleansingTask.id] && !activeTasks.find(t => t.taskId === autoCleansingTask.id)){
+        suggestions.push(autoCleansingTask);
+      }
+    }
+    
+    console.log('Suggestions:', suggestions);
+    return suggestions;
+  }
+
+  function showSuggestedTasksPopup(clickedTaskId){
+    console.log('showSuggestedTasksPopup called');
+    const suggestions = getSuggestedTasks(clickedTaskId);
+    
+    if(suggestions.length === 0) {
+      console.log('No suggestions to show');
+      return;
+    }
+    
+    const popup = el('suggestedTasksPopup');
+    const listEl = el('suggestedTasksList');
+    
+    console.log('Popup element:', popup, 'List element:', listEl);
+    
+    if(!popup || !listEl) return;
+    
+    listEl.innerHTML = suggestions.map(task => {
+      return `
+        <div class="suggestedTaskItem" data-task-id="${task.id}">
+          <div class="suggestedTaskItemIcon">${task.label.split(' ')[0]}</div>
+          <div class="suggestedTaskItemContent">
+            <div class="suggestedTaskItemLabel">${task.label.substring(task.label.indexOf(' ') + 1)}</div>
+            <div class="suggestedTaskItemXP">+${task.xp} XP</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+    
+    // Attach event listeners
+    listEl.querySelectorAll('.suggestedTaskItem').forEach((item, index) => {
+      item.addEventListener('click', () => {
+        const task = suggestions[index];
+        showActiveTaskPopup(task.label, task.xp, task.id);
+        hideSuggestedTasksPopup();
+      });
+    });
+    
+    popup.style.display = 'block';
+  }
+
+  function hideSuggestedTasksPopup(){
+    const popup = el('suggestedTasksPopup');
+    if(popup){
+      popup.style.display = 'none';
+    }
+  }
+
+  function toggleTitle(titleValue, activate){
+    if(!state.permanentBuffs) state.permanentBuffs = {};
+    
+    if(activate){
+      state.permanentBuffs.title = titleValue;
+      applyTitle(titleValue);
+      showNotification(`✅ Titre équipé: ${titleValue}`);
+    } else {
+      state.permanentBuffs.title = '';
+      applyTitle('');
+      showNotification('⭕ Titre déséquipé');
+    }
+    
+    saveState();
+    renderInventory();
+  }
+
+  function toggleAvatarIllustration(itemId, equip){
+    if(!state.inventory.equippedAvatars) state.inventory.equippedAvatars = [];
+    
+    if(equip){
+      if(!state.inventory.equippedAvatars.includes(itemId)){
+        state.inventory.equippedAvatars.push(itemId);
+        showNotification('✅ Illustration équipée');
+      }
+    } else {
+      state.inventory.equippedAvatars = state.inventory.equippedAvatars.filter(id => id !== itemId);
+      showNotification('⭕ Illustration déséquipée');
+    }
+    
+    saveState();
+    updateAvatarGallery();
+    renderInventory();
+  }
+
+  function applyAvatarFrame(frameName){
+    const avatar = el('charAvatar');
+    if(!avatar) return;
+    
+    // Remove existing frame classes
+    avatar.className = avatar.className.replace(/frame-\w+/g, '');
+    
+    // Apply new frame
+    if(frameName !== 'none'){
+      avatar.classList.add(`frame-${frameName}`);
+    }
+  }
+
+  function applyTitle(titleText){
+    updateCharacterDisplay();
+  }
+
+  // Game Mode System
+  function applyGameMode(){
+    const mode = state.gameMode || "freedom";
+    
+    // Apply body class
+    document.body.classList.toggle("mode-money", mode === "money");
+    
+    // Update button text
+    const btn = el("btnModeSwitch");
+    if(btn){
+      if(mode === "money"){
+        btn.textContent = "🎮 Mode Liberté";
+        btn.style.background = "linear-gradient(135deg, #7cf7c2, #7caaff)";
+      } else {
+        btn.textContent = "💰 Mode Money";
+        btn.style.background = "linear-gradient(135deg, #ffd700, #ffa500)";
+      }
+    }
+    
+    // Update currency labels
+    const currencyLabel = el("currencyLabel");
+    if(currencyLabel){
+      currencyLabel.textContent = mode === "money" ? "Coins" : "XP";
+    }
+    
+    const currencyDayLabel = el("currencyDayLabel");
+    if(currencyDayLabel){
+      currencyDayLabel.textContent = mode === "money" ? "Coins" : "XP";
+    }
+    
+    const currencySpentLabel = el("currencySpentLabel");
+    if(currencySpentLabel){
+      currencySpentLabel.textContent = mode === "money" ? "Coins" : "XP";
+    }
+    
+    const gainedLabel = el("gainedLabel");
+    if(gainedLabel){
+      gainedLabel.textContent = mode === "money" ? "gagnés" : "gagnés";
+    }
+    
+    const spentLabel = el("spentLabel");
+    if(spentLabel){
+      spentLabel.textContent = mode === "money" ? "dépensés" : "dépensés";
+    }
+    
+    // Update journal title
+    const journalTitle = el("journalTitle");
+    if(journalTitle){
+      journalTitle.textContent = mode === "money" ? "💰 Journal Money" : "📜 Journal du jour";
+    }
+    
+    // Update liberty label
+    const libertyLabel = el("libertyLabel");
+    const kpiLiberty = el("kpiLiberty");
+    if(mode === "money"){
+      if(libertyLabel) libertyLabel.textContent = "Efficacité % (Productivité)";
+    } else {
+      if(libertyLabel) libertyLabel.textContent = "Liberté % (Sifu = Liberté+Responsabilité)";
+    }
+    
+    // Update XP breakdown icons
+    const iconLib = el("iconLib");
+    const iconResp = el("iconResp");
+    const iconDev = el("iconDev");
+    const iconEff = el("iconEff");
+    const icon = mode === "money" ? "🪙" : "⭐";
+    if(iconLib) iconLib.textContent = icon;
+    if(iconResp) iconResp.textContent = icon;
+    if(iconDev) iconDev.textContent = icon;
+    if(iconEff) iconEff.textContent = icon;
+    
+    // Update title
+    document.title = mode === "money" 
+      ? "💰 Money Making Game" 
+      : "The Game of Freedom — Sifu Mode";
+  }
+
+  function getCurrencyName(){
+    return state.gameMode === "money" ? "Coins" : "XP";
+  }
+
+  function getCurrencyIcon(){
+    return state.gameMode === "money" ? "🪙" : "⭐";
+  }
+
+  function getCurrentSections(){
+    return state.gameMode === "money" ? SECTIONS_MONEY : SECTIONS;
+  }
+
+  function getCurrentRewards(){
+    return state.gameMode === "money" ? rewardsMoney : rewards;
+  }
+
+  // Apply permanent effects on load
+  function applyPermanentEffects(){
+    if(!state.permanentBuffs) return;
+    
+    if(state.permanentBuffs.theme && state.permanentBuffs.theme !== 'default'){
+      applyTheme(state.permanentBuffs.theme);
+    }
+    
+    if(state.permanentBuffs.avatarFrame && state.permanentBuffs.avatarFrame !== 'none'){
+      applyAvatarFrame(state.permanentBuffs.avatarFrame);
+    }
+    
+    if(state.permanentBuffs.title){
+      applyTitle(state.permanentBuffs.title);
+    }
+  }
+
+  // Custom tasks
+  function renderCustomTasks(){
+    const d = state.currentDate;
+    ensureDay(d);
+    const wrap = el("custom-tasks-section");
+    if(!wrap) return;
+    wrap.innerHTML = "";
+
+    const customTasks = state.days[d].customTasks || [];
+    const customCats = state.days[d].customCategories || [];
+    
+    // Obtenir les clés des sections standard
+    const standardSectionKeys = SECTIONS.map(s => s.key);
+    
+    // Filtrer uniquement les tâches sans catégorie ou avec catégories personnalisées
+    const tasksToDisplay = customTasks.filter(task => 
+      !task.categoryId || !standardSectionKeys.includes(task.categoryId)
+    );
+    
+    if(tasksToDisplay.length === 0 && customCats.length === 0) return;
+
+    // Grouper les tâches par catégorie
+    const tasksByCategory = {};
+    const noCatTasks = [];
+    
+    tasksToDisplay.forEach(task => {
+      if(task.categoryId && tasksByCategory[task.categoryId] === undefined) {
+        tasksByCategory[task.categoryId] = [];
+      }
+      if(task.categoryId) {
+        tasksByCategory[task.categoryId].push(task);
+      } else {
+        noCatTasks.push(task);
+      }
+    });
+
+    // Appliquer l'ordre personnalisé des catégories
+    const categoryOrder = state.ui?.customCategoryOrder || customCats.map(c => c.id);
+    const orderedCustomCats = categoryOrder
+      .map(id => customCats.find(c => c.id === id))
+      .filter(Boolean);
+
+    // Créer une section pour chaque catégorie
+    orderedCustomCats.forEach((cat, index) => {
+      const tasksInCat = tasksByCategory[cat.id] || [];
+      
+      // Créer une zone de drop avant chaque catégorie personnalisée
+      const dropZone = document.createElement("div");
+      dropZone.className = "custom-category-drop-zone";
+      dropZone.style.cssText = "height:2px;background:transparent;transition:all 0.2s;margin:2px 0;";
+      dropZone.setAttribute("data-insert-before", cat.id);
+      
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.style.height = "20px";
+        dropZone.style.background = "rgba(140,255,190,0.2)";
+        dropZone.style.border = "2px dashed var(--accent)";
+        dropZone.style.borderRadius = "8px";
+      });
+      
+      dropZone.addEventListener("dragleave", (e) => {
+        e.preventDefault();
+        dropZone.style.height = "2px";
+        dropZone.style.background = "transparent";
+        dropZone.style.border = "none";
+      });
+      
+      dropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.style.height = "2px";
+        dropZone.style.background = "transparent";
+        dropZone.style.border = "none";
+        
+        const draggedData = e.dataTransfer.getData("text/plain");
+        if(draggedData.startsWith("custom:")) {
+          const draggedKey = draggedData.replace("custom:", "");
+          const insertBeforeKey = cat.id;
+          
+          if(draggedKey && draggedKey !== insertBeforeKey) {
+            const currentOrder = [...(state.ui?.customCategoryOrder || customCats.map(c => c.id))];
+            const draggedIndex = currentOrder.indexOf(draggedKey);
+            const targetIndex = currentOrder.indexOf(insertBeforeKey);
+            
+            if(draggedIndex !== -1 && targetIndex !== -1){
+              currentOrder.splice(draggedIndex, 1);
+              const newIndex = draggedIndex < targetIndex ? targetIndex - 1 : targetIndex;
+              currentOrder.splice(newIndex, 0, draggedKey);
+              
+              state.ui = state.ui || {};
+              state.ui.customCategoryOrder = currentOrder;
+              saveState();
+              renderCustomTasks();
+            }
+          }
+        }
+      });
+      
+      wrap.appendChild(dropZone);
+      
+      const section = document.createElement("details");
+      section.className = "section customCategorySection";
+      section.setAttribute("draggable", "true");
+      section.setAttribute("data-section-key", cat.id);
+      section.open = !!state.ui?.open?.[cat.id];
+      section.style.borderLeftColor = "rgba(140, 255, 190, 0.6)";
+      
+      // Sauvegarder l'état ouvert/fermé
+      section.addEventListener("toggle", () => {
+        state.ui = state.ui || { open:{}, nested:{} };
+        state.ui.open = state.ui.open || {};
+        state.ui.open[cat.id] = section.open;
+        saveState();
+      });
+      
+      // Drag and drop events for custom categories
+      section.addEventListener("dragstart", (e) => {
+        e.dataTransfer.effectAllowed = "move";
+        e.dataTransfer.setData("text/plain", "custom:" + cat.id);
+        section.style.opacity = "0.4";
+      });
+
+      section.addEventListener("dragend", () => {
+        section.style.opacity = "1";
+      });
+
+      section.addEventListener("dragover", (e) => {
+        e.preventDefault();
+      });
+
+      section.addEventListener("drop", (e) => {
+        e.preventDefault();
+        // Le drop sur une catégorie n'est plus utilisé - on utilise les drop zones
+      });
+      
+      // Obtenir l'icône personnalisée ou l'icône par défaut
+      const customIcon = state.ui?.sectionIcons?.[cat.id];
+      const displayIcon = customIcon || "📁";
+      
+      const summary = document.createElement("summary");
+      summary.innerHTML = `
+        <div class="sumLeft">
+          <div class="chev">›</div>
+          <b class="sectionTitle" data-section-key="${cat.id}" style="cursor:pointer" title="Cliquer pour changer l'icône">${displayIcon} ${cat.name}</b> (${tasksInCat.length})
+        </div>
+        <div class="sumRight">
+          <button id="deleteCat_${cat.id}" class="linkBtn" style="padding:6px 8px;font-size:11px;color:var(--warn);">✕ Supprimer</button>
+        </div>
+      `;
+      
+      // Ajouter le listener pour changer l'icône
+      summary.querySelector(".sectionTitle").addEventListener("click", (e) => {
+        e.stopPropagation();
+        openEmojiPicker(cat.id);
+      });
+      
+      const body = document.createElement("div");
+      body.className = "sectionBody";
+
+      if(tasksInCat.length === 0) {
+        const emptyMsg = document.createElement("div");
+        emptyMsg.style.cssText = "color: var(--muted); font-size: 12px; text-align: center; padding: 20px;";
+        emptyMsg.textContent = "Aucune tâche dans cette catégorie";
+        body.appendChild(emptyMsg);
+      } else {
+        tasksInCat.forEach((task) => {
+          const taskEl = document.createElement("div");
+          taskEl.className = "task";
+          const isChecked = state.days[d].checked[task.id] || false;
+          
+          taskEl.innerHTML = `
+            <div class="left">
+              <input type="checkbox" id="ck_${task.id}" ${isChecked ? "checked" : ""}>
+              <div>
+                <label for="ck_${task.id}" style="cursor:pointer"><b>${task.label}</b></label>
+                <div class="meta">Tâche personnalisée • <span class="xp"><b>${task.xp}</b> XP</span></div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button id="delete_${task.id}" class="linkBtn" style="padding:6px 8px;font-size:11px;">✕ Supprimer</button>
+            </div>
+          `;
+          body.appendChild(taskEl);
+
+          taskEl.querySelector(`#ck_${task.id}`).addEventListener("change", (e) => {
+            state.days[d].checked[task.id] = e.target.checked;
+            saveState();
+            syncUI(false);
+          });
+
+          // Add click handler to show active task popup
+          taskEl.style.cursor = 'pointer';
+          taskEl.addEventListener('click', (e) => {
+            // Don't trigger if clicking checkbox or delete button
+            if(e.target.type === 'checkbox' || e.target.closest('button')) return;
+            showActiveTaskPopup(task.label, task.xp, task.id);
+          });
+
+          taskEl.querySelector(`#delete_${task.id}`).addEventListener("click", (e) => {
+            e.stopPropagation(); // Prevent task popup from opening
+            const taskIdx = state.days[d].customTasks.findIndex(t => t.id === task.id);
+            if(taskIdx >= 0) {
+              state.days[d].customTasks.splice(taskIdx, 1);
+            }
+            delete state.days[d].checked[task.id];
+            saveState();
+            renderCustomTasks();
+            syncUI(false);
+          });
+        });
+      }
+
+      section.appendChild(summary);
+      section.appendChild(body);
+      wrap.appendChild(section);
+      
+      // Event listener pour supprimer la catégorie
+      const deleteBtn = summary.querySelector(`#deleteCat_${cat.id}`);
+      if(deleteBtn) {
+        deleteBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          deleteCustomCategory(cat.id);
+        });
+      }
+    });
+    
+    // Ajouter une zone de drop après la dernière catégorie personnalisée
+    if(orderedCustomCats.length > 0) {
+      const finalDropZone = document.createElement("div");
+      finalDropZone.className = "custom-category-drop-zone";
+      finalDropZone.style.cssText = "height:2px;background:transparent;transition:all 0.2s;margin:2px 0;";
+      finalDropZone.setAttribute("data-insert-at-end", "true");
+      
+      finalDropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        finalDropZone.style.height = "20px";
+        finalDropZone.style.background = "rgba(140,255,190,0.2)";
+        finalDropZone.style.border = "2px dashed var(--accent)";
+        finalDropZone.style.borderRadius = "8px";
+      });
+      
+      finalDropZone.addEventListener("dragleave", (e) => {
+        e.preventDefault();
+        finalDropZone.style.height = "2px";
+        finalDropZone.style.background = "transparent";
+        finalDropZone.style.border = "none";
+      });
+      
+      finalDropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        finalDropZone.style.height = "2px";
+        finalDropZone.style.background = "transparent";
+        finalDropZone.style.border = "none";
+        
+        const draggedData = e.dataTransfer.getData("text/plain");
+        if(draggedData.startsWith("custom:")) {
+          const draggedKey = draggedData.replace("custom:", "");
+          
+          if(draggedKey) {
+            const currentOrder = [...(state.ui?.customCategoryOrder || customCats.map(c => c.id))];
+            const draggedIndex = currentOrder.indexOf(draggedKey);
+            
+            if(draggedIndex !== -1){
+              currentOrder.splice(draggedIndex, 1);
+              currentOrder.push(draggedKey);
+              
+              state.ui = state.ui || {};
+              state.ui.customCategoryOrder = currentOrder;
+              saveState();
+              renderCustomTasks();
+            }
+          }
+        }
+      });
+      
+      wrap.appendChild(finalDropZone);
+    }
+
+    // Ajouter les tâches sans catégorie dans une section générale
+    if(noCatTasks.length > 0) {
+      const section = document.createElement("details");
+      section.className = "section";
+      section.open = true;
+      const summary = document.createElement("summary");
+      summary.innerHTML = `
+        <div class="sumLeft">
+          <div class="chev">›</div>
+          <b>📝 Tâches personnalisées</b> (${noCatTasks.length})
+        </div>
+        <div class="sumRight"></div>
+      `;
+      const body = document.createElement("div");
+      body.className = "sectionBody";
+
+      noCatTasks.forEach((task) => {
+        const taskEl = document.createElement("div");
+        taskEl.className = "task";
+        const isChecked = state.days[d].checked[task.id] || false;
+        
+        taskEl.innerHTML = `
+          <div class="left">
+            <input type="checkbox" id="ck_${task.id}" ${isChecked ? "checked" : ""}>
+            <div>
+              <label for="ck_${task.id}" style="cursor:pointer"><b>${task.label}</b></label>
+              <div class="meta">Tâche personnalisée • <span class="xp"><b>${task.xp}</b> XP</span></div>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button id="delete_${task.id}" class="linkBtn" style="padding:6px 8px;font-size:11px;">✕ Supprimer</button>
+          </div>
+        `;
+        body.appendChild(taskEl);
+
+        taskEl.querySelector(`#ck_${task.id}`).addEventListener("change", (e) => {
+          state.days[d].checked[task.id] = e.target.checked;
+          saveState();
+          syncUI(false);
+        });
+
+        // Add click handler to show active task popup
+        taskEl.style.cursor = 'pointer';
+        taskEl.addEventListener('click', (e) => {
+          // Don't trigger if clicking checkbox or delete button
+          if(e.target.type === 'checkbox' || e.target.closest('button')) return;
+          showActiveTaskPopup(task.label, task.xp, task.id);
+        });
+
+        taskEl.querySelector(`#delete_${task.id}`).addEventListener("click", (e) => {
+          e.stopPropagation(); // Prevent task popup from opening
+          const taskIdx = state.days[d].customTasks.findIndex(t => t.id === task.id);
+          if(taskIdx >= 0) {
+            state.days[d].customTasks.splice(taskIdx, 1);
+          }
+          delete state.days[d].checked[task.id];
+          saveState();
+          renderCustomTasks();
+          syncUI(false);
+        });
+      });
+
+      section.appendChild(summary);
+      section.appendChild(body);
+      wrap.appendChild(section);
+    }
+  }
+
+  function openCustomTaskModal(){
+    el("customTaskModalTitle").textContent = "➕ Créer une tâche personnalisée";
+    el("customTaskCreate").textContent = "Créer";
+    el("customTaskEditId").value = "";
+    el("customTaskName").value = "";
+    el("customTaskXP").value = "";
+    el("customTaskCategory").value = "";
+    populateCustomCategoryDropdown();
+    el("customTaskModalBack").style.display = "flex";
+    el("customTaskName").focus();
+  }
+
+  function openEditTaskModal(taskId){
+    const d = state.currentDate;
+    ensureDay(d);
+    const task = state.days[d].customTasks.find(t => t.id === taskId);
+    if(!task) return;
+
+    el("customTaskModalTitle").textContent = "✏️ Modifier la tâche";
+    el("customTaskCreate").textContent = "Sauvegarder";
+    el("customTaskEditId").value = taskId;
+    el("customTaskName").value = task.label;
+    el("customTaskXP").value = task.xp;
+    populateCustomCategoryDropdown(); // Peupler d'abord le dropdown
+    el("customTaskCategory").value = task.categoryId || ""; // Puis définir la valeur
+    el("customTaskModalBack").style.display = "flex";
+    el("customTaskName").focus();
+  }
+
+  function createCustomTask(){
+    try {
+      const editId = el("customTaskEditId").value;
+      const name = el("customTaskName").value.trim();
+      const xp = parseInt(el("customTaskXP").value) || 0;
+      const catId = el("customTaskCategory").value || "";
+
+      if(!name || xp < 1){
+        alert("Veuillez entrer un nom et un nombre d'XP valide (min 1).");
+        return;
+      }
+
+      const d = state.currentDate;
+      ensureDay(d);
+      
+      // Mode édition
+      if(editId){
+        const task = state.days[d].customTasks.find(t => t.id === editId);
+        if(task){
+          task.label = name;
+          task.xp = xp;
+          task.categoryId = catId;
+        }
+      } else {
+        // Mode création
+        const taskId = "custom_" + Date.now();
+        const task = { id: taskId, label: name, xp, categoryId: catId };
+        
+        state.days[d].customTasks.push(task);
+        state.days[d].checked[taskId] = false;
+        
+        // Bonus XP for creating a task (planning bonus)
+        state.days[d].taskCreationXP = (state.days[d].taskCreationXP || 0) + 5;
+      }
+      
+      saveState();
+      renderSections(); // Afficher les tâches dans les catégories standard d'abord
+      renderCustomTasks(); // Ensuite afficher les tâches sans catégorie standard
+      syncUI(false);
+      
+      el("customTaskModalBack").style.display = "none";
+    } catch(e) {
+      console.error("Erreur createCustomTask:", e);
+      alert("Erreur: " + e.message);
+    }
+  }
+
+  function openCustomCategoryModal(){
+    el("customCategoryName").value = "";
+    el("customCategoryModalBack").style.display = "flex";
+    el("customCategoryName").focus();
+  }
+
+  function createCustomCategory(){
+    const name = el("customCategoryName").value.trim();
+    if(!name){
+      alert("Veuillez entrer un nom de catégorie.");
+      return;
+    }
+
+    const d = state.currentDate;
+    ensureDay(d);
+    state.days[d].customCategories = state.days[d].customCategories || [];
+
+    const catId = "cat_" + Date.now();
+    state.days[d].customCategories.push({ id: catId, name });
+
+    saveState();
+    populateCustomCategoryDropdown();
+    renderCustomTasks();
+    el("customCategoryModalBack").style.display = "none";
+  }
+
+  function deleteCustomCategory(catId){
+    const d = state.currentDate;
+    ensureDay(d);
+    
+    // Demander confirmation
+    if(!confirm("Êtes-vous sûr de vouloir supprimer cette catégorie ?\nLes tâches dedans seront converties en tâches sans catégorie.")) {
+      return;
+    }
+    
+    // Trouver l'index de la catégorie
+    const catIdx = state.days[d].customCategories.findIndex(c => c.id === catId);
+    if(catIdx < 0) return;
+    
+    // Convertir toutes les tâches de cette catégorie en tâches sans catégorie
+    const customTasks = state.days[d].customTasks || [];
+    customTasks.forEach(task => {
+      if(task.categoryId === catId) {
+        task.categoryId = "";
+      }
+    });
+    
+    // Supprimer la catégorie
+    state.days[d].customCategories.splice(catIdx, 1);
+    
+    // Sauvegarder et re-rendre
+    saveState();
+    populateCustomCategoryDropdown();
+    renderCustomTasks();
+  }
+
+  function populateCustomCategoryDropdown(){
+    const d = state.currentDate;
+    ensureDay(d);
+    const customCats = state.days[d].customCategories || [];
+    const select = el("customTaskCategory");
+
+    // Garder l'option par défaut
+    const defaultOption = select.options[0];
+    while(select.options.length > 1) select.remove(1);
+
+    // Ajouter les catégories standards
+    SECTIONS.forEach(section => {
+      const opt = document.createElement('option');
+      opt.value = section.key;
+      opt.textContent = section.title;
+      select.appendChild(opt);
+    });
+
+    // Ajouter les catégories personnalisées
+    customCats.forEach(cat => {
+      const opt = document.createElement('option');
+      opt.value = cat.id;
+      opt.textContent = cat.name;
+      select.appendChild(opt);
     });
   }
 
@@ -1251,6 +4526,66 @@
     for(const t of qiPractice){
       if(t.id === "qi_cultivations_group") continue;
       total += 1;
+
+  // Daily quest bar renderer (uses existing `rewards` and today's purchases)
+  function renderQuestBar(){
+    const panel = el('daily-quest');
+    if(!panel) return;
+    const d = state.currentDate;
+    ensureDay(d);
+    const purchases = state.days[d].purchases || [];
+    const purchasedIds = new Set((purchases||[]).map(p=>p.id));
+
+    const total = rewards.length;
+    let completed = 0;
+    let xpSum = 0;
+    for(const r of rewards){
+      if(purchasedIds.has(r.id)){
+        completed += 1;
+        xpSum += (r.cost || 0);
+      }
+    }
+    const pctVal = total ? Math.round((completed/total)*100) : 0;
+
+    // update counters
+    if(el('questCompleted')) el('questCompleted').textContent = String(completed);
+    if(el('questTotal')) el('questTotal').textContent = String(total);
+    if(el('questPct')) el('questPct').textContent = pctVal + '%';
+    if(el('questXP')) el('questXP').textContent = String(xpSum);
+
+    // update fill
+    const fill = el('questFill');
+    if(fill){
+      fill.style.width = pctVal + '%';
+      const bar = fill.parentElement;
+      if(bar) bar.setAttribute('aria-valuenow', String(pctVal));
+    }
+
+    // build steps markers
+    const stepsId = 'questSteps';
+    let old = el(stepsId);
+    if(old) old.remove();
+
+    const questBar = el('questFill') ? el('questFill').parentElement : null;
+    if(!questBar) return;
+    const steps = document.createElement('div');
+    steps.id = stepsId;
+    steps.className = 'questSteps';
+    questBar.style.position = 'relative';
+    questBar.appendChild(steps);
+
+    rewards.forEach((r, idx) => {
+      const step = document.createElement('div');
+      step.className = 'questStep';
+      const leftPct = Math.round(((idx + 1) / total) * 100);
+      step.style.left = leftPct + '%';
+      step.title = r.name + ' — ' + (r.cost || 0) + ' XP';
+      if(purchasedIds.has(r.id)){
+        step.classList.add('active');
+      }
+      steps.appendChild(step);
+    });
+  }
       if(checked[t.id]){ xp += t.xp; done += 1; }
     }
     const all = (done === total);
@@ -1269,6 +4604,111 @@
   }
   function getDoubleXPForDateSection(date, sectionKey){
     return state.inventory.doubleXP.some(x => x && x.date === date && x.section === sectionKey);
+  }
+
+  function calculatePotentialXP(sectionKey, date) {
+    const character = getCurrentCharacter();
+    let potentialXP = 0;
+    
+    // Get all tasks for this section
+    if (sectionKey === 'lib') {
+      // Include Qi Practice, standalone liberty tasks, and system tasks
+      qiPractice.forEach(t => potentialXP += t.xp || 0);
+      libertyStandalone.forEach(t => potentialXP += t.xp || 0);
+      systemTasks.forEach(t => potentialXP += t.xp || 0);
+    } else if (sectionKey === 'resp') {
+      responsibilityTasks.forEach(t => potentialXP += t.xp || 0);
+    } else if (sectionKey === 'dev') {
+      developmentTasks.forEach(t => potentialXP += t.xp || 0);
+    } else if (sectionKey === 'eff') {
+      efficiencyTasks.forEach(t => potentialXP += t.xp || 0);
+    }
+    
+    // Apply character bonus
+    if (character.id === 'sage' && sectionKey === 'dev') {
+      potentialXP = Math.floor(potentialXP * 1.5);
+    } else if (character.id === 'monk' && sectionKey === 'lib') {
+      potentialXP = Math.floor(potentialXP * 1.5);
+    }
+    
+    // Check for double XP
+    if (getDoubleXPForDateSection(date, sectionKey)) {
+      potentialXP = potentialXP * 2;
+    }
+    
+    return potentialXP;
+  }
+
+  function calculatePotentialXP(sectionKey, date) {
+    const character = getCurrentCharacter();
+    let potentialXP = 0;
+    
+    // Get all tasks for this section
+    if (sectionKey === 'lib') {
+      // Include Qi Practice, standalone liberty tasks, and system tasks
+      qiPractice.forEach(t => potentialXP += t.xp || 0);
+      libertyStandalone.forEach(t => potentialXP += t.xp || 0);
+      systemTasks.forEach(t => potentialXP += t.xp || 0);
+    } else if (sectionKey === 'resp') {
+      responsibilityTasks.forEach(t => potentialXP += t.xp || 0);
+    } else if (sectionKey === 'dev') {
+      developmentTasks.forEach(t => potentialXP += t.xp || 0);
+    } else if (sectionKey === 'eff') {
+      efficiencyTasks.forEach(t => potentialXP += t.xp || 0);
+    }
+    
+    // Add section completion bonus
+    potentialXP += SECTION_BONUS_XP;
+    
+    // Apply character bonus
+    if (character.id === 'sage' && sectionKey === 'dev') {
+      potentialXP = Math.floor(potentialXP * 1.5);
+    } else if (character.id === 'monk' && sectionKey === 'lib') {
+      potentialXP = Math.floor(potentialXP * 1.5);
+    }
+    
+    // Check for double XP
+    if (getDoubleXPForDateSection(date, sectionKey)) {
+      potentialXP = potentialXP * 2;
+    }
+    
+    return potentialXP;
+  }
+
+  function calculatePotentialXP(sectionKey, date) {
+    const character = getCurrentCharacter();
+    let potentialXP = 0;
+    
+    // Get all tasks for this section
+    if (sectionKey === 'lib') {
+      // Include Qi Practice, standalone liberty tasks, and system tasks
+      qiPractice.forEach(t => potentialXP += t.xp || 0);
+      libertyStandalone.forEach(t => potentialXP += t.xp || 0);
+      systemTasks.forEach(t => potentialXP += t.xp || 0);
+    } else if (sectionKey === 'resp') {
+      responsibilityTasks.forEach(t => potentialXP += t.xp || 0);
+    } else if (sectionKey === 'dev') {
+      developmentTasks.forEach(t => potentialXP += t.xp || 0);
+    } else if (sectionKey === 'eff') {
+      efficiencyTasks.forEach(t => potentialXP += t.xp || 0);
+    }
+    
+    // Add section completion bonus
+    potentialXP += SECTION_BONUS_XP;
+    
+    // Apply character bonus
+    if (character.id === 'sage' && sectionKey === 'dev') {
+      potentialXP = Math.floor(potentialXP * 1.5);
+    } else if (character.id === 'monk' && sectionKey === 'lib') {
+      potentialXP = Math.floor(potentialXP * 1.5);
+    }
+    
+    // Check for double XP
+    if (getDoubleXPForDateSection(date, sectionKey)) {
+      potentialXP = potentialXP * 2;
+    }
+    
+    return potentialXP;
   }
 
   function calcDayXP(date){
@@ -1293,6 +4733,13 @@
     let effXP_raw = 0;
     for(const t of efficiencyTasks){ if(checked[t.id]) effXP_raw += t.xp; }
 
+    // Custom tasks XP (add to lib by default)
+    let customXP = 0;
+    for(const t of (day.customTasks||[])){
+      if(checked[t.id]) customXP += t.xp;
+    }
+    libXP_raw += customXP;
+
     // Double XP applies to raw (not to +30 completion bonus)
     if(getDoubleXPForDateSection(date, "lib"))  libXP_raw *= 2;
     if(getDoubleXPForDateSection(date, "resp")) respXP_raw *= 2;
@@ -1310,22 +4757,64 @@
     const bonusEff  = calcSectionBonus(cEff.done,  cEff.total);
 
     const lootBoostXP = Number(day.lootBoostXP||0);
+    const taskCreationXP = Number(day.taskCreationXP||0);
 
     const libXP  = libXP_raw  + bonusLib;
     const respXP = respXP_raw + bonusResp;
     const devXP  = devXP_raw  + bonusDev;
     const effXP  = effXP_raw  + bonusEff;
 
-    const gained = libXP + respXP + devXP + effXP + lootBoostXP;
+    // Apply character XP bonuses
+    const character = getCurrentCharacter();
+    let libXP_final = libXP;
+    let respXP_final = respXP;
+    let devXP_final = devXP;
+    let effXP_final = effXP;
+    
+    if(character){
+      if(character.id === "warrior"){
+        respXP_final = Math.floor(respXP * 1.5); // +50% XP sur Responsabilité
+      } else if(character.id === "sage"){
+        devXP_final = Math.floor(devXP * 1.5); // +50% XP sur Développement
+      } else if(character.id === "monk"){
+        libXP_final = Math.floor(libXP * 1.5); // +50% XP sur Liberté
+      } else if(character.id === "scholar"){
+        effXP_final = Math.floor(effXP * 1.5); // +50% XP sur Efficacité
+      } else if(character.id === "balanced"){
+        // +25% XP sur toutes les tâches
+        libXP_final = Math.floor(libXP * 1.25);
+        respXP_final = Math.floor(respXP * 1.25);
+        devXP_final = Math.floor(devXP * 1.25);
+        effXP_final = Math.floor(effXP * 1.25);
+      }
+    }
+
+    let gained = libXP_final + respXP_final + devXP_final + effXP_final + lootBoostXP + taskCreationXP;
+    
+    // Apply permanent XP multiplier
+    if(state.permanentBuffs && state.permanentBuffs.xpMultiplier > 0){
+      const multiplier = 1 + (state.permanentBuffs.xpMultiplier / 100);
+      gained = Math.floor(gained * multiplier);
+    }
+    
     const spent = (day.purchases||[]).reduce((a,p)=>a + (p.cost||0), 0);
+
+    // Calculate potential XP for each section
+    const potential = {
+      lib: calculatePotentialXP('lib', date),
+      resp: calculatePotentialXP('resp', date),
+      dev: calculatePotentialXP('dev', date),
+      eff: calculatePotentialXP('eff', date)
+    };
 
     return {
       gained, spent,
-      breakdown:{ lib:libXP, resp:respXP, dev:devXP, eff:effXP, boost:lootBoostXP },
+      breakdown:{ lib:libXP_final, resp:respXP_final, dev:devXP_final, eff:effXP_final, boost:lootBoostXP, taskCreation:taskCreationXP },
       sectionBonus:{ lib:bonusLib, resp:bonusResp, dev:bonusDev, eff:bonusEff },
       counts:{ lib:cLib, resp:cResp, dev:cDev, eff:cEff },
       qi, sys, cult: qi.cult,
-      lootsCount: (day.loots||[]).length
+      lootsCount: (day.loots||[]).length,
+      potential
     };
   }
 
@@ -1368,7 +4857,7 @@
     if(state.lootHistory.length > 250) state.lootHistory.length = 250;
 
     day.sectionLooted[sectionKey] = true;
-    day.loots.push({ section: sectionKey, type: loot.type, label: loot.label, desc: loot.desc, ts: new Date().toISOString() });
+    day.loots.push({ section: sectionKey, type: loot.type, label: loot.label, desc: loot.desc, illustration: loot.illustration, ts: new Date().toISOString() });
 
     saveState();
     openLootModal({ date, sectionKey, loot });
@@ -1416,7 +4905,12 @@
     el("lootModalBack").style.display = "flex";
     el("lootTitle").textContent = `🎁 Loot Box — ${sectionName(ctx.sectionKey)} (${ctx.date})`;
     el("lootText").textContent = `Section 100% → +30 XP + Loot Box.`;
-    el("lootBig").innerHTML = `<b>${ctx.loot.label}</b> — ${escapeHtml(ctx.loot.desc)}`;
+    
+    const labelDisplay = ctx.loot.illustration 
+      ? `<img src="${ctx.loot.illustration}" style="width: 80px; height: 80px; object-fit: contain; vertical-align: middle; margin-right: 8px;" />`
+      : ctx.loot.label;
+    
+    el("lootBig").innerHTML = `<b>${labelDisplay}</b> — ${escapeHtml(ctx.loot.desc)}`;
 
     const rerollBtn = el("lootReroll");
     rerollBtn.disabled = !(state.inventory.rerolls > 0);
@@ -1431,11 +4925,15 @@
       state.lootHistory.unshift(msg);
       if(state.lootHistory.length > 250) state.lootHistory.length = 250;
 
-      state.days[ctx.date].loots.push({ section: ctx.sectionKey, type: newLoot.type, label: newLoot.label, desc: newLoot.desc, ts: new Date().toISOString(), reroll:true });
+      state.days[ctx.date].loots.push({ section: ctx.sectionKey, type: newLoot.type, label: newLoot.label, desc: newLoot.desc, illustration: newLoot.illustration, ts: new Date().toISOString(), reroll:true });
 
       saveState();
 
-      el("lootBig").innerHTML = `<b>${newLoot.label}</b> — ${escapeHtml(newLoot.desc)} <span class="pill">REROLL</span>`;
+      const newLabelDisplay = newLoot.illustration 
+        ? `<img src="${newLoot.illustration}" style="width: 80px; height: 80px; object-fit: contain; vertical-align: middle; margin-right: 8px;" />`
+        : newLoot.label;
+
+      el("lootBig").innerHTML = `<b>${newLabelDisplay}</b> — ${escapeHtml(newLoot.desc)} <span class="pill">REROLL</span>`;
       rerollBtn.disabled = !(state.inventory.rerolls > 0);
 
       renderRewards();
@@ -1445,52 +4943,79 @@
   }
   function closeLootModal(){ el("lootModalBack").style.display = "none"; }
 
-  // Economy
-  function attemptBuy(reward){
-    const d = state.currentDate;
-    ensureDay(d);
+  // Economy - attemptBuy function removed (replaced by claimReward for Rewards Track system)
 
-    const { libOk } = calcLibertyPct(d);
-    if(!libOk){
-      alert("🔒 Rewards BLOQUÉS : Liberté OK est FALSE.");
-      return;
+  // Update evolutive logo based on performance
+  function updateEvolutiveLogo(libertyPct, xpGained) {
+    const logo = el("evolutiveLogo");
+    if (!logo) return;
+
+    // Calculate performance score
+    const score = (libertyPct * 0.6) + (Math.min(xpGained / 500, 1) * 40);
+
+    if (score < 30) {
+      logo.setAttribute("data-level", "low");
+    } else if (score < 60) {
+      logo.setAttribute("data-level", "medium");
+    } else {
+      logo.setAttribute("data-level", "high");
     }
-
-    let finalCost = reward.cost;
-    let discountUsed = 0;
-    if(state.inventory.discounts > 0){
-      discountUsed = 50;
-      finalCost = Math.max(0, reward.cost - 50);
-    }
-
-    const wallet = calcWallet();
-    if(wallet < finalCost){
-      alert(`Pas assez de XP.\nWallet: ${wallet} XP\nCoût: ${finalCost} XP`);
-      return;
-    }
-
-    if(discountUsed) state.inventory.discounts -= 1;
-
-    state.days[d].purchases.push({
-      id: reward.id,
-      name: reward.name,
-      cost: finalCost,
-      baseCost: reward.cost,
-      discountUsed,
-      ts: new Date().toISOString()
-    });
-
-    saveState();
-    renderRewards();
-    syncUI(false);
-    renderHistory();
   }
 
   // Sync UI
+  // Check and apply weekly shield generation
+  function checkWeeklyShieldGen(currentDate){
+    if(!state.permanentBuffs || !state.permanentBuffs.shieldGen) return;
+    
+    // Initialize last shield gen date if not exists
+    if(!state.lastShieldGen){
+      state.lastShieldGen = currentDate;
+      return;
+    }
+    
+    // Check if a week has passed
+    const lastDate = new Date(state.lastShieldGen);
+    const currDate = new Date(currentDate);
+    const daysDiff = Math.floor((currDate - lastDate) / (1000 * 60 * 60 * 24));
+    
+    if(daysDiff >= 7){
+      state.inventory.shields = (state.inventory.shields || 0) + 1;
+      state.lastShieldGen = currentDate;
+      saveState();
+      showNotification('🛡️ Générateur: +1 Shield (hebdomadaire)');
+    }
+  }
+
   function syncUI(allowLootCheck=true){
     const d = state.currentDate;
     ensureDay(d);
     const checked = state.days[d].checked;
+
+    // Check for weekly shield generation
+    checkWeeklyShieldGen(d);
+    
+    // Apply auto-cultivation if enabled
+    if(state.permanentBuffs && state.permanentBuffs.autoCultivation){
+      if(!state.days[d].autoCultApplied){
+        const cultIds = ['cult_1', 'cult_2', 'cult_3'];
+        cultIds.forEach(id => {
+          if(!checked[id]){
+            checked[id] = true;
+          }
+        });
+        state.days[d].autoCultApplied = true;
+        saveState();
+      }
+    }
+
+    // Render custom tasks
+    renderCustomTasks();
+    
+    // Update Rewards Track based on total XP
+    renderRewards();
+    
+    // Update Character level and stats
+    updateCharacterUI();
 
     for(const t of allTasksFlat){
       const input = document.getElementById(`ck_${t.id}`);
@@ -1499,7 +5024,15 @@
 
     const lib = calcLibertyPct(d);
     el("libPct").textContent = `${lib.pct}% (${lib.done}/${lib.total})`;
-    el("libBar").style.width = `${Math.min(100, Math.max(0, lib.pct))}%`;
+    
+    // Animate liberty progress bar
+    const libFill = el("libProgressFill");
+    if(libFill) {
+      setTimeout(() => {
+        libFill.style.width = `${Math.min(100, Math.max(0, lib.pct))}%`;
+      }, 100);
+    }
+    
     const okEl = el("libOk");
     okEl.textContent = lib.libOk ? "TRUE" : "FALSE";
     okEl.className = lib.libOk ? "ok" : "no";
@@ -1507,27 +5040,59 @@
     const xp = calcDayXP(d);
     el("xpGained").textContent = xp.gained;
     el("xpSpent").textContent = xp.spent;
-    el("wallet").textContent = calcWallet();
+    const walletValue = calcWallet();
+    el("wallet").textContent = walletValue;
+
+    // Animate XP progress bar (max 500 XP for visual)
+    const xpFill = el("xpProgressFill");
+    if(xpFill) {
+      const xpPercent = Math.min(100, (xp.gained / 500) * 100);
+      setTimeout(() => {
+        xpFill.style.width = `${xpPercent}%`;
+      }, 100);
+        // Dégradé rouge en mode money
+        if(state.gameMode === 'money'){
+          xpFill.style.background = 'linear-gradient(90deg, #ff3c3c, #ff7c7c)';
+          xpFill.style.boxShadow = '0 0 10px rgba(255, 60, 60, 0.6)';
+        } else {
+          xpFill.style.background = 'linear-gradient(90deg, #7cf7c2, #8ab4f8)';
+          xpFill.style.boxShadow = '0 0 10px rgba(124, 247, 194, 0.6)';
+        }
+    }
+
+    // Animate wallet progress bar (max 2000 for visual)
+    const walletFill = el("walletProgressFill");
+    if(walletFill) {
+      const walletPercent = Math.min(100, (walletValue / 2000) * 100);
+      setTimeout(() => {
+        walletFill.style.width = `${walletPercent}%`;
+      }, 100);
+    }
+
+    // Update evolutive logo based on performance
+    updateEvolutiveLogo(lib.pct, xp.gained);
 
     el("xpLib").textContent = xp.breakdown.lib;
     el("xpResp").textContent = xp.breakdown.resp;
     el("xpDev").textContent = xp.breakdown.dev;
     el("xpEff").textContent = xp.breakdown.eff;
 
-    setSectionHeader("lib",  xp.counts.lib,  xp.sectionBonus.lib,  state.days[d].sectionLooted.lib);
-    setSectionHeader("resp", xp.counts.resp, xp.sectionBonus.resp, state.days[d].sectionLooted.resp);
-    setSectionHeader("dev",  xp.counts.dev,  xp.sectionBonus.dev,  state.days[d].sectionLooted.dev);
-    setSectionHeader("eff",  xp.counts.eff,  xp.sectionBonus.eff,  state.days[d].sectionLooted.eff);
+    setSectionHeader("lib",  xp.counts.lib,  xp.sectionBonus.lib,  state.days[d].sectionLooted.lib,  xp.potential.lib);
+    setSectionHeader("resp", xp.counts.resp, xp.sectionBonus.resp, state.days[d].sectionLooted.resp, xp.potential.resp);
+    setSectionHeader("dev",  xp.counts.dev,  xp.sectionBonus.dev,  state.days[d].sectionLooted.dev,  xp.potential.dev);
+    setSectionHeader("eff",  xp.counts.eff,  xp.sectionBonus.eff,  state.days[d].sectionLooted.eff,  xp.potential.eff);
 
-    function setSectionHeader(key, c, bonus, looted){
+    function setSectionHeader(key, c, bonus, looted, potential){
       const a = document.getElementById(`pct_${key}`);
       const b = document.getElementById(`done_${key}`);
       const cEl = document.getElementById(`bonus_${key}`);
       const lEl = document.getElementById(`loot_${key}`);
+      const pEl = document.getElementById(`potential_${key}`);
       if(a) a.textContent = `${c.pct}%`;
       if(b) b.textContent = `${c.done}/${c.total}`;
       if(cEl) cEl.textContent = `Bonus: ${bonus}`;
       if(lEl) lEl.textContent = `Loot: ${looted ? "✅" : "—"}`;
+      if(pEl) pEl.textContent = `${potential || 0} XP`;
     }
 
     if(el("qiDone")) el("qiDone").textContent = `${xp.qi.done}/${xp.qi.total}`;
@@ -1655,19 +5220,19 @@
       .slice()
       .reverse()
       .map(x => {
-        const dim = x.has ? "" : ` style="opacity:.55"`;
-        const dateBtn = `<button class="linkBtn" data-go="${x.date}">${x.date}</button>`;
+        const dim = x.has ? "" : ` style="opacity:.5"`;
+        const dateBtn = `<button class="linkBtn" data-go="${x.date}" style="font-weight:600">${x.date}</button>`;
+        const netStyle = x.net >= 0 ? 'color:#7cf7c2' : 'color:#ff6b6b';
+        const libColor = x.libertyPct >= 80 ? '#7cf7c2' : x.libertyPct >= 50 ? '#ffd166' : '#ff6b6b';
+        const sections = `${x.cLib.pct}% • ${x.cResp.pct}% • ${x.cDev.pct}% • ${x.cEff.pct}%`;
         return `
           <tr${dim}>
             <td>${dateBtn}</td>
-            <td>${x.libertyPct}%</td>
-            <td>${x.xpGained}</td>
-            <td>${x.xpSpent}</td>
-            <td>${x.net}</td>
-            <td>${x.cLib.pct}% (${x.cLib.done}/${x.cLib.total})</td>
-            <td>${x.cResp.pct}% (${x.cResp.done}/${x.cResp.total})</td>
-            <td>${x.cDev.pct}% (${x.cDev.done}/${x.cDev.total})</td>
-            <td>${x.cEff.pct}% (${x.cEff.done}/${x.cEff.total})</td>
+            <td style="color:${libColor};font-weight:600">${x.libertyPct}%</td>
+            <td style="color:#7cf7c2">${x.xpGained}</td>
+            <td style="color:#ff9a44">${x.xpSpent}</td>
+            <td style="${netStyle};font-weight:600">${x.net}</td>
+            <td style="font-size:11px;color:var(--muted)">${sections}</td>
             <td>${x.rewardsCount}</td>
             <td>${x.lootsCount}</td>
           </tr>
@@ -1702,10 +5267,110 @@
     const wrap = el("sections");
     wrap.innerHTML = "";
 
-    for(const s of SECTIONS){
+    // Obtenir les sections selon le mode
+    const CURRENT_SECTIONS = getCurrentSections();
+    
+    // Récupérer l'ordre personnalisé ou utiliser l'ordre par défaut
+    // Si on change de mode, réinitialiser l'ordre
+    let sectionOrder = state.ui?.sectionOrder;
+    
+    // Vérifier que toutes les clés de sectionOrder existent dans CURRENT_SECTIONS
+    if(sectionOrder){
+      const validKeys = sectionOrder.filter(key => CURRENT_SECTIONS.find(s => s.key === key));
+      if(validKeys.length === 0){
+        sectionOrder = null; // Réinitialiser si aucune clé valide
+      }
+    }
+    
+    sectionOrder = sectionOrder || CURRENT_SECTIONS.map(s => s.key);
+    const orderedSections = sectionOrder.map(key => CURRENT_SECTIONS.find(s => s.key === key)).filter(Boolean);
+
+    let currentDraggedSection = null;
+
+    for(let i = 0; i < orderedSections.length; i++){
+      const s = orderedSections[i];
+      
+      // Créer une zone de drop avant chaque section
+      const dropZone = document.createElement("div");
+      dropZone.className = "section-drop-zone";
+      dropZone.style.cssText = "height:2px;background:transparent;transition:all 0.2s;margin:2px 0;";
+      dropZone.setAttribute("data-insert-before", s.key);
+      
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.style.height = "20px";
+        dropZone.style.background = "rgba(124,247,194,0.2)";
+        dropZone.style.border = "2px dashed var(--accent)";
+        dropZone.style.borderRadius = "8px";
+      });
+      
+      dropZone.addEventListener("dragleave", (e) => {
+        e.preventDefault();
+        dropZone.style.height = "2px";
+        dropZone.style.background = "transparent";
+        dropZone.style.border = "none";
+      });
+      
+      dropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropZone.style.height = "2px";
+        dropZone.style.background = "transparent";
+        dropZone.style.border = "none";
+        
+        const draggedKey = e.dataTransfer.getData("text/plain");
+        const insertBeforeKey = s.key;
+        
+        if(draggedKey && draggedKey !== insertBeforeKey) {
+          const CURRENT_SECTIONS = getCurrentSections();
+          const currentOrder = [...(state.ui?.sectionOrder || CURRENT_SECTIONS.map(s => s.key))];
+          const draggedIndex = currentOrder.indexOf(draggedKey);
+          const targetIndex = currentOrder.indexOf(insertBeforeKey);
+          
+          if(draggedIndex !== -1 && targetIndex !== -1){
+            currentOrder.splice(draggedIndex, 1);
+            const newIndex = draggedIndex < targetIndex ? targetIndex - 1 : targetIndex;
+            currentOrder.splice(newIndex, 0, draggedKey);
+            
+            state.ui = state.ui || {};
+            state.ui.sectionOrder = currentOrder;
+            saveState();
+            renderSections();
+            syncUI(false);
+          }
+        }
+      });
+      
+      wrap.appendChild(dropZone);
+      
       const details = document.createElement("details");
       details.className = "section";
+      details.setAttribute("draggable", "true");
+      details.setAttribute("data-section-key", s.key);
       details.open = !!state.ui?.open?.[s.key];
+
+      // Drag and drop events for sections
+      details.addEventListener("dragstart", (e) => {
+        e.dataTransfer.effectAllowed = "move";
+        e.dataTransfer.setData("text/plain", s.key);
+        details.style.opacity = "0.4";
+        currentDraggedSection = s.key;
+      });
+
+      details.addEventListener("dragend", () => {
+        details.style.opacity = "1";
+        currentDraggedSection = null;
+      });
+
+      details.addEventListener("dragover", (e) => {
+        e.preventDefault();
+      });
+
+      details.addEventListener("drop", (e) => {
+        e.preventDefault();
+        // Le drop sur une section n'est plus utilisé - on utilise les drop zones
+      });
 
       details.addEventListener("toggle", ()=>{
         state.ui = state.ui || { open:{}, nested:{} };
@@ -1714,15 +5379,22 @@
         saveState();
       });
 
+      // Obtenir l'icône personnalisée ou l'icône par défaut
+      const customIcon = state.ui?.sectionIcons?.[s.key];
+      const displayTitle = customIcon ? s.title.replace(/^[^\s]+\s/, customIcon + " ") : s.title;
+      
+      const currencyName = getCurrencyName();
+
       details.innerHTML = `
         <summary>
           <div class="sumLeft">
             <span class="chev">▶</span>
-            <b>${s.title}</b>
+            <b class="sectionTitle" data-section-key="${s.key}" style="cursor:pointer" title="Cliquer pour changer l'icône">${displayTitle}</b>
           </div>
           <div class="sumRight">
             <span class="badge" id="pct_${s.key}">0%</span>
             <span class="badge" id="done_${s.key}">0/0</span>
+            <span class="badge xpWarn" id="potential_${s.key}">0 ${currencyName}</span>
             <span class="badge" id="bonus_${s.key}">Bonus: 0</span>
             <span class="badge" id="loot_${s.key}">Loot: 0</span>
           </div>
@@ -1734,22 +5406,131 @@
       `;
 
       wrap.appendChild(details);
+      
+      // Ajouter le listener pour changer l'icône
+      const titleElement = details.querySelector(".sectionTitle");
+      titleElement.addEventListener("click", (e) => {
+        e.stopPropagation();
+        openEmojiPicker(s.key);
+      });
+      
       const body = details.querySelector(`#body_${s.key}`);
 
-      if(s.key === "lib"){
-        body.appendChild(renderQiPratiqueNested());
-        libertyStandalone.forEach(t => body.appendChild(taskRow(t, s.meta, "lib")));
-        body.appendChild(renderSystemNested());
-      } else if(s.key === "resp"){
-        (s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta, "resp")));
-      } else if(s.key === "dev"){
-        (s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta, "dev")));
-      } else if(s.key === "eff"){
-        (s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta, "eff")));
+      // Mode Freedom - sections spécifiques
+      if(state.gameMode === "freedom"){
+        if(s.key === "lib"){
+          body.appendChild(renderQiPratiqueNested());
+          libertyStandalone.forEach(t => body.appendChild(taskRow(t, s.meta, "lib")));
+          body.appendChild(renderSystemNested());
+        } else if(s.key === "resp"){
+          (s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta, "resp")));
+        } else if(s.key === "dev"){
+          (s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta, "dev")));
+        } else if(s.key === "eff"){
+          (s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta, "eff")));
+        } else if(s.key === "money"){
+          (s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta, "money")));
+        } else {
+          (s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta)));
+        }
       } else {
-        (s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta)));
+        // Mode Money - toutes les sections ont juste leurs tâches
+        (s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta, s.key)));
       }
+
+      // Ajouter les tâches personnalisées de cette catégorie
+      const d = state.currentDate;
+      ensureDay(d);
+      const customTasks = (state.days[d].customTasks || []).filter(t => t.categoryId === s.key);
+      customTasks.forEach(task => {
+        const row = taskRow(task, s.meta, s.key);
+        
+        // Ajouter un bouton d'édition pour les tâches personnalisées
+        const editBtn = document.createElement("button");
+        editBtn.textContent = "✏️";
+        editBtn.className = "editCustomTask";
+        editBtn.style.cssText = "margin-left:8px;padding:2px 6px;background:#4488ff;color:white;border:none;border-radius:3px;cursor:pointer;font-size:12px";
+        editBtn.onclick = (e) => {
+          e.stopPropagation();
+          openEditTaskModal(task.id);
+        };
+        
+        // Ajouter un bouton de suppression pour les tâches personnalisées
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "✕";
+        deleteBtn.className = "deleteCustomTask";
+        deleteBtn.style.cssText = "margin-left:4px;padding:2px 6px;background:#ff4444;color:white;border:none;border-radius:3px;cursor:pointer;font-size:12px";
+        deleteBtn.onclick = (e) => {
+          e.stopPropagation();
+          if(confirm("Supprimer cette tâche personnalisée ?")) {
+            const taskIdx = state.days[d].customTasks.findIndex(t => t.id === task.id);
+            if(taskIdx !== -1) {
+              state.days[d].customTasks.splice(taskIdx, 1);
+              delete state.days[d].checked[task.id];
+              saveState();
+              renderSections();
+              syncUI(false);
+            }
+          }
+        };
+        
+        const xpDiv = row.querySelector(".xp");
+        xpDiv.appendChild(editBtn);
+        xpDiv.appendChild(deleteBtn);
+        body.appendChild(row);
+      });
     }
+    
+    // Ajouter une zone de drop après la dernière section
+    const finalDropZone = document.createElement("div");
+    finalDropZone.className = "section-drop-zone";
+    finalDropZone.style.cssText = "height:2px;background:transparent;transition:all 0.2s;margin:2px 0;";
+    finalDropZone.setAttribute("data-insert-at-end", "true");
+    
+    finalDropZone.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      finalDropZone.style.height = "20px";
+      finalDropZone.style.background = "rgba(124,247,194,0.2)";
+      finalDropZone.style.border = "2px dashed var(--accent)";
+      finalDropZone.style.borderRadius = "8px";
+    });
+    
+    finalDropZone.addEventListener("dragleave", (e) => {
+      e.preventDefault();
+      finalDropZone.style.height = "2px";
+      finalDropZone.style.background = "transparent";
+      finalDropZone.style.border = "none";
+    });
+    
+    finalDropZone.addEventListener("drop", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      finalDropZone.style.height = "2px";
+      finalDropZone.style.background = "transparent";
+      finalDropZone.style.border = "none";
+      
+      const draggedKey = e.dataTransfer.getData("text/plain");
+      
+      if(draggedKey) {
+        const CURRENT_SECTIONS = getCurrentSections();
+        const currentOrder = [...(state.ui?.sectionOrder || CURRENT_SECTIONS.map(s => s.key))];
+        const draggedIndex = currentOrder.indexOf(draggedKey);
+        
+        if(draggedIndex !== -1){
+          currentOrder.splice(draggedIndex, 1);
+          currentOrder.push(draggedKey);
+          
+          state.ui = state.ui || {};
+          state.ui.sectionOrder = currentOrder;
+          saveState();
+          renderSections();
+          syncUI(false);
+        }
+      }
+    });
+    
+    wrap.appendChild(finalDropZone);
   }
 
   function renderQiPratiqueNested(){
@@ -1790,7 +5571,7 @@
   function renderSystemNested(){
     return nestedDetails(
       "system",
-      "🧱 Système / Organisation (4)",
+      "🧱 Système (4)",
       `<span class="badge" id="sysDone">0/4</span><span class="badge" id="sysPct">0%</span><span class="badge xpWarn" id="sysXp">0 XP</span>`,
       (body) => {
         systemTasks.forEach(t=>{
@@ -1810,3 +5591,5 @@
 </script>
 </body>
 </html>
+
+
