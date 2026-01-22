@@ -1,0 +1,14 @@
+﻿:root {
+  font-family: 'Inter', system-ui, sans-serif;
+  color: #f5f7ff;
+  background-color: #05070b;
+}
+
+body {
+  margin: 0;
+  background-color: #05070b;
+}
+
+#root {
+  min-height: 100vh;
+}
