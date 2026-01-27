@@ -128,8 +128,8 @@
     .wrap{max-width:1200px;width:min(100%,1200px);margin:0 auto;padding:18px 14px 40px}
 
     .topbar{
-      display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;
-      padding:6px 12px;
+      display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;
+      padding:4px 12px 2px 12px;
       border:1px solid rgba(124,247,194,.25);
       background:linear-gradient(135deg, rgba(20,28,44,.95), rgba(15,22,34,.9));
       backdrop-filter:blur(12px);
@@ -147,10 +147,21 @@
     
     /* Character Panel dans topbar - Version compacte */
     .topbar .characterPanel{
-      display:flex;gap:8px;align-items:center;flex:1 1 auto;justify-content:center;padding:0 8px;
+      display:flex;gap:8px;align-items:flex-end;flex:1 1 auto;justify-content:center;padding:0 8px;
       border-left:1px solid rgba(124,247,194,.15);border-right:1px solid rgba(124,247,194,.15);
     }
-    .topbar .controls{flex:0 0 auto;display:flex;gap:6px;align-items:center}
+    .characterLevelWrapper{
+      align-self:flex-end;
+    }
+    .topbar .controls{
+      flex:0 0 auto;
+      display:flex;
+      gap:6px;
+      align-items:center;
+      justify-content:flex-end;
+      margin-left:auto;
+      text-align:right;
+    }
     .logo{
       width:36px;height:36px;
       border:2px solid rgba(124,247,194,.3);
@@ -304,14 +315,18 @@
       display:flex;
       align-items:center;
       gap:10px;
-      flex-wrap:wrap;
-      width:100%;
+      flex-wrap:nowrap;
+      width:auto;
+      margin-left:auto;
     }
     #journal-scores .hd{
       justify-content:flex-start;
+      align-items:center;
+      flex-wrap:nowrap;
     }
     #journal-scores .hd h2{
-      margin-right:auto;
+      margin-right:12px;
+      white-space:nowrap;
     }
     input[type="date"], input[type="month"], select{
       background:linear-gradient(135deg,rgba(15,22,34,.9),rgba(10,18,32,.8));
@@ -510,6 +525,15 @@
       display:flex;align-items:center;justify-content:space-between;gap:10px;
       flex-wrap:wrap;
     }
+    .panel .hd.lootRewardsHeader{
+      justify-content:center;
+      position:relative;
+      padding:14px 16px;
+    }
+    .panel .hd.lootRewardsHeader .panelCollapseBtn{
+      position:absolute;
+      left:10px;
+    }
     .panel .hd h2{margin:0;font-size:12px;letter-spacing:.9px;text-transform:uppercase}
     .panel .bd{padding:12px}
 
@@ -518,6 +542,28 @@
     @media (max-width: 640px){
     }
     .kpi{padding:10px;border:var(--px) solid var(--line);background:rgba(15,22,34,.8)}
+    #kpiLiberty{ position:relative; }
+    .ruleNoteTooltip{
+      position:absolute;
+      left:10px;
+      right:10px;
+      bottom:10px;
+      background:rgba(12,18,28,.95);
+      border:1px solid rgba(124,247,194,.25);
+      color:var(--muted);
+      font-size:11px;
+      line-height:1.35;
+      padding:8px 10px;
+      border-radius:6px;
+      opacity:0;
+      pointer-events:none;
+      transform:translateY(4px);
+      transition:opacity .2s ease, transform .2s ease;
+    }
+    #kpiLiberty:hover .ruleNoteTooltip{
+      opacity:1;
+      transform:translateY(0);
+    }
     .kpi .label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.7px}
     .kpi .value{font-size:18px;margin-top:6px}
     .bar{
@@ -537,7 +583,7 @@
     .status b.no{color:var(--bad)}
 
     .badge{
-      padding: 6px 10px;
+      padding: 5px 8px;
       border-radius: 8px;
       border: 1px solid rgba(124, 247, 194, 0.25);
       background: linear-gradient(135deg, rgba(20, 28, 44, 0.9), rgba(15, 22, 34, 0.8));
@@ -552,6 +598,12 @@
     .badge:hover {
       border-color: rgba(124, 247, 194, 0.4);
       box-shadow: 0 4px 12px rgba(124, 247, 194, 0.15);
+    }
+    .validationIcon{
+      width:16px;
+      height:16px;
+      object-fit:contain;
+      vertical-align:-3px;
     }
     .pill{
       display:inline-block;padding:2px 6px;border:var(--px) solid var(--line);background:rgba(22,34,54,.85);
@@ -577,6 +629,262 @@
       color:var(--accent);font-size:12px
     }
     .xp small{color:var(--muted)}
+    #btnAddCustomCategory,
+    #btnAddCustomTask{
+      color:var(--warn);
+      border-color:rgba(255,209,102,.45);
+    }
+
+    /* Daily quests */
+    .dailyQuestBlock{
+      padding:16px 16px 14px;
+      border:1px solid rgba(124,247,194,.25);
+      background:
+        radial-gradient(120% 140% at 10% 0%, rgba(124,247,194,.08), rgba(0,0,0,0)),
+        linear-gradient(135deg, rgba(16,24,38,.9), rgba(10,16,26,.85));
+      margin:0 0 12px 0;
+      border-radius:12px;
+      box-shadow:0 10px 30px rgba(0,0,0,.35), inset 0 0 0 1px rgba(124,247,194,.08);
+    }
+    .dailyQuestRow{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      justify-content:space-between;
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.8px;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+    .dailyQuestRow.main{
+      font-size:20px;
+      letter-spacing:1px;
+      color:var(--text);
+      padding:8px 0 14px 0;
+      border-bottom:1px solid rgba(124,247,194,.18);
+      justify-content:center;
+      gap:14px;
+      text-shadow:0 0 14px rgba(124,247,194,.35), 0 0 28px rgba(124,247,194,.2);
+    }
+    .dailyQuestRow.main .questLabel{
+      justify-content:center;
+      width:100%;
+      font-weight:800;
+    }
+    .dailyQuestRow.main .questXP{
+      font-size:13px;
+      font-weight:800;
+      text-shadow:0 0 12px rgba(255,209,102,.5);
+    }
+    .dailyQuestRow .questLabel{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      color:var(--text);
+      font-size:12px;
+      text-transform:none;
+      letter-spacing:0.2px;
+    }
+    .dailyQuestRow .questXP{
+      color:var(--warn);
+      font-weight:700;
+      font-size:12px;
+      white-space:nowrap;
+    }
+    .dailyQuestInput{
+      width:100%;
+      background:rgba(10,18,32,.7);
+      color:var(--text);
+      border:1px solid rgba(124,247,194,.25);
+      border-radius:6px;
+      padding:7px 10px;
+      font-family:inherit;
+      font-size:12px;
+      font-weight:600;
+      letter-spacing:.2px;
+    }
+    .dailyQuestInput.main{
+      font-size:13px;
+      padding:10px 12px;
+      border-color:rgba(124,247,194,.35);
+      background:linear-gradient(135deg, rgba(10,18,32,.95), rgba(12,20,34,.85));
+      text-align:center;
+      box-shadow:inset 0 0 0 1px rgba(124,247,194,.08);
+    }
+    .prestigeTopBtn{
+      position:absolute;
+      right:-46px;
+      bottom:-2px;
+      width:24px;
+      height:24px;
+      border-radius:6px;
+      border:1px solid rgba(255,209,102,.6);
+      background:rgba(255,209,102,.2);
+      color:#ffd166;
+      font-size:12px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow:0 0 10px rgba(255,209,102,.25);
+    }
+    .shopLaunchGrid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap:14px;
+      padding:10px;
+    }
+    .shopLaunchCard{
+      border:var(--px) solid var(--line);
+      background:rgba(16,24,38,.75);
+      border-radius:8px;
+      padding:16px;
+      text-align:center;
+      cursor:pointer;
+      transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .shopLaunchCard:hover{
+      transform:translateY(-2px);
+      box-shadow:0 10px 24px rgba(0,0,0,.35);
+      border-color:rgba(124,247,194,.4);
+    }
+    .shopLaunchTitle{
+      font-size:13px;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:.8px;
+      color:#7cf7c2;
+      margin-bottom:6px;
+    }
+    .shopLaunchDesc{font-size:12px;color:var(--muted)}
+    .shopTabs{
+      display:flex;
+      gap:8px;
+      margin-bottom:10px;
+      flex-wrap:wrap;
+    }
+    .shopTabBtn{
+      padding:6px 10px;
+      border-radius:6px;
+      border:1px solid rgba(124,247,194,.25);
+      background:rgba(15,22,34,.7);
+      color:var(--text);
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.7px;
+      cursor:pointer;
+    }
+    .shopTabBtn.active{
+      border-color:rgba(124,247,194,.5);
+      background:rgba(124,247,194,.12);
+      color:#7cf7c2;
+    }
+    .prestigeStats{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .prestigeStat{
+      padding:8px 10px;
+      border:var(--px) solid var(--line);
+      background:rgba(10,18,32,.6);
+      border-radius:6px;
+      font-size:12px;
+    }
+    .prestigeItems{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:10px;
+    }
+    .prestigeItem{
+      border:var(--px) solid var(--line);
+      background:rgba(15,22,34,.75);
+      border-radius:6px;
+      padding:10px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .prestigeItem h4{margin:0;font-size:12px;text-transform:uppercase;letter-spacing:.7px}
+    .prestigeItem .cost{color:var(--warn);font-size:12px}
+    .dailyQuestInput:focus{
+      outline:none;
+      border-color:rgba(124,247,194,.5);
+      box-shadow:0 0 0 2px rgba(124,247,194,.1);
+    }
+    .dailyQuestSub{
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      gap:8px;
+      align-items:center;
+      margin-top:8px;
+      padding:6px 8px;
+      border-radius:10px;
+      background:linear-gradient(135deg, rgba(14,22,36,.6), rgba(10,18,32,.4));
+      border:1px solid rgba(124,247,194,.12);
+    }
+    .secondaryQuestHeader{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-top:10px;
+      color:var(--muted);
+      font-size:11px;
+      text-transform:uppercase;
+      letter-spacing:.8px;
+    }
+    .secondaryQuestToggle{
+      width:auto;
+      height:auto;
+      border-radius:0;
+      border:none;
+      background:transparent;
+      color:var(--text);
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      padding:0;
+      transition:transform .2s ease;
+    }
+    .secondaryQuestToggle .chev{
+      display:inline-block;
+      transform:rotate(90deg);
+      transition:transform .2s ease;
+      width:auto;
+      height:auto;
+      border:none;
+      background:transparent;
+      box-shadow:none;
+      font-size:18px;
+    }
+    .secondaryQuestToggle.collapsed .chev{
+      transform:rotate(0deg);
+    }
+    .secondaryQuestList.collapsed{ display:none; }
+    .dailyQuestSub .questLabel{
+      font-size:11px;
+      color:var(--muted);
+    }
+    .dailyQuestSub .questXP{
+      font-size:11px;
+      color:#ffd166;
+    }
+    .dailyQuestSub.isDone,
+    .dailyQuestRow.isDone{
+      background:rgba(124,247,194,.08);
+      box-shadow:0 0 0 1px rgba(124,247,194,.25), 0 6px 18px rgba(124,247,194,.15);
+      border-radius:10px;
+      transform:translateY(-1px);
+    }
+    .dailyQuestPop{
+      animation: dailyQuestPop .35s ease-out;
+    }
+    @keyframes dailyQuestPop{
+      0% { transform: scale(0.98); }
+      60% { transform: scale(1.03); }
+      100% { transform: scale(1); }
+    }
 
     /* Category colors */
     .cat-qi{     background:linear-gradient(180deg,var(--cat-qi-bg), rgba(10,18,32,.55)); border-color:var(--cat-qi-br); }
@@ -684,17 +992,17 @@
     details.section{
       border:var(--px) solid var(--line);
       background:rgba(16,24,38,.55);
-      margin:10px 0;
+      margin:4px 0;
     }
     details.section[open]{ background:rgba(16,24,38,.70); }
     details.section > summary{
       list-style:none;
       cursor:pointer;
-      padding:10px 12px;
+      padding:14px 14px;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:10px;
+      gap:12px;
       user-select:none;
       outline:none;
       border-bottom:var(--px) solid transparent;
@@ -706,20 +1014,24 @@
     details.section > summary::-webkit-details-marker{ display:none; }
     .sumLeft{
       display:flex;align-items:center;gap:10px;flex-wrap:wrap;
-      font-size:12px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted)
+      font-size:13px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted)
     }
     .sumLeft b{color:var(--text)}
     .sumRight{
-      display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end
+      display:flex;align-items:center;gap:4px;flex-wrap:wrap;justify-content:flex-end
     }
     .chev{
-      width:22px;height:22px;display:grid;place-items:center;
-      border:var(--px) solid var(--line);background:rgba(22,34,54,.85);
+      display:inline-block;
       color:var(--text);
       transform: rotate(0deg);
       transition: transform .18s ease;
-      font-size:12px;
+      font-size:16px;
       flex:0 0 auto;
+      background:transparent;
+      border:none;
+      width:auto;
+      height:auto;
+      box-shadow:none;
     }
     details.section[open] .chev{ transform: rotate(90deg) !important; }
     details.nested[open] .chev{ transform: rotate(90deg) !important; }
@@ -881,11 +1193,11 @@
       padding:18px;
     }
     .modal{
-      width:min(560px, 100%);
+      width:min(720px, 100%);
       border:var(--px) solid var(--line);
       background:rgba(16,24,38,.95);
       box-shadow:var(--shadow);
-      padding:14px;
+      padding:12px 14px;
     }
     .modal .mh{
       display:flex;justify-content:space-between;align-items:center;gap:10px;
@@ -923,6 +1235,7 @@
             <div class="avatarImageContainer">
               <img id="charAvatar" class="avatarImage" src="assets/avatars/character-avatar.png" alt="Character Avatar" />
               <span id="avatarImageCounter" class="avatarCounter">1/1</span>
+              <button id="btnPrestige" class="prestigeTopBtn" title="Prestiger">⭐</button>
             </div>
             <button id="btnNextImage" class="avatarNavBtn">›</button>
           </div>
@@ -1049,7 +1362,7 @@
         <button class="panelCollapseBtn" data-target="journal-scores-body">
           <span class="panelChev">›</span>
         </button>
-        <h2 id="journalTitle">📜 Journal du jour</h2>
+        <h2 id="journalTitle" class="trackTitle">📜 Journal du jour</h2>
           <div class="journalHeaderControls" style="display:flex;align-items:center;gap:10px">
           <div class="chip">
             <span>📅 Jour :</span>
@@ -1077,6 +1390,7 @@
               </div>
             </div>
             <div class="status">Liberté OK: <b id="libOk" class="no">FALSE</b></div>
+            <div class="ruleNoteTooltip" id="ruleNote"></div>
           </div>
 
           <div class="kpi">
@@ -1129,12 +1443,12 @@
           </div>
         </div>
 
-            <div class="footnote" id="ruleNote"></div>
+            
       </div>
     </section>
 
     <!-- Rewards Track (Battle Pass Style) - Non sticky -->
-    <section class="panel" style="margin-bottom: 14px;">
+    <section class="panel" style="margin-top:-18px;margin-bottom:6px;">
       <div class="lootTrackWrapper" id="rewardsTrackWrapper">
         <div class="lootTrackHeader">
           <button id="rewardsCollapseBtn" class="rewardsToggle">
@@ -1158,7 +1472,7 @@
           <button class="panelCollapseBtn" data-target="journal-taches-body">
             <span class="panelChev">›</span>
           </button>
-          <h2>✅ T&#226;ches du jour</h2>
+          <h2 class="trackTitle"><img src="assets/icons/validation-icon.png" class="validationIcon" alt="OK" /> T&#226;ches du jour</h2>
           <div style="display:flex;gap:8px">
             <button id="btnAddCustomCategory" class="linkBtn">+ Catégorie</button>
             <button id="btnAddCustomTask" class="linkBtn">+ Ajouter tâche</button>
@@ -1166,6 +1480,41 @@
         </div>
 
         <div class="bd" id="journal-taches-body">
+          <div class="dailyQuestBlock">
+          <div class="dailyQuestRow main" id="mainQuestRow">
+              <label class="questLabel">
+                <input type="checkbox" id="mainQuestCheck" />
+                <span>Quête principale du jour</span>
+              </label>
+              <span class="questXP">+200 XP</span>
+            </div>
+            <input id="mainQuestInput" class="dailyQuestInput main" type="text" placeholder="Écris ta quête principale du jour..." />
+
+            <div class="secondaryQuestHeader">
+              <button id="secondaryQuestToggle" class="secondaryQuestToggle" aria-expanded="true" aria-controls="secondaryQuestList">
+                <span class="chev">›</span>
+              </button>
+              <span>Quêtes secondaires</span>
+            </div>
+            <div class="secondaryQuestList" id="secondaryQuestList">
+              <div class="dailyQuestSub" id="subQuest1Row">
+                <label class="questLabel">
+                  <input type="checkbox" id="subQuest1Check" />
+                  <span>Quête secondaire 1</span>
+                </label>
+                <input id="subQuest1Input" class="dailyQuestInput" type="text" placeholder="Quête secondaire 1" />
+                <span class="questXP">+120 XP</span>
+              </div>
+              <div class="dailyQuestSub" id="subQuest2Row">
+                <label class="questLabel">
+                  <input type="checkbox" id="subQuest2Check" />
+                  <span>Quête secondaire 2</span>
+                </label>
+                <input id="subQuest2Input" class="dailyQuestInput" type="text" placeholder="Quête secondaire 2" />
+                <span class="questXP">+120 XP</span>
+              </div>
+            </div>
+          </div>
           <!-- Custom tasks section -->
           <div id="custom-tasks-section" style="margin-bottom:16px"></div>
           
@@ -1175,12 +1524,12 @@
 
       <!-- RIGHT -->
       <div class="panel">
-        <div class="hd">
+        <div class="hd lootRewardsHeader">
           <button class="panelCollapseBtn" data-target="loot-rewards-body">
             <span class="panelChev">›</span>
           </button>
-          <h2>🎁 Loot + Rewards</h2>
-          <div class="status">Seuil Liberté OK = 40%</div>
+          <h2 class="trackTitle">🎁 Loot + Rewards</h2>
+          
         </div>
 
         <div id="loot-rewards-body">
@@ -1250,59 +1599,28 @@
 
           <!-- TAB 2: Magasin -->
           <div id="tab-shop" class="tabContent">
-            <div class="shopHeader">
-              <div class="shopBalance">
-                <span class="balanceLabel">💰 Solde XP:</span>
-                <span class="balanceValue" id="shopBalance">0</span>
+            <div class="shopLaunchGrid">
+              <div class="shopLaunchCard" onclick="openShopModal()">
+                <div class="shopLaunchIcon"><img src="assets/illustrations/shop-illustration.png" style="width:140px;height:140px;object-fit:contain;" alt="Magasin" /></div>
+                <div class="shopLaunchTitle">Magasin</div>
+                <div class="shopLaunchDesc">Consommables, permanents, cosmétiques</div>
               </div>
-            </div>
-
-            <div class="shopFilters">
-              <button class="filterBtn active" data-filter="all">Tout</button>
-              <button class="filterBtn" data-filter="consumables">Consommables</button>
-              <button class="filterBtn" data-filter="permanent">Permanent</button>
-              <button class="filterBtn" data-filter="cosmetic">Cosmétique</button>
-            </div>
-            
-            <div class="cosmeticSubFilters" style="display:none;">
-              <button class="subFilterBtn active" data-subfilter="all">Tous</button>
-              <button class="subFilterBtn" data-subfilter="title">Titres</button>
-              <button class="subFilterBtn" data-subfilter="avatarFrame">Cadres</button>
-              <button class="subFilterBtn" data-subfilter="theme">Thèmes</button>
-            </div>
-
-            <div id="shopItems" class="shopGrid">
-              <!-- Items will be injected here -->
+              <div class="shopLaunchCard" onclick="openPrestigeTab()">
+                <div class="shopLaunchIcon"><img src="assets/illustrations/prestige-illustration.png" style="width:140px;height:140px;object-fit:contain;" alt="Prestige" /></div>
+                <div class="shopLaunchTitle">Prestige</div>
+                <div class="shopLaunchDesc">Bonus XP + slots de quêtes</div>
+              </div>
             </div>
           </div>
 
           <!-- TAB 3: Inventaire -->
           <div id="tab-inventory" class="tabContent">
-            <div class="inventoryHeader">
-              <h3>🎒 Mon Inventaire</h3>
-              <div class="inventoryStats">
-                <span class="badge">Items: <b id="invItemCount">0</b></span>
-                <span class="badge">Valeur: <b id="invTotalValue">0</b> XP</span>
-                <button id="btnResetInventory" class="linkBtn" style="margin-left:12px;color:var(--warn);">🗑️ Reset Inventaire</button>
+            <div class="shopLaunchGrid">
+              <div class="shopLaunchCard" onclick="openInventoryModal()">
+                <div class="shopLaunchIcon"><img src="assets/illustrations/inventaire-illustration.png" style="width:140px;height:140px;object-fit:contain;" alt="Inventaire" /></div>
+                <div class="shopLaunchTitle">Inventaire</div>
+                <div class="shopLaunchDesc">Consommables, permanents, cosmétiques</div>
               </div>
-            </div>
-
-            <div class="inventoryFilters">
-              <button class="filterBtn active" data-filter="all">Tout</button>
-              <button class="filterBtn" data-filter="consumables">Consommables</button>
-              <button class="filterBtn" data-filter="permanent">Permanent</button>
-              <button class="filterBtn" data-filter="cosmetic">Cosmétique</button>
-            </div>
-            
-            <div class="inventoryCosmeticSubFilters" style="display:none;">
-              <button class="subFilterBtn active" data-subfilter="all">Tous</button>
-              <button class="subFilterBtn" data-subfilter="title">Titres</button>
-              <button class="subFilterBtn" data-subfilter="avatarFrame">Cadres</button>
-              <button class="subFilterBtn" data-subfilter="theme">Thèmes</button>
-            </div>
-
-            <div id="inventoryItems" class="inventoryGrid">
-              <!-- Items will be injected here -->
             </div>
           </div>
 
@@ -1399,6 +1717,98 @@
       </div>
       <div class="activeTaskPopupBody" id="activeTasksList">
         <!-- Les t&#226;ches actives seront inject&#233;es ici -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Shop Modal -->
+  <div class="modalBack" id="shopModalBack" style="display:none">
+    <div class="modal">
+      <div class="mh">
+        <h3>🏪 Magasin</h3>
+        <button class="linkBtn" id="shopClose">Fermer</button>
+      </div>
+      <div class="mb" style="max-height:70vh;overflow:auto">
+        <div class="shopTabs">
+          <button class="shopTabBtn active" data-shop-tab="shop">Boutique</button>
+          <button class="shopTabBtn" data-shop-tab="prestige">Prestige</button>
+        </div>
+
+        <div id="shopTabShop">
+          <div class="shopHeader">
+            <div class="shopBalance">
+              <span class="balanceLabel">💰 Solde XP:</span>
+              <span class="balanceValue" id="shopBalance">0</span>
+            </div>
+          </div>
+
+          <div class="shopFilters">
+            <button class="filterBtn active" data-filter="all">Tout</button>
+            <button class="filterBtn" data-filter="consumables">Consommables</button>
+            <button class="filterBtn" data-filter="permanent">Permanent</button>
+            <button class="filterBtn" data-filter="cosmetic">Cosmétique</button>
+          </div>
+          
+          <div class="cosmeticSubFilters" style="display:none;">
+            <button class="subFilterBtn active" data-subfilter="all">Tous</button>
+            <button class="subFilterBtn" data-subfilter="title">Titres</button>
+            <button class="subFilterBtn" data-subfilter="avatarFrame">Cadres</button>
+            <button class="subFilterBtn" data-subfilter="theme">Thèmes</button>
+          </div>
+
+          <div id="shopItems" class="shopGrid">
+            <!-- Items will be injected here -->
+          </div>
+        </div>
+
+        <div id="shopTabPrestige" style="display:none">
+          <div class="prestigeStats">
+            <div class="prestigeStat">Points Prestige: <b id="prestigePoints">0</b></div>
+            <div class="prestigeStat">Bonus XP: <b id="prestigeXpBonus">0%</b></div>
+            <div class="prestigeStat">Slots Quêtes: <b id="prestigeQuestSlots">2</b></div>
+          </div>
+          <div class="prestigeStat" id="prestigeHint">Atteins un palier de niveau (10/20/30/40/50) pour obtenir des points prestige.</div>
+          <div class="prestigeItems" id="prestigeItems"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Inventory Modal -->
+  <div class="modalBack" id="inventoryModalBack" style="display:none">
+    <div class="modal">
+      <div class="mh">
+        <h3>🎒 Inventaire</h3>
+        <button class="linkBtn" id="inventoryClose">Fermer</button>
+      </div>
+      <div class="mb" style="max-height:70vh;overflow:auto">
+        <div class="inventoryHeader">
+          <h3>🎒 Mon Inventaire</h3>
+          <div class="inventoryStats">
+            <span class="badge">Items: <b id="invItemCount">0</b></span>
+            <span class="badge">Valeur: <b id="invTotalValue">0</b> XP</span>
+            <button id="btnResetInventory" class="linkBtn" style="margin-left:12px;color:var(--warn);">🗑️ Reset Inventaire</button>
+            <button id="btnRestoreTasks" class="linkBtn" style="margin-left:8px;color:var(--accent);">♻️ Restaurer tâches</button>
+          </div>
+        </div>
+
+        <div class="inventoryFilters">
+          <button class="filterBtn active" data-filter="all">Tout</button>
+          <button class="filterBtn" data-filter="consumables">Consommables</button>
+          <button class="filterBtn" data-filter="permanent">Permanent</button>
+          <button class="filterBtn" data-filter="cosmetic">Cosmétique</button>
+        </div>
+        
+        <div class="inventoryCosmeticSubFilters" style="display:none;">
+          <button class="subFilterBtn active" data-subfilter="all">Tous</button>
+          <button class="subFilterBtn" data-subfilter="title">Titres</button>
+          <button class="subFilterBtn" data-subfilter="avatarFrame">Cadres</button>
+          <button class="subFilterBtn" data-subfilter="theme">Thèmes</button>
+        </div>
+
+        <div id="inventoryItems" class="inventoryGrid">
+          <!-- Items will be injected here -->
+        </div>
       </div>
     </div>
   </div>
@@ -1524,6 +1934,9 @@
   const STORAGE_KEY = "tgoF_sifu_v14_custom_categories";
   const LIB_OK_THRESHOLD_PCT = 40;
   const SECTION_BONUS_XP = 30;
+  const MAIN_QUEST_XP = 200;
+  const SECONDARY_QUEST_XP = 120;
+  const VALIDATION_ICON = '<img src="assets/icons/validation-icon.png" class="validationIcon" alt="OK" />';
 
   // Firebase
   const firebaseConfig = {
@@ -1626,6 +2039,129 @@
     const foot = el("summaryFootLabel");
     if(foot && state.ui){
       foot.textContent = state.ui.summaryCollapsed ? "Activer pour voir plus" : "Glisse pour voir les tâches";
+    }
+  }
+
+  function renderDailyQuestUI(date){
+    ensureDay(date);
+    const day = state.days[date];
+    const mainCheck = el("mainQuestCheck");
+    const mainInput = el("mainQuestInput");
+    const sub1Check = el("subQuest1Check");
+    const sub1Input = el("subQuest1Input");
+    const sub2Check = el("subQuest2Check");
+    const sub2Input = el("subQuest2Input");
+    const mainRow = el("mainQuestRow");
+    const sub1Row = el("subQuest1Row");
+    const sub2Row = el("subQuest2Row");
+    if(mainCheck) mainCheck.checked = !!day.mainQuestDone;
+    if(mainInput) mainInput.value = day.mainQuestText || "";
+    if(sub1Check) sub1Check.checked = !!day.subQuest1Done;
+    if(sub1Input) sub1Input.value = day.subQuest1Text || "Quête secondaire 1";
+    if(sub2Check) sub2Check.checked = !!day.subQuest2Done;
+    if(sub2Input) sub2Input.value = day.subQuest2Text || "Quête secondaire 2";
+    if(mainRow) mainRow.classList.toggle("isDone", !!day.mainQuestDone);
+    if(sub1Row) sub1Row.classList.toggle("isDone", !!day.subQuest1Done);
+    if(sub2Row) sub2Row.classList.toggle("isDone", !!day.subQuest2Done);
+  }
+
+  function initDailyQuestControls(){
+    const mainCheck = el("mainQuestCheck");
+    const mainInput = el("mainQuestInput");
+    const sub1Check = el("subQuest1Check");
+    const sub1Input = el("subQuest1Input");
+    const sub2Check = el("subQuest2Check");
+    const sub2Input = el("subQuest2Input");
+    const mainRow = el("mainQuestRow");
+    const sub1Row = el("subQuest1Row");
+    const sub2Row = el("subQuest2Row");
+    const secondaryToggle = el("secondaryQuestToggle");
+    const secondaryList = el("secondaryQuestList");
+
+    if(mainCheck){
+      mainCheck.addEventListener("change", () => {
+        const d = state.currentDate;
+        ensureDay(d);
+        state.days[d].mainQuestDone = mainCheck.checked;
+        if(mainRow){
+          mainRow.classList.toggle("isDone", mainCheck.checked);
+          if(mainCheck.checked){
+            mainRow.classList.remove("dailyQuestPop");
+            void mainRow.offsetWidth;
+            mainRow.classList.add("dailyQuestPop");
+          }
+        }
+        saveState();
+        syncUI();
+        renderHistory();
+      });
+    }
+    if(mainInput){
+      mainInput.addEventListener("input", () => {
+        const d = state.currentDate;
+        ensureDay(d);
+        state.days[d].mainQuestText = mainInput.value;
+        saveState();
+      });
+    }
+    if(sub1Check){
+      sub1Check.addEventListener("change", () => {
+        const d = state.currentDate;
+        ensureDay(d);
+        state.days[d].subQuest1Done = sub1Check.checked;
+        if(sub1Row){
+          sub1Row.classList.toggle("isDone", sub1Check.checked);
+          if(sub1Check.checked){
+            sub1Row.classList.remove("dailyQuestPop");
+            void sub1Row.offsetWidth;
+            sub1Row.classList.add("dailyQuestPop");
+          }
+        }
+        saveState();
+        syncUI();
+        renderHistory();
+      });
+    }
+    if(sub1Input){
+      sub1Input.addEventListener("input", () => {
+        const d = state.currentDate;
+        ensureDay(d);
+        state.days[d].subQuest1Text = sub1Input.value;
+        saveState();
+      });
+    }
+    if(sub2Check){
+      sub2Check.addEventListener("change", () => {
+        const d = state.currentDate;
+        ensureDay(d);
+        state.days[d].subQuest2Done = sub2Check.checked;
+        if(sub2Row){
+          sub2Row.classList.toggle("isDone", sub2Check.checked);
+          if(sub2Check.checked){
+            sub2Row.classList.remove("dailyQuestPop");
+            void sub2Row.offsetWidth;
+            sub2Row.classList.add("dailyQuestPop");
+          }
+        }
+        saveState();
+        syncUI();
+        renderHistory();
+      });
+    }
+    if(sub2Input){
+      sub2Input.addEventListener("input", () => {
+        const d = state.currentDate;
+        ensureDay(d);
+        state.days[d].subQuest2Text = sub2Input.value;
+        saveState();
+      });
+    }
+    if(secondaryToggle && secondaryList){
+      secondaryToggle.addEventListener("click", () => {
+        secondaryList.classList.toggle("collapsed");
+        secondaryToggle.classList.toggle("collapsed", secondaryList.classList.contains("collapsed"));
+        secondaryToggle.setAttribute("aria-expanded", secondaryList.classList.contains("collapsed") ? "false" : "true");
+      });
     }
   }
 
@@ -1772,24 +2308,10 @@
     }
   ];
 
-  // Cultivations (12) total 30xp
-  const cultivationSteps = [
-    { n:1, xp:4 }, { n:2, xp:4 }, { n:3, xp:4 }, { n:4, xp:11 },
-    { n:5, xp:7 }, { n:6, xp:7 }, { n:7, xp:7 }, { n:8, xp:14 },
-    { n:9, xp:11 }, { n:10, xp:11 }, { n:11, xp:11 }, { n:12, xp:17 },
-  ];
-  const cultivationTasks = cultivationSteps.map(s => {
-    const side = (s.n % 2 === 0) ? '(G)' : '(D)';
-    return {
-      id: `cult_${s.n}`,
-      label: `🌱 Cultivation ${s.n} ${side}`,
-      xp: s.xp
-    };
-  });
+  // Cultivations removed
 
-  // Qi Pratique items (Cultivations is nested group)
+  // Qi Pratique items
   const qiPractice = [
-    { id:"qi_cultivations_group", label:`🌱 Cultivations (12)`, xp: 30, kind:"group" }, // display only
     { id:"qi_projections",  label:"🎯 Projections", xp:16  },
     { id:"qi_dantien",      label:"⚙️ Dantien Tuna", xp:20 },
     { id:"qi_balancing",    label:"⚖️ Balancing", xp:20 },
@@ -1872,7 +2394,6 @@
     // Permanent
     { id:"xp_multiplier_1", name:"Multiplicateur XP I", icon:"📈", price:500, category:"permanent", description:"+5% XP permanent", effect:"xpMultiplier", value:5 },
     { id:"xp_multiplier_2", name:"Multiplicateur XP II", icon:"📈📈", price:1200, category:"permanent", description:"+10% XP permanent", effect:"xpMultiplier", value:10, requires:"xp_multiplier_1" },
-    { id:"auto_cultivation", name:"Cultivation Auto", icon:"🌱", price:800, category:"permanent", description:"Complète automatiquement 3 cultivations/jour", effect:"autoCultivation" },
     { id:"task_slots_1", name:"Slots de Tâches +5", icon:"📋", price:400, category:"permanent", description:"+5 emplacements de tâches personnalisées", effect:"taskSlots", value:5 },
     { id:"category_slots_1", name:"Slots Catégories +3", icon:"📁", price:350, category:"permanent", description:"+3 emplacements de catégories", effect:"categorySlots", value:3 },
     { id:"fast_rewards", name:"Récompenses Rapides", icon:"⚡", price:600, category:"permanent", description:"-10% de XP requis pour les rewards", effect:"rewardDiscount", value:10 },
@@ -2025,8 +2546,7 @@
 
   // Flatten tasks
   const qiFlatTasks = [
-    ...cultivationTasks,
-    ...qiPractice.filter(t => t.id !== "qi_cultivations_group")
+    ...qiPractice
   ];
   const libertyFlatTasks = [
     ...qiFlatTasks,
@@ -2047,15 +2567,14 @@
   function sectionTaskIds(key){
     if(key === "lib"){
       return [
-        ...cultivationTasks.map(t=>t.id),
-        ...qiPractice.filter(t=>t.id!=="qi_cultivations_group").map(t=>t.id),
-        ...libertyStandalone.map(t=>t.id),
-        ...systemTasks.map(t=>t.id),
+        ...filterActiveTasks(qiPractice).map(t=>t.id),
+        ...filterActiveTasks(libertyStandalone).map(t=>t.id),
+        ...filterActiveTasks(systemTasks).map(t=>t.id),
       ];
     }
-    if(key === "resp") return responsibilityTasks.map(t=>t.id);
-    if(key === "dev")  return developmentTasks.map(t=>t.id);
-    if(key === "eff")  return efficiencyTasks.map(t=>t.id);
+    if(key === "resp") return filterActiveTasks(responsibilityTasks).map(t=>t.id);
+    if(key === "dev")  return filterActiveTasks(developmentTasks).map(t=>t.id);
+    if(key === "eff")  return filterActiveTasks(efficiencyTasks).map(t=>t.id);
     return [];
   }
 
@@ -2085,6 +2604,7 @@
   initTitles();
   applyDarkMode();
   initSummaryCard();
+  initDailyQuestControls();
 
   // UI init
   el("dateInput").value = state.currentDate || todayISO();
@@ -2093,6 +2613,8 @@
   el("histMode").value = "week";
   el("weekPick").value = state.currentDate;
   el("monthPick").value = state.currentDate.slice(0,7);
+
+  renderDailyQuestUI(state.currentDate);
 
   renderSections();
   renderRewards();
@@ -2403,6 +2925,30 @@
     }
   }, 100);
 
+  // Restore removed tasks button
+  setTimeout(() => {
+    const restoreTasksBtn = el("btnRestoreTasks");
+    if(restoreTasksBtn){
+      restoreTasksBtn.addEventListener("click", () => {
+        ensureRemovedTasks();
+        if(state.removedTasks.length === 0){
+          showNotification("✅ Aucune tâche supprimée");
+          return;
+        }
+        if(confirm("♻️ Restaurer toutes les tâches supprimées ?")){
+          state.removedTasks = [];
+          migrateEnsureAllTasks(state);
+          saveState();
+          renderSections();
+          renderCustomTasks();
+          syncUI(false);
+          renderHistory();
+          showNotification("♻️ Tâches restaurées");
+        }
+      });
+    }
+  }, 100);
+
   function openCharacterSelectModal() {
     const modal = el("modalCharacterSelect");
     const grid = el("characterGrid");
@@ -2657,7 +3203,7 @@
       renderRewards();
       syncUI();
       renderHistory();
-      alert("Import OK ✅");
+      alert("Import OK");
     }catch(err){
       console.error(err);
       alert("Impossible d'importer (JSON invalide).");
@@ -2669,6 +3215,30 @@
   // Modal events
   el("lootClose").addEventListener("click", closeLootModal);
   el("lootOk").addEventListener("click", closeLootModal);
+  const shopClose = el("shopClose");
+  const shopModal = el("shopModalBack");
+  if(shopClose && shopModal){
+    shopClose.addEventListener("click", () => {
+      shopModal.style.display = "none";
+    });
+    shopModal.addEventListener("click", (e) => {
+      if(e.target === shopModal) shopModal.style.display = "none";
+    });
+  }
+  const inventoryClose = el("inventoryClose");
+  const inventoryModal = el("inventoryModalBack");
+  if(inventoryClose && inventoryModal){
+    inventoryClose.addEventListener("click", () => {
+      inventoryModal.style.display = "none";
+    });
+    inventoryModal.addEventListener("click", (e) => {
+      if(e.target === inventoryModal) inventoryModal.style.display = "none";
+    });
+  }
+  const prestigeBtn = el("btnPrestige");
+  if(prestigeBtn){
+    prestigeBtn.addEventListener("click", prestigeNow);
+  }
 
   // Tab system
   document.querySelectorAll(".tabBtn").forEach(btn => {
@@ -2686,12 +3256,16 @@
         tabContent.classList.add("active");
         
         // Render content when tab is opened
-        if(tabName === "tab-shop"){
-          renderShop();
-        } else if(tabName === "tab-inventory"){
+        if(tabName === "tab-inventory"){
           renderInventory();
         }
       }
+    });
+  });
+
+  document.querySelectorAll(".shopTabBtn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      openShopTab(btn.dataset.shopTab);
     });
   });
 
@@ -2877,7 +3451,7 @@
         currentDate: todayISO(),
         days:{},
         walletBase:0,
-      ui:{ open:{ lib:true, resp:false, dev:false, eff:false }, nested:{ qi:true, system:false, cultivation:false } },
+      ui:{ open:{ lib:true, resp:false, dev:false, eff:false }, nested:{ qi:true, system:false } },
         inventory: createInventory(),
         lootHistory: []
       };
@@ -2887,13 +3461,15 @@
       base.currentDate = base.currentDate || todayISO();
       base.ui = base.ui || { open:{}, nested:{}, summaryCollapsed:false };
       base.ui.open = base.ui.open || { lib:true, resp:false, dev:false, eff:false };
-      base.ui.nested = base.ui.nested || { qi:true, system:false, cultivation:false };
+      base.ui.nested = base.ui.nested || { qi:true, system:false };
       if(typeof base.ui.darkMode !== "boolean") base.ui.darkMode = false;
 
       base.inventory = base.inventory || createInventory();
       base.inventory.equippedAvatars = base.inventory.equippedAvatars || [];
       base.lootHistory = base.lootHistory || [];
+      base.prestige = base.prestige || { points:0, xpOffset:0, xpBonus:0, questSlots:2 };
       base.claimedRewards = base.claimedRewards || []; // Array of reward IDs claimed from Rewards Track
+      base.removedTasks = Array.isArray(base.removedTasks) ? base.removedTasks : [];
       base.lastSavedAt = base.lastSavedAt || 0;
 
       ensureDay(base.currentDate, base);
@@ -2907,7 +3483,7 @@
         currentDate: todayISO(),
         days:{},
         walletBase:0,
-        ui:{ open:{ lib:true, resp:false, dev:false, eff:false }, nested:{ qi:true, system:false, cultivation:false }, summaryCollapsed:false },
+        ui:{ open:{ lib:true, resp:false, dev:false, eff:false }, nested:{ qi:true, system:false }, summaryCollapsed:false },
         inventory: createInventory(),
         lootHistory: []
       };
@@ -2916,6 +3492,8 @@
       ensureDay(fallback.currentDate, fallback);
       migrateEnsureAllTasks(fallback);
       migrateEnsureLootKeys(fallback);
+      fallback.prestige = fallback.prestige || { points:0, xpOffset:0, xpBonus:0, questSlots:2 };
+      fallback.removedTasks = Array.isArray(fallback.removedTasks) ? fallback.removedTasks : [];
       return fallback;
     }
   }
@@ -2934,9 +3512,16 @@
     if(!Array.isArray(day.customTasks)) day.customTasks = [];
     if(!Array.isArray(day.customCategories)) day.customCategories = [];
     if(!Array.isArray(day.purchases)) day.purchases = [];
+    if(typeof day.mainQuestDone !== "boolean") day.mainQuestDone = false;
+    if(typeof day.mainQuestText !== "string") day.mainQuestText = "";
+    if(typeof day.subQuest1Done !== "boolean") day.subQuest1Done = false;
+    if(typeof day.subQuest1Text !== "string") day.subQuest1Text = "Quête secondaire 1";
+    if(typeof day.subQuest2Done !== "boolean") day.subQuest2Done = false;
+    if(typeof day.subQuest2Text !== "string") day.subQuest2Text = "Quête secondaire 2";
     if(!day.sectionLooted) day.sectionLooted = { lib:false, resp:false, dev:false, eff:false };
     if(typeof day.lootBoostXP !== 'number') day.lootBoostXP = 0;
     if(!Array.isArray(day.loots)) day.loots = [];
+    if(!st.prestige) st.prestige = { points:0, xpOffset:0, xpBonus:0, questSlots:2 };
   }
 
   function createEmptyDay(){
@@ -2947,6 +3532,12 @@
       customTasks: [],
       customCategories: [],
       purchases: [],
+      mainQuestDone: false,
+      mainQuestText: "",
+      subQuest1Done: false,
+      subQuest1Text: "Quête secondaire 1",
+      subQuest2Done: false,
+      subQuest2Text: "Quête secondaire 2",
       sectionLooted: { lib:false, resp:false, dev:false, eff:false },
       lootBoostXP: 0,
       loots: []
@@ -2961,6 +3552,12 @@
         if(typeof day.checked[t.id] !== "boolean") day.checked[t.id] = false;
       }
       day.purchases = day.purchases || [];
+      if(typeof day.mainQuestDone !== "boolean") day.mainQuestDone = false;
+      if(typeof day.mainQuestText !== "string") day.mainQuestText = "";
+      if(typeof day.subQuest1Done !== "boolean") day.subQuest1Done = false;
+      if(typeof day.subQuest1Text !== "string") day.subQuest1Text = "Quête secondaire 1";
+      if(typeof day.subQuest2Done !== "boolean") day.subQuest2Done = false;
+      if(typeof day.subQuest2Text !== "string") day.subQuest2Text = "Quête secondaire 2";
     }
   }
 
@@ -3019,6 +3616,49 @@
     return map[cat] || "";
   }
 
+  function ensureRemovedTasks(){
+    if(!Array.isArray(state.removedTasks)) state.removedTasks = [];
+  }
+
+  function isTaskRemoved(taskId){
+    return Array.isArray(state.removedTasks) && state.removedTasks.includes(taskId);
+  }
+
+  function isCustomTaskId(taskId, date = state.currentDate){
+    const day = state.days?.[date];
+    if(!day || !Array.isArray(day.customTasks)) return false;
+    return day.customTasks.some(t => t.id === taskId);
+  }
+
+  function removeTaskEverywhere(taskId, opts = {}){
+    const { addToRemoved = false, removeCustom = true } = opts;
+    if(addToRemoved){
+      ensureRemovedTasks();
+      if(!state.removedTasks.includes(taskId)) state.removedTasks.push(taskId);
+    }
+    for(const d of Object.keys(state.days || {})){
+      const day = state.days[d];
+      if(day?.checked) delete day.checked[taskId];
+      if(removeCustom && Array.isArray(day.customTasks)){
+        const idx = day.customTasks.findIndex(t => t.id === taskId);
+        if(idx !== -1) day.customTasks.splice(idx, 1);
+      }
+    }
+    if(state.ui?.taskOrder){
+      Object.keys(state.ui.taskOrder).forEach((key) => {
+        const list = state.ui.taskOrder[key];
+        if(Array.isArray(list)){
+          const idx = list.indexOf(taskId);
+          if(idx !== -1) list.splice(idx, 1);
+        }
+      });
+    }
+  }
+
+  function filterActiveTasks(tasks){
+    return tasks.filter(t => !isTaskRemoved(t.id));
+  }
+
   // Render helpers
   function taskRow(task, meta, cat){
     const row = document.createElement("div");
@@ -3040,6 +3680,24 @@
       </div>
       <div class="xp"><span>${currencyIcon}+${task.xp}</span><small>${currencyName}</small></div>
     `;
+
+    const xpDiv = row.querySelector(".xp");
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "✕";
+    deleteBtn.className = "deleteTask";
+    deleteBtn.style.cssText = "margin-left:8px;padding:2px 6px;background:#ff4444;color:white;border:none;border-radius:3px;cursor:pointer;font-size:12px";
+    deleteBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if(!confirm("Supprimer cette tâche ?")) return;
+      const isCustom = isCustomTaskId(task.id);
+      removeTaskEverywhere(task.id, { addToRemoved: !isCustom, removeCustom: true });
+      saveState();
+      renderSections();
+      renderCustomTasks();
+      syncUI(false);
+      renderHistory();
+    });
+    xpDiv.appendChild(deleteBtn);
     
     const checkbox = row.querySelector(`#ck_${task.id}`);
     checkbox.addEventListener("change",(e)=>{
@@ -3053,7 +3711,7 @@
     // Drag and drop for tasks
     row.addEventListener("dragstart", (e) => {
       // Ne pas permettre le drag si on clique sur la checkbox
-      if(e.target.type === 'checkbox') {
+      if(e.target.type === 'checkbox' || e.target.closest('button')) {
         e.preventDefault();
         return;
       }
@@ -3143,7 +3801,7 @@
     row.style.cursor = 'pointer';
     row.addEventListener('click', (e) => {
       // Don't trigger if clicking checkbox or drag handle
-      if(e.target.type === 'checkbox' || e.target.classList.contains('drag-handle')) return;
+      if(e.target.type === 'checkbox' || e.target.classList.contains('drag-handle') || e.target.closest('button')) return;
       showActiveTaskPopup(task.label, task.xp, task.id);
       
       // Afficher les suggestions après un court délai
@@ -3230,7 +3888,6 @@
             <span class="badge" id="done_${s.key}">0/0</span>
             <span class="badge xpWarn" id="potential_${s.key}">0 XP</span>
             <span class="badge" id="bonus_${s.key}">Bonus: 0</span>
-            <span class="badge" id="loot_${s.key}">Loot: 0</span>
           </div>
         </summary>
         <div class="sectionBody">
@@ -3243,58 +3900,20 @@
       const body = details.querySelector(`#body_${s.key}`);
 
       if(s.key === "lib"){
-        body.appendChild(renderQiPratiqueNested());
-        libertyStandalone.forEach(t => body.appendChild(taskRow(t, s.meta, "lib")));
+        filterActiveTasks(qiPractice)
+          .forEach(t => body.appendChild(taskRow(t, "Qi Pratique (compte dans Liberté%).", "qi")));
+        filterActiveTasks(libertyStandalone).forEach(t => body.appendChild(taskRow(t, s.meta, "lib")));
         body.appendChild(renderSystemNested());
       } else if(s.key === "resp"){
-        (s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta, "resp")));
+        filterActiveTasks(s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta, "resp")));
       } else if(s.key === "dev"){
-        (s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta, "dev")));
+        filterActiveTasks(s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta, "dev")));
       } else if(s.key === "eff"){
-        (s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta, "eff")));
+        filterActiveTasks(s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta, "eff")));
       } else {
-        (s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta)));
+        filterActiveTasks(s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta)));
       }
     }
-  }
-
-  function renderQiPratiqueNested(){
-    const details = nestedDetails(
-      "qi",
-      "🜂 Qi Pratique",
-      `<span class="badge" id="qiDone">0/0</span><span class="badge" id="qiPct">0%</span><span class="badge xpWarn" id="qiXp">0 XP</span>`,
-      (body) => {
-        body.appendChild(renderCultivationsNested());
-        qiPractice
-          .filter(t => t.id !== "qi_cultivations_group")
-          .forEach(t => body.appendChild(taskRow(t, "Qi Pratique (compte dans Liberté%).", "qi")));
-
-        const note = document.createElement("div");
-        note.className = "sectionHint";
-        note.style.marginTop = "8px";
-        note.textContent = "Bonus Qi Pratique: +15 XP si TOUT Qi Pratique est complété (incluant toutes les Cultivations).";
-        body.appendChild(note);
-      },
-      "qi"
-    );
-    // Augmenter la taille du titre pour correspondre aux tâches normales
-    const sumLeft = details.querySelector('.sumLeft');
-    if(sumLeft) sumLeft.style.fontSize = '14px';
-    return details;
-  }
-
-  function renderCultivationsNested(){
-    return nestedDetails(
-      "cultivation",
-      "🌱 Cultivations (12 étapes) &ugrave; Total 30 XP",
-      `<span class="badge" id="cultDone">0/12</span><span class="badge" id="cultPct">0%</span><span class="badge xpWarn" id="cultXp">0 XP</span>`,
-      (body) => {
-        cultivationTasks.forEach(t=>{
-          body.appendChild(taskRow(t, "Sous-étape de Cultivations (compte dans Liberté%).", "qi"));
-        });
-      },
-      "qi"
-    );
   }
 
   function renderSystemNested(){
@@ -3303,7 +3922,7 @@
       "🧱 Système (4)",
       `<span class="badge" id="sysDone">0/4</span><span class="badge" id="sysPct">0%</span><span class="badge xpWarn" id="sysXp">0 XP</span>`,
       (body) => {
-        systemTasks.forEach(t=>{
+        filterActiveTasks(systemTasks).forEach(t=>{
           body.appendChild(taskRow(t, "Système (compte dans Liberté%).", "system"));
         });
         const note = document.createElement("div");
@@ -3317,16 +3936,14 @@
   }
 
   // Calculate total XP accumulated across all days
+  function calculateTotalXPRaw(){
+    // Keep total XP consistent with wallet calculation (gained - spent + base)
+    return calcWallet();
+  }
+
   function calculateTotalXP(){
-    const dates = Object.keys(state.days || {});
-    let total = 0;
-    for(const d of dates){
-      const xp = calcDayXP(d);
-      total += xp.gained;
-      // Add test XP for level testing
-      total += (state.days[d].testXP || 0);
-    }
-    return total;
+    const offset = Number(state.prestige?.xpOffset || 0);
+    return Math.max(0, calculateTotalXPRaw() - offset);
   }
 
   // Character Level System
@@ -3536,7 +4153,7 @@
         <div class="lootTrackName">${reward.name}</div>
         <div class="lootTrackXPReq">${requiredXP} XP ${discountBadge}</div>
         ${!isUnlocked ? '<div class="lootTrackLock">🔒</div>' : ''}
-        ${isClaimed ? '<div class="lootTrackCheck">✅</div>' : ''}
+        ${isClaimed ? `<div class="lootTrackCheck">${VALIDATION_ICON}</div>` : ''}
       `;
       
       // Click handler for unlocked but not claimed rewards
@@ -3834,15 +4451,8 @@
         break;
         
       case 'autoCultivation':
-        // Permanent effect
+        // Permanent effect (cultivations removed)
         state.permanentBuffs.autoCultivation = true;
-        // Auto-complete 3 cultivations today
-        const cultIds = ['cult_1', 'cult_2', 'cult_3'];
-        cultIds.forEach(id => {
-          if(!state.days[d].checked[id]){
-            state.days[d].checked[id] = true;
-          }
-        });
         break;
         
       case 'taskSlots':
@@ -3975,13 +4585,13 @@
           ${item.description ? `<div class="inventoryItemDesc">${item.description}</div>` : ''}
           ${item.category === 'permanent' ? '<div class="inventoryItemPermanent">✨ Effet permanent actif</div>' : ''}
           ${item.category === 'cosmetic' && !isAvatarFrame && !isTheme && !isTitle ? '<div class="inventoryItemCosmetic">🎨 Cosmétique équipé</div>' : ''}
-          ${isAvatarFrame && isFrameActive ? '<div class="inventoryItemCosmetic">✅ Cadre activé</div>' : ''}
+          ${isAvatarFrame && isFrameActive ? `<div class="inventoryItemCosmetic">${VALIDATION_ICON} Cadre activé</div>` : ''}
           ${isAvatarFrame && !isFrameActive ? '<div class="inventoryItemInactive">⭕ Cadre désactivé</div>' : ''}
-          ${isTheme && isThemeActive ? '<div class="inventoryItemCosmetic">✅ Thème activé</div>' : ''}
+          ${isTheme && isThemeActive ? `<div class="inventoryItemCosmetic">${VALIDATION_ICON} Thème activé</div>` : ''}
           ${isTheme && !isThemeActive ? '<div class="inventoryItemInactive">⭕ Thème désactivé</div>' : ''}
-          ${isTitle && isTitleActive ? '<div class="inventoryItemCosmetic">✅ Titre équipé</div>' : ''}
+          ${isTitle && isTitleActive ? `<div class="inventoryItemCosmetic">${VALIDATION_ICON} Titre équipé</div>` : ''}
           ${isTitle && !isTitleActive ? '<div class="inventoryItemInactive">⭕ Titre non équipé</div>' : ''}
-          ${isAvatarIllustration && isAvatarEquipped ? '<div class="inventoryItemCosmetic">✅ Illustration équipée</div>' : ''}
+          ${isAvatarIllustration && isAvatarEquipped ? `<div class="inventoryItemCosmetic">${VALIDATION_ICON} Illustration équipée</div>` : ''}
           ${isAvatarIllustration && !isAvatarEquipped ? '<div class="inventoryItemInactive">⭕ Illustration non équipée</div>' : ''}
         </div>
         ${canUse ? `
@@ -4063,7 +4673,8 @@
   function showNotification(message){
     const notif = document.createElement('div');
     notif.className = 'notification';
-    notif.textContent = message;
+    const safe = escapeHtml(message);
+    notif.innerHTML = safe.replaceAll("✅", VALIDATION_ICON);
     document.body.appendChild(notif);
     
     setTimeout(() => {
@@ -4340,6 +4951,112 @@
     }
   }
 
+  // Prestige system
+  const prestigeCatalog = [
+    { id:"xp_2",  name:"+2% XP",  type:"xp", value:2,  cost:1 },
+    { id:"xp_4",  name:"+4% XP",  type:"xp", value:4,  cost:3 },
+    { id:"xp_6",  name:"+6% XP",  type:"xp", value:6,  cost:5 },
+    { id:"xp_8",  name:"+8% XP",  type:"xp", value:8,  cost:8 },
+    { id:"xp_10", name:"+10% XP", type:"xp", value:10, cost:12 },
+    { id:"xp_12", name:"+12% XP", type:"xp", value:12, cost:17 },
+    { id:"xp_15", name:"+15% XP", type:"xp", value:15, cost:25 },
+    { id:"slot_1", name:"+1 slot quête", type:"slot", value:1, cost:4 },
+    { id:"slot_2", name:"+1 slot quête", type:"slot", value:2, cost:7 },
+    { id:"slot_3", name:"+1 slot quête", type:"slot", value:3, cost:11 }
+  ];
+
+  function getPrestigePointsForLevel(level){
+    if(level >= 50) return 50;
+    if(level >= 40) return 15;
+    if(level >= 30) return 7;
+    if(level >= 20) return 3;
+    if(level >= 10) return 1;
+    return 0;
+  }
+
+  function updatePrestigeUI(){
+    const pointsEl = el("prestigePoints");
+    if(pointsEl) pointsEl.textContent = String(state.prestige?.points || 0);
+    const bonusEl = el("prestigeXpBonus");
+    if(bonusEl) bonusEl.textContent = `${state.prestige?.xpBonus || 0}%`;
+    const slotsEl = el("prestigeQuestSlots");
+    if(slotsEl) slotsEl.textContent = String(state.prestige?.questSlots || 2);
+
+    const totalXP = calculateTotalXP();
+    const level = calculateCharacterLevel(totalXP).level;
+    const reward = getPrestigePointsForLevel(level);
+    const hint = el("prestigeHint");
+    if(hint){
+      hint.textContent = reward > 0
+        ? `Niveau ${level} Prestige disponible: +${reward} points.`
+        : "Atteins un palier de niveau (10/20/30/40/50) pour obtenir des points prestige.";
+    }
+    const btn = el("btnPrestige");
+    if(btn) btn.disabled = reward <= 0;
+  }
+
+  function renderPrestigeShop(){
+    const container = el("prestigeItems");
+    if(!container) return;
+    updatePrestigeUI();
+    container.innerHTML = "";
+
+    prestigeCatalog.forEach(item => {
+      const points = Number(state.prestige?.points || 0);
+      let owned = false;
+      let canBuy = points >= item.cost;
+
+      if(item.type === "xp"){
+        owned = (state.prestige?.xpBonus || 0) >= item.value;
+        if(owned) canBuy = false;
+      }
+      if(item.type === "slot"){
+        const slots = Number(state.prestige?.questSlots || 2);
+        const maxSlots = 5;
+        if(slots >= maxSlots) { owned = true; canBuy = false; }
+      }
+
+      const elItem = document.createElement("div");
+      elItem.className = "prestigeItem";
+      elItem.innerHTML = `
+        <h4>${item.name}</h4>
+        <div class="cost">Coût: ${item.cost} prestige</div>
+        <button ${canBuy ? "" : "disabled"}>${owned ? "Déjà acquis" : "Acheter"}</button>
+      `;
+      const btn = elItem.querySelector("button");
+      if(btn && canBuy){
+        btn.addEventListener("click", () => buyPrestigeItem(item));
+      }
+      container.appendChild(elItem);
+    });
+  }
+
+  function buyPrestigeItem(item){
+    const points = Number(state.prestige?.points || 0);
+    if(points < item.cost) return;
+    if(item.type === "xp"){
+      state.prestige.xpBonus = item.value;
+    } else if(item.type === "slot"){
+      state.prestige.questSlots = (state.prestige.questSlots || 2) + 1;
+    }
+    state.prestige.points -= item.cost;
+    saveState();
+    renderPrestigeShop();
+    syncUI();
+  }
+
+  function prestigeNow(){
+    const totalXP = calculateTotalXP();
+    const level = calculateCharacterLevel(totalXP).level;
+    const reward = getPrestigePointsForLevel(level);
+    if(reward <= 0) return;
+    state.prestige.points = (state.prestige.points || 0) + reward;
+    state.prestige.xpOffset = (state.prestige.xpOffset || 0) + calculateTotalXPRaw();
+    saveState();
+    renderPrestigeShop();
+    syncUI();
+  }
+
   // Suggested tasks management
   function getSuggestedTasks(clickedTaskId){
     console.log('getSuggestedTasks called with:', clickedTaskId);
@@ -4347,9 +5064,9 @@
     const d = state.currentDate;
     ensureDay(d);
     
-    // Si c'est une cultivation ou yoga, suggérer audio et lecture
-    if(clickedTaskId.startsWith('cult_') || clickedTaskId === 'yoga'){
-      console.log('Clicked task is a cultivation or yoga');
+    // Si c'est yoga, suggérer audio et lecture
+    if(clickedTaskId === 'yoga'){
+      console.log('Clicked task is yoga');
       const audioTask = systemTasks.find(t => t.id === 'sys_audio');
       const lectureTask = systemTasks.find(t => t.id === 'sys_lecture');
       const autoCleansingTask = responsibilityTasks.find(t => t.id === 'auto_cleans');
@@ -4944,6 +5661,43 @@
     el("customTaskName").focus();
   }
 
+  window.openShopModal = function openShopModal(){
+    const shopModal = el("shopModalBack");
+    if(!shopModal) return;
+    renderShop();
+    shopModal.style.display = "flex";
+    openShopTab("shop");
+  }
+
+  window.openInventoryModal = function openInventoryModal(){
+    const inventoryModal = el("inventoryModalBack");
+    if(!inventoryModal) return;
+    renderInventory();
+    inventoryModal.style.display = "flex";
+  }
+
+  window.openPrestigeTab = function openPrestigeTab(){
+    const shopModal = el("shopModalBack");
+    if(!shopModal) return;
+    renderShop();
+    renderPrestigeShop();
+    shopModal.style.display = "flex";
+    openShopTab("prestige");
+  }
+
+  function openShopTab(name){
+    const shopTab = el("shopTabShop");
+    const prestigeTab = el("shopTabPrestige");
+    const buttons = document.querySelectorAll(".shopTabBtn");
+    buttons.forEach(b => b.classList.remove("active"));
+    buttons.forEach(b => {
+      if(b.dataset.shopTab === name) b.classList.add("active");
+    });
+    if(shopTab) shopTab.style.display = name === "shop" ? "block" : "none";
+    if(prestigeTab) prestigeTab.style.display = name === "prestige" ? "block" : "none";
+    if(name === "prestige") renderPrestigeShop();
+  }
+
   function openEditTaskModal(taskId){
     const d = state.currentDate;
     ensureDay(d);
@@ -5100,20 +5854,11 @@
     for(const id of ids) if(checked[id]) done += 1;
     return { done, total: ids.length, pct: pct(done, ids.length) };
   }
-  function calcCultivationXP(checked){
-    let xp = 0, done = 0;
-    for(const t of cultivationTasks){
-      if(checked[t.id]){ xp += t.xp; done += 1; }
-    }
-    const total = cultivationTasks.length;
-    return { xp, done, total, pct: pct(done,total), all: done === total };
-  }
   function calcQiXP(checked){
-    const cult = calcCultivationXP(checked);
-    let xp = cult.xp, done = cult.done, total = cult.total;
+    let xp = 0, done = 0, total = 0;
 
     for(const t of qiPractice){
-      if(t.id === "qi_cultivations_group") continue;
+      if(isTaskRemoved(t.id)) continue;
       total += 1;
 
   // Daily quest bar renderer (uses existing `rewards` and today's purchases)
@@ -5177,17 +5922,18 @@
   }
       if(checked[t.id]){ xp += t.xp; done += 1; }
     }
-    const all = (done === total);
+    const all = (total > 0 && done === total);
     if(all) xp += QI_BONUS_XP;
-    return { xp, done, total, pct: pct(done,total), all, cult };
+    return { xp, done, total, pct: pct(done,total), all };
   }
   function calcSystemXP(checked){
-    let xp = 0, done = 0;
+    let xp = 0, done = 0, total = 0;
     for(const t of systemTasks){
+      if(isTaskRemoved(t.id)) continue;
+      total += 1;
       if(checked[t.id]){ xp += t.xp; done += 1; }
     }
-    const total = systemTasks.length;
-    const all = done === total;
+    const all = total > 0 && done === total;
     if(all) xp += SYSTEM_BONUS_XP;
     return { xp, done, total, pct: pct(done,total), all };
   }
@@ -5198,20 +5944,24 @@
   function calculatePotentialXP(sectionKey, date) {
     const character = getCurrentCharacter();
     let potentialXP = 0;
+    let taskCount = 0;
     
     // Get all tasks for this section
     if (sectionKey === 'lib') {
       // Include Qi Practice, standalone liberty tasks, and system tasks
-      qiPractice.forEach(t => potentialXP += t.xp || 0);
-      libertyStandalone.forEach(t => potentialXP += t.xp || 0);
-      systemTasks.forEach(t => potentialXP += t.xp || 0);
+      filterActiveTasks(qiPractice).forEach(t => { potentialXP += t.xp || 0; taskCount += 1; });
+      filterActiveTasks(libertyStandalone).forEach(t => { potentialXP += t.xp || 0; taskCount += 1; });
+      filterActiveTasks(systemTasks).forEach(t => { potentialXP += t.xp || 0; taskCount += 1; });
     } else if (sectionKey === 'resp') {
-      responsibilityTasks.forEach(t => potentialXP += t.xp || 0);
+      filterActiveTasks(responsibilityTasks).forEach(t => { potentialXP += t.xp || 0; taskCount += 1; });
     } else if (sectionKey === 'dev') {
-      developmentTasks.forEach(t => potentialXP += t.xp || 0);
+      filterActiveTasks(developmentTasks).forEach(t => { potentialXP += t.xp || 0; taskCount += 1; });
     } else if (sectionKey === 'eff') {
-      efficiencyTasks.forEach(t => potentialXP += t.xp || 0);
+      filterActiveTasks(efficiencyTasks).forEach(t => { potentialXP += t.xp || 0; taskCount += 1; });
     }
+    
+    // Add section completion bonus
+    if(taskCount > 0) potentialXP += SECTION_BONUS_XP;
     
     // Apply character bonus
     if (character.id === 'sage' && sectionKey === 'dev') {
@@ -5231,23 +5981,24 @@
   function calculatePotentialXP(sectionKey, date) {
     const character = getCurrentCharacter();
     let potentialXP = 0;
+    let taskCount = 0;
     
     // Get all tasks for this section
     if (sectionKey === 'lib') {
       // Include Qi Practice, standalone liberty tasks, and system tasks
-      qiPractice.forEach(t => potentialXP += t.xp || 0);
-      libertyStandalone.forEach(t => potentialXP += t.xp || 0);
-      systemTasks.forEach(t => potentialXP += t.xp || 0);
+      filterActiveTasks(qiPractice).forEach(t => { potentialXP += t.xp || 0; taskCount += 1; });
+      filterActiveTasks(libertyStandalone).forEach(t => { potentialXP += t.xp || 0; taskCount += 1; });
+      filterActiveTasks(systemTasks).forEach(t => { potentialXP += t.xp || 0; taskCount += 1; });
     } else if (sectionKey === 'resp') {
-      responsibilityTasks.forEach(t => potentialXP += t.xp || 0);
+      filterActiveTasks(responsibilityTasks).forEach(t => { potentialXP += t.xp || 0; taskCount += 1; });
     } else if (sectionKey === 'dev') {
-      developmentTasks.forEach(t => potentialXP += t.xp || 0);
+      filterActiveTasks(developmentTasks).forEach(t => { potentialXP += t.xp || 0; taskCount += 1; });
     } else if (sectionKey === 'eff') {
-      efficiencyTasks.forEach(t => potentialXP += t.xp || 0);
+      filterActiveTasks(efficiencyTasks).forEach(t => { potentialXP += t.xp || 0; taskCount += 1; });
     }
     
     // Add section completion bonus
-    potentialXP += SECTION_BONUS_XP;
+    if(taskCount > 0) potentialXP += SECTION_BONUS_XP;
     
     // Apply character bonus
     if (character.id === 'sage' && sectionKey === 'dev') {
@@ -5267,23 +6018,24 @@
   function calculatePotentialXP(sectionKey, date) {
     const character = getCurrentCharacter();
     let potentialXP = 0;
+    let taskCount = 0;
     
     // Get all tasks for this section
     if (sectionKey === 'lib') {
       // Include Qi Practice, standalone liberty tasks, and system tasks
-      qiPractice.forEach(t => potentialXP += t.xp || 0);
-      libertyStandalone.forEach(t => potentialXP += t.xp || 0);
-      systemTasks.forEach(t => potentialXP += t.xp || 0);
+      filterActiveTasks(qiPractice).forEach(t => { potentialXP += t.xp || 0; taskCount += 1; });
+      filterActiveTasks(libertyStandalone).forEach(t => { potentialXP += t.xp || 0; taskCount += 1; });
+      filterActiveTasks(systemTasks).forEach(t => { potentialXP += t.xp || 0; taskCount += 1; });
     } else if (sectionKey === 'resp') {
-      responsibilityTasks.forEach(t => potentialXP += t.xp || 0);
+      filterActiveTasks(responsibilityTasks).forEach(t => { potentialXP += t.xp || 0; taskCount += 1; });
     } else if (sectionKey === 'dev') {
-      developmentTasks.forEach(t => potentialXP += t.xp || 0);
+      filterActiveTasks(developmentTasks).forEach(t => { potentialXP += t.xp || 0; taskCount += 1; });
     } else if (sectionKey === 'eff') {
-      efficiencyTasks.forEach(t => potentialXP += t.xp || 0);
+      filterActiveTasks(efficiencyTasks).forEach(t => { potentialXP += t.xp || 0; taskCount += 1; });
     }
     
     // Add section completion bonus
-    potentialXP += SECTION_BONUS_XP;
+    if(taskCount > 0) potentialXP += SECTION_BONUS_XP;
     
     // Apply character bonus
     if (character.id === 'sage' && sectionKey === 'dev') {
@@ -5302,25 +6054,37 @@
 
   function calcDayXP(date){
     const day = state.days[date];
-    if(!day) return { gained:0, spent:0, breakdown:{}, sectionBonus:{}, counts:{}, qi:{}, sys:{}, cult:{}, lootsCount:0 };
+    if(!day) return { gained:0, spent:0, breakdown:{}, sectionBonus:{}, counts:{}, qi:{}, sys:{}, lootsCount:0 };
 
     const checked = day.checked || {};
 
     const qi = calcQiXP(checked);
     let libStandaloneXP = 0;
-    for(const t of libertyStandalone){ if(checked[t.id]) libStandaloneXP += t.xp; }
+    for(const t of libertyStandalone){
+      if(isTaskRemoved(t.id)) continue;
+      if(checked[t.id]) libStandaloneXP += t.xp;
+    }
     const sys = calcSystemXP(checked);
 
     let libXP_raw = qi.xp + libStandaloneXP + sys.xp;
 
     let respXP_raw = 0;
-    for(const t of responsibilityTasks){ if(checked[t.id]) respXP_raw += t.xp; }
+    for(const t of responsibilityTasks){
+      if(isTaskRemoved(t.id)) continue;
+      if(checked[t.id]) respXP_raw += t.xp;
+    }
 
     let devXP_raw = 0;
-    for(const t of developmentTasks){ if(checked[t.id]) devXP_raw += t.xp; }
+    for(const t of developmentTasks){
+      if(isTaskRemoved(t.id)) continue;
+      if(checked[t.id]) devXP_raw += t.xp;
+    }
 
     let effXP_raw = 0;
-    for(const t of efficiencyTasks){ if(checked[t.id]) effXP_raw += t.xp; }
+    for(const t of efficiencyTasks){
+      if(isTaskRemoved(t.id)) continue;
+      if(checked[t.id]) effXP_raw += t.xp;
+    }
 
     // Custom tasks XP (add to lib by default)
     let customXP = 0;
@@ -5378,7 +6142,16 @@
       }
     }
 
-    let gained = libXP_final + respXP_final + devXP_final + effXP_final + lootBoostXP + taskCreationXP;
+    const mainQuestXP = day.mainQuestDone ? MAIN_QUEST_XP : 0;
+    const subQuestXP =
+      (day.subQuest1Done ? SECONDARY_QUEST_XP : 0) +
+      (day.subQuest2Done ? SECONDARY_QUEST_XP : 0);
+
+    let gained = libXP_final + respXP_final + devXP_final + effXP_final + lootBoostXP + taskCreationXP + mainQuestXP + subQuestXP;
+    if(state.prestige && state.prestige.xpBonus > 0){
+      const mult = 1 + (state.prestige.xpBonus / 100);
+      gained = Math.floor(gained * mult);
+    }
     
     // Apply permanent XP multiplier
     if(state.permanentBuffs && state.permanentBuffs.xpMultiplier > 0){
@@ -5398,10 +6171,10 @@
 
     return {
       gained, spent,
-      breakdown:{ lib:libXP_final, resp:respXP_final, dev:devXP_final, eff:effXP_final, boost:lootBoostXP, taskCreation:taskCreationXP },
+      breakdown:{ lib:libXP_final, resp:respXP_final, dev:devXP_final, eff:effXP_final, mainQuest: mainQuestXP, subQuest: subQuestXP, boost:lootBoostXP, taskCreation:taskCreationXP },
       sectionBonus:{ lib:bonusLib, resp:bonusResp, dev:bonusDev, eff:bonusEff },
       counts:{ lib:cLib, resp:cResp, dev:cDev, eff:cEff },
-      qi, sys, cult: qi.cult,
+      qi, sys,
       lootsCount: (day.loots||[]).length,
       potential
     };
@@ -5410,9 +6183,11 @@
   function calcLibertyPct(date){
     const day = state.days[date];
     const checked = (day && day.checked) ? day.checked : {};
-    const total = libertyPctTasksFlat.length;
+    let total = 0;
     let done = 0;
     for(const t of libertyPctTasksFlat){
+      if(isTaskRemoved(t.id)) continue;
+      total += 1;
       if(checked[t.id]) done += 1;
     }
     const p = total ? Math.round((done / total) * 100) : 0;
@@ -5580,23 +6355,11 @@
     ensureDay(d);
     const checked = state.days[d].checked;
 
+    renderDailyQuestUI(d);
+
     // Check for weekly shield generation
     checkWeeklyShieldGen(d);
     
-    // Apply auto-cultivation if enabled
-    if(state.permanentBuffs && state.permanentBuffs.autoCultivation){
-      if(!state.days[d].autoCultApplied){
-        const cultIds = ['cult_1', 'cult_2', 'cult_3'];
-        cultIds.forEach(id => {
-          if(!checked[id]){
-            checked[id] = true;
-          }
-        });
-        state.days[d].autoCultApplied = true;
-        saveState();
-      }
-    }
-
     // Render custom tasks
     renderCustomTasks();
     
@@ -5675,22 +6438,17 @@
       const a = document.getElementById(`pct_${key}`);
       const b = document.getElementById(`done_${key}`);
       const cEl = document.getElementById(`bonus_${key}`);
-      const lEl = document.getElementById(`loot_${key}`);
       const pEl = document.getElementById(`potential_${key}`);
-      if(a) a.textContent = `${c.pct}%`;
-      if(b) b.textContent = `${c.done}/${c.total}`;
-      if(cEl) cEl.textContent = `Bonus: ${bonus}`;
-      if(lEl) lEl.textContent = `Loot: ${looted ? "✅" : "&ugrave;"}`;
-      if(pEl) pEl.textContent = `${potential || 0} XP`;
+      if(a) a.textContent = `📊 ${c.pct}%`;
+      if(b) b.innerHTML = `${VALIDATION_ICON} ${c.done}/${c.total}`;
+      if(cEl) cEl.textContent = `⭐ Bonus: ${bonus}`;
+      if(pEl) pEl.textContent = `⚡ ${potential || 0} XP`;
     }
 
     if(el("qiDone")) el("qiDone").textContent = `${xp.qi.done}/${xp.qi.total}`;
     if(el("qiPct"))  el("qiPct").textContent  = `${xp.qi.pct}%`;
     if(el("qiXp"))   el("qiXp").textContent   = `${xp.qi.xp} XP${getDoubleXPForDateSection(d,"lib") ? " ⚡" : ""}`;
 
-    if(el("cultDone")) el("cultDone").textContent = `${xp.cult.done}/${xp.cult.total}`;
-    if(el("cultPct"))  el("cultPct").textContent  = `${xp.cult.pct}%`;
-    if(el("cultXp"))   el("cultXp").textContent   = `${xp.cult.xp} XP`;
 
     if(el("sysDone")) el("sysDone").textContent = `${xp.sys.done}/${xp.sys.total}`;
     if(el("sysPct"))  el("sysPct").textContent  = `${xp.sys.pct}%`;
@@ -5700,19 +6458,35 @@
       `Seuil Liberté OK = ${LIB_OK_THRESHOLD_PCT}%. Bonus section 100% = +${SECTION_BONUS_XP} XP + 1 Loot Box (par section/jour). ` +
       `${state.days[d].lootBoostXP ? `Boost loot aujourd’hui: +${state.days[d].lootBoostXP} XP.` : ""}`;
 
-    el("rewardGate").textContent = lib.libOk ? "✅ Autorisés" : "🔒 Bloqués";
+    el("rewardGate").innerHTML = lib.libOk ? `${VALIDATION_ICON} Autorisés` : "🔒 Bloqués";
     rewards.forEach(r=>{
       const btn = document.getElementById(`buy_${r.id}`);
       if(btn) btn.disabled = !lib.libOk;
     });
 
     // Rewards log
+    const mainQuestLine = state.days[d].mainQuestDone
+      ? `<div class="item">${VALIDATION_ICON} Quête principale du jour${state.days[d].mainQuestText ? ` — ${escapeHtml(state.days[d].mainQuestText)}` : ""} <span class="pill">+${MAIN_QUEST_XP} XP</span></div>`
+      : "";
+    const subQuestLines = [
+      state.days[d].subQuest1Done
+        ? `<div class="item">${VALIDATION_ICON} Quête secondaire 1${state.days[d].subQuest1Text ? ` — ${escapeHtml(state.days[d].subQuest1Text)}` : ""} <span class="pill">+${SECONDARY_QUEST_XP} XP</span></div>`
+        : "",
+      state.days[d].subQuest2Done
+        ? `<div class="item">${VALIDATION_ICON} Quête secondaire 2${state.days[d].subQuest2Text ? ` — ${escapeHtml(state.days[d].subQuest2Text)}` : ""} <span class="pill">+${SECONDARY_QUEST_XP} XP</span></div>`
+        : ""
+    ].join("");
+
     const purchases = state.days[d].purchases || [];
-    el("dayLog").innerHTML = purchases.length
+    const purchaseLines = purchases.length
       ? purchases.slice().reverse().map(p=>{
           const disc = p.discountUsed ? ` <span class="pill">-50</span>` : ``;
-          return `<div class="item">✅ ${escapeHtml(p.name)} <span class="pill">-${p.cost} XP</span>${disc}</div>`;
+          return `<div class="item">${VALIDATION_ICON} ${escapeHtml(p.name)} <span class="pill">-${p.cost} XP</span>${disc}</div>`;
         }).join("")
+      : "";
+
+    el("dayLog").innerHTML = (mainQuestLine || subQuestLines || purchaseLines)
+      ? `${mainQuestLine}${subQuestLines}${purchaseLines}`
       : `<div class="item">Aucun reward pris aujourd’hui.</div>`;
 
     // Loot log
@@ -5985,7 +6759,6 @@
             <span class="badge" id="done_${s.key}">0/0</span>
             <span class="badge xpWarn" id="potential_${s.key}">0 ${currencyName}</span>
             <span class="badge" id="bonus_${s.key}">Bonus: 0</span>
-            <span class="badge" id="loot_${s.key}">Loot: 0</span>
           </div>
         </summary>
         <div class="sectionBody">
@@ -6008,23 +6781,24 @@
       // Mode Freedom - sections spécifiques
       if(state.gameMode === "freedom"){
         if(s.key === "lib"){
-          body.appendChild(renderQiPratiqueNested());
-          libertyStandalone.forEach(t => body.appendChild(taskRow(t, s.meta, "lib")));
+          filterActiveTasks(qiPractice)
+            .forEach(t => body.appendChild(taskRow(t, "Qi Pratique (compte dans Liberté%).", "qi")));
+          filterActiveTasks(libertyStandalone).forEach(t => body.appendChild(taskRow(t, s.meta, "lib")));
           body.appendChild(renderSystemNested());
         } else if(s.key === "resp"){
-          (s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta, "resp")));
+          filterActiveTasks(s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta, "resp")));
         } else if(s.key === "dev"){
-          (s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta, "dev")));
+          filterActiveTasks(s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta, "dev")));
         } else if(s.key === "eff"){
-          (s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta, "eff")));
+          filterActiveTasks(s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta, "eff")));
         } else if(s.key === "money"){
-          (s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta, "money")));
+          filterActiveTasks(s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta, "money")));
         } else {
-          (s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta)));
+          filterActiveTasks(s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta)));
         }
       } else {
         // Mode Money - toutes les sections ont juste leurs tâches
-        (s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta, s.key)));
+        filterActiveTasks(s.tasks || []).forEach(t => body.appendChild(taskRow(t, s.meta, s.key)));
       }
 
       // Ajouter les tâches personnalisées de cette catégorie
@@ -6044,28 +6818,8 @@
           openEditTaskModal(task.id);
         };
         
-        // Ajouter un bouton de suppression pour les tâches personnalisées
-        const deleteBtn = document.createElement("button");
-        deleteBtn.textContent = "✕";
-        deleteBtn.className = "deleteCustomTask";
-        deleteBtn.style.cssText = "margin-left:4px;padding:2px 6px;background:#ff4444;color:white;border:none;border-radius:3px;cursor:pointer;font-size:12px";
-        deleteBtn.onclick = (e) => {
-          e.stopPropagation();
-          if(confirm("Supprimer cette tâche personnalisée ?")) {
-            const taskIdx = state.days[d].customTasks.findIndex(t => t.id === task.id);
-            if(taskIdx !== -1) {
-              state.days[d].customTasks.splice(taskIdx, 1);
-              delete state.days[d].checked[task.id];
-              saveState();
-              renderSections();
-              syncUI(false);
-            }
-          }
-        };
-        
         const xpDiv = row.querySelector(".xp");
         xpDiv.appendChild(editBtn);
-        xpDiv.appendChild(deleteBtn);
         body.appendChild(row);
       });
     }
@@ -6122,48 +6876,13 @@
     wrap.appendChild(finalDropZone);
   }
 
-  function renderQiPratiqueNested(){
-    return nestedDetails(
-      "qi",
-      "🜂 Qi Pratique",
-      `<span class="badge" id="qiDone">0/0</span><span class="badge" id="qiPct">0%</span><span class="badge xpWarn" id="qiXp">0 XP</span>`,
-      (body) => {
-        body.appendChild(renderCultivationsNested());
-        qiPractice
-          .filter(t => t.id !== "qi_cultivations_group")
-          .forEach(t => body.appendChild(taskRow(t, "Qi Pratique (compte dans Liberté%).", "qi")));
-
-        const note = document.createElement("div");
-        note.className = "sectionHint";
-        note.style.marginTop = "8px";
-        note.textContent = "Bonus Qi Pratique: +15 XP si TOUT Qi Pratique est complété (incluant toutes les Cultivations).";
-        body.appendChild(note);
-      },
-      "qi"
-    );
-  }
-
-  function renderCultivationsNested(){
-    return nestedDetails(
-      "cultivation",
-      "🌱 Cultivations (12 étapes) &ugrave; Total 30 XP",
-      `<span class="badge" id="cultDone">0/12</span><span class="badge" id="cultPct">0%</span><span class="badge xpWarn" id="cultXp">0 XP</span>`,
-      (body) => {
-        cultivationTasks.forEach(t=>{
-          body.appendChild(taskRow(t, "Sous-étape de Cultivations (compte dans Liberté%).", "qi"));
-        });
-      },
-      "qi"
-    );
-  }
-
   function renderSystemNested(){
     return nestedDetails(
       "system",
       "🧱 Système (4)",
       `<span class="badge" id="sysDone">0/4</span><span class="badge" id="sysPct">0%</span><span class="badge xpWarn" id="sysXp">0 XP</span>`,
       (body) => {
-        systemTasks.forEach(t=>{
+        filterActiveTasks(systemTasks).forEach(t=>{
           body.appendChild(taskRow(t, "Système (compte dans Liberté%).", "system"));
         });
         const note = document.createElement("div");
